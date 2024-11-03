@@ -19,11 +19,25 @@
       Toggle Inventory
     </button>
 
+    <button onclick="openSellAllPopup()">Sell All</button>
+
     <div id="inventory"></div>
     <div id="shop">
       <h2>Shop</h2>
       <div id="upgrades"></div>
     </div>
+
+    <!-- Sell All Popup -->
+<div id="sellAllPopup" class="popup" style="display:none;">
+    <div class="popup-content">
+        <h2>Sell All Items by Rarity</h2>
+        <form id="rarityForm">
+            <div id="rarityCheckboxes"></div>
+            <button type="button" onclick="sellSelectedRarities()">Done</button>
+            <button type="button" onclick="closePopup()">Cancel</button>
+        </form>
+    </div>
+</div>
 
     <script src="modules/game.js" defer></script>
     <script src="modules/text.js" defer></script>

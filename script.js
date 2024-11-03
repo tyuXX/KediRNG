@@ -27,7 +27,9 @@ function displayInventory() {
       itemDiv.innerHTML = `
             <p>${item.text}</p>
             <p>${rarity[item.rarity].name}</p>
-            <button onclick="delItem(${index})">Sell: ${item.sell*sellMultiplier}</button>
+            <button onclick="delItem(${index})">Sell: ${
+        item.sell * sellMultiplier
+      }</button>
         `;
 
       itemDiv.style.backgroundColor =
@@ -68,33 +70,109 @@ function displayUpgrades() {
   upgradesDiv.innerHTML = ""; // Clear existing upgrades
 
   upgrades.forEach((upgrade, index) => {
-    if (!boughtUpgrades.includes(upgrade.id)) {
-      const upgradeDiv = document.createElement("div");
-      upgradeDiv.classList.add("upgrade");
-      upgradeDiv.innerHTML = `
-        <p>${upgrade.name}</p>
+    const boughtUpgrade = boughtUpgrades.find((up) => up[0] === upgrade.id);
+    const boughtCount = boughtUpgrade ? boughtUpgrade[1] : 0;
+
+    const upgradeDiv = document.createElement("div");
+    upgradeDiv.classList.add("upgrade");
+    upgradeDiv.innerHTML = `
+        <p>${upgrade.name} - ${upgrade.description} (Level: ${boughtCount})</p>
         <p>Cost: ${upgrade.cost}</p>
-        <button onclick="buyUpgrade(${index})">Buy</button>
       `;
-      upgradesDiv.appendChild(upgradeDiv);
+
+    if (boughtCount >= upgrade.limit) {
+      upgradeDiv.innerHTML += `<button disabled style="background-color: gray;">Sold out</button>`;
+    } else {
+      upgradeDiv.innerHTML += `<button onclick="buyUpgrade(${index})">Buy</button>`;
     }
+
+    upgradesDiv.appendChild(upgradeDiv);
   });
 }
 
 // Function to buy an upgrade
 function buyUpgrade(index) {
   const upgrade = upgrades[index];
-  if (money >= upgrade.cost) {
+  const boughtUpgrade = boughtUpgrades.find((up) => up[0] === upgrade.id);
+  const boughtCount = boughtUpgrade ? boughtUpgrade[1] : 0;
+
+  if (money >= upgrade.cost && boughtCount < upgrade.limit) {
     money -= upgrade.cost;
     upgrade.effect(); // Apply the effect of the upgrade
-    if (!upgrade.multibuy) {
-      boughtUpgrades.push(upgrade.id);
+
+    if (boughtUpgrade) {
+      boughtUpgrade[1]++; // Increment count of the upgrade
+    } else {
+      boughtUpgrades.push([upgrade.id, 1]); // Add new upgrade with count 1
     }
+
     displayInventory(); // Update inventory
     displayUpgrades(); // Update shop to reflect changes
   } else {
-    alert("Not enough money!");
+    alert("Not enough money or upgrade limit reached!");
   }
+}
+
+// Function to open the Sell All popup
+function openSellAllPopup() {
+  const rarityCheckboxesDiv = document.getElementById("rarityCheckboxes");
+  rarityCheckboxesDiv.innerHTML = ""; // Clear existing checkboxes
+
+  // Create checkboxes for each rarity
+  rarity.forEach((r, index) => {
+    const checkbox = document.createElement("input");
+    checkbox.type = "checkbox";
+    checkbox.id = `rarity-${index}`;
+    checkbox.value = r.value; // Or whatever property represents the rarity value
+
+    const label = document.createElement("label");
+    label.htmlFor = `rarity-${index}`;
+    label.innerText = r.name; // Assuming you have a 'name' property for the rarity
+
+    rarityCheckboxesDiv.appendChild(checkbox);
+    rarityCheckboxesDiv.appendChild(label);
+    rarityCheckboxesDiv.appendChild(document.createElement("br")); // Line break for better spacing
+  });
+
+  document.getElementById("sellAllPopup").style.display = "flex"; // Show the popup
+}
+
+// Function to close the popup
+function closePopup() {
+  document.getElementById("sellAllPopup").style.display = "none"; // Hide the popup
+}
+
+// Function to sell selected rarities
+function sellSelectedRarities() {
+  const checkboxes = document.querySelectorAll(
+    "#rarityCheckboxes input[type=checkbox]"
+  );
+  const selectedRarities = [];
+
+  checkboxes.forEach((checkbox) => {
+    if (checkbox.checked) {
+      selectedRarities.push(parseInt(checkbox.value)); // Store the selected rarity values
+    }
+  });
+
+  if (selectedRarities.length === 0) {
+    alert("No rarities selected!");
+    return;
+  }
+
+  // Sell items of selected rarities
+  selectedRarities.forEach((rarityValue) => {
+    inventory = inventory.filter((item) => {
+      if (item.rarity === rarityValue) {
+        money += item.sell * sellMultiplier; // Add the sell value to money
+        return false; // Remove this item from inventory
+      }
+      return true; // Keep this item in inventory
+    });
+  });
+
+  displayInventory(); // Update inventory display
+  closePopup(); // Close the popup
 }
 
 // Render loop to update money labels
