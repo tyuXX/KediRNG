@@ -11,6 +11,10 @@ function rollText() {
     rarity: rarit.value,
     sell: Math.floor(Math.pow(2, rarit.value) * Math.random()) + 1,
   });
+  if(!raritiesDone.includes(rarit.value)){
+    raritiesDone.push(rarit.value);
+    newRarityAnimation();
+  }
   displayInventory();
 }
 
@@ -173,6 +177,10 @@ function sellSelectedRarities() {
 
   displayInventory(); // Update inventory display
   closePopup(); // Close the popup
+}
+
+function newRarityAnimation(){
+
 }
 
 // Render loop to update money labels
