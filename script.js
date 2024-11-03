@@ -1,6 +1,9 @@
 const invDiv = document.getElementById("inventory");
+const mlabel = document.getElementById("mlabel");
+const pmlabel = document.getElementById("pmlabel");
 
-var inventory = [{ text: "Kedi RNG", rarity: 0 }];
+var inventory = [{ text: "Kedi RNG", rarity: 0, sell: 0 }];
+var money = 0;
 
 function rollText() {
   let rarit = rarity[0];
@@ -13,6 +16,7 @@ function rollText() {
   inventory.push({
     text: rarit.texts[Math.floor(Math.random() * rarit.texts.length)],
     rarity: rarit.value,
+    sell: Math.floor(Math.pow(2, rarit.value)*Math.random())
   });
   displayInventory();
 }
@@ -24,7 +28,7 @@ function displayInventory() {
       inventory[index].rarity
     } class=\"item\"><p>${inventory[index].text}</p><p>${
       rarity[inventory[index].rarity].name
-    }</p><button onclick=delItem(${index})>X</button></div>`;
+    }</p><button onclick=delItem(${index})>Sell:${inventory[index].sell}</button></div>`;
   }
 
   const items = document.querySelectorAll(".item");
@@ -39,6 +43,17 @@ function displayInventory() {
 }
 
 function delItem(index) {
+    money += inventory[index].sell
   inventory.splice(index, 1);
   displayInventory();
 }
+
+async function renderLoop() {
+    while(true){
+        mlabel.innerHTML = `Money:${money}`;
+        pmlabel.innerHTML = `Potential Money:${inventory.reduce((a, b) => a + b.sell, 0)}`;
+        await new Promise(r => setTimeout(r, 100));
+    }
+}
+
+renderLoop();
