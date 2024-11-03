@@ -7,11 +7,13 @@ const tlabel = document.getElementById("tlabel");
 function rollText() {
   for (let index = 0; index < rollMultiplier; index++) {
     const rarit = rarity.find((r) => Math.random() < 0.5) || rarity[0]; // Get a random rarity
+    const selectedText = rarit.texts[Math.floor(Math.random() * rarit.texts.length)];
     inventory.push({
-      text: rarit.texts[Math.floor(Math.random() * rarit.texts.length)],
+      text: selectedText,
       rarity: rarit.value,
       sell: Math.floor(Math.pow(2, rarit.value) * Math.random()) + 1,
     });
+    checkQuestCompletion(selectedText);
     if (!raritiesDone.includes(rarit.value)) {
       raritiesDone.push(rarit.value);
       newRarityAnimation(rarit.value);
@@ -49,6 +51,23 @@ function displayInventory() {
     invDiv.innerHTML = "";
     invDiv.appendChild(fragment);
   }
+}
+
+function displayQuests() {
+    const questsDiv = document.getElementById("quests"); // Ensure this div exists in your HTML
+    questsDiv.innerHTML = ""; // Clear existing quests
+
+    quests.forEach((quest) => {
+        const questDiv = document.createElement("div");
+        questDiv.classList.add("quest");
+        questDiv.innerHTML = `
+            <p>${quest.requiredText}</p>
+            <p>${rarity[quest.rarity].name}</p>
+            <p>Reward: ${quest.reward}</p>
+        `;
+        questDiv.style.backgroundColor = rarity[quest.rarity].colors[0];
+        questsDiv.appendChild(questDiv);
+    });
 }
 
 // Function to delete an item from the inventory
@@ -207,6 +226,45 @@ function newRarityAnimation(rarityint) {
   });
 }
 
+// Function to generate random quests
+function generateRandomQuest() {
+    // Select a random rarity
+    let randomRarity = rarity[0];
+    for (let i = 0; i < rarity.length; i++) {
+        if (Math.random() < 0.3) {
+            randomRarity = rarity[i];
+            break;
+        }
+    }
+    
+    // Select a random text from the chosen rarity
+    const randomText = randomRarity.texts[Math.floor(Math.random() * randomRarity.texts.length)];
+
+    // Define the quest with a reward greater than the text's base value
+    const reward = Math.pow(2, randomRarity.value) * Math.random() * 10; // Example reward formula
+    const newQuest = {
+        id: quests.length + 1,
+        requiredText: randomText,
+        reward: Math.floor(reward),
+        rarity: randomRarity.value
+    };
+
+    quests.push(newQuest);
+}
+
+function checkQuestCompletion(text) {
+    quests.forEach((quest) => {
+        if (text === quest.requiredText) {
+            money += quest.reward; // Reward the player
+            //Remove quest from list
+            quests = quests.filter((q) => q.id !== quest.id);
+            displayQuests();
+            // Add a notification or modal to inform the player
+        }
+    });
+}
+
+
 async function renderLoop() {
   while (true) {
     mlabel.innerHTML = `Money: ${money}`;
@@ -219,7 +277,19 @@ async function renderLoop() {
   }
 }
 
+async function questLoop() {
+  while (true) {
+    generateRandomQuest();
+    await new Promise((r) => setTimeout(r, 100000));
+  }
+}
+
 // Initial calls
 displayUpgrades();
 displayInventory();
+for (let i = 0; i < 5; i++) {
+    generateRandomQuest();
+}
+displayQuests();
+questLoop();
 renderLoop();

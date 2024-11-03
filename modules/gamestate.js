@@ -6,6 +6,7 @@ function saveGame() {
     inventory: inventory,
     boughtUpgrades: boughtUpgrades,
     raritiesDone: raritiesDone,
+    quests: quests,
     // Add any new properties here
   };
 
@@ -38,6 +39,7 @@ function loadGame(event) {
         inventory = gameData.inventory || defInventory;
         boughtUpgrades = gameData.boughtUpgrades || [];
         raritiesDone = gameData.raritiesDone || defRaritiesDone;
+        quests = gameData.quests || [];
 
         // Load other properties here as needed
 
