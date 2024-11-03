@@ -1,110 +1,126 @@
 /* General Body Style */
 body {
-    background-color: #1b1b1b;
-    font-family: Arial, sans-serif;
-    text-align: center;
-    margin: 0;
-    padding: 0;
-    color: #e0e0e0;
+  background-color: #1b1b1b;
+  font-family: Arial, sans-serif;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+  color: #e0e0e0;
 }
 
 h1 {
-    color: #e0e0e0;
-    margin-top: 20px;
+  color: #e0e0e0;
+  margin-top: 20px;
 }
 
 /* Money and Potential Money Labels */
-#mlabel, #pmlabel {
-    font-size: 18px;
-    font-weight: bold;
-    color: #ffffff;
-    margin: 10px;
-    padding: 8px;
-    border-radius: 5px;
-    display: inline-block;
-    background-color: #333333;
+#mlabel,
+#pmlabel {
+  font-size: 18px;
+  font-weight: bold;
+  color: #ffffff;
+  margin: 10px;
+  padding: 8px;
+  border-radius: 5px;
+  display: inline-block;
+  background-color: #333333;
 }
 
 /* Roll Button Style */
 button {
-    background-color: #5a5aff; /* Darker blue */
-    border: none;
-    color: white;
-    padding: 12px 24px;
-    font-size: 16px;
-    font-weight: bold;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+  background-color: #5a5aff; /* Darker blue */
+  border: none;
+  color: white;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 button:hover {
-    background-color: #4d4dff; /* Slightly lighter blue on hover */
+  background-color: #4d4dff; /* Slightly lighter blue on hover */
 }
 
 button:active {
-    background-color: #4040e0; /* Darker shade on click */
+  background-color: #4040e0; /* Darker shade on click */
 }
 
 /* Inventory Container */
 #inventory {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-    gap: 10px;
-    max-width: 90%;
-    margin: 20px auto;
-    padding: 10px;
-    border: 2px solid #444444;
-    background-color: #2a2a2a;
-    border-radius: 10px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
-    overflow-y: auto;
-    max-height: 60vh;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 10px;
+  max-width: 90%;
+  margin: 20px auto;
+  padding: 10px;
+  border: 2px solid #444444;
+  background-color: #2a2a2a;
+  border-radius: 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
+  overflow-y: auto;
+  max-height: 60vh;
 }
 
 /* Inventory Item Style */
 .item {
-    background-color: #333333;
-    border: 1px solid #555555;
-    border-radius: 8px;
-    padding: 10px;
-    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.5);
-    font-size: 16px;
-    color: #e0e0e0;
-    text-align: center;
-    transition: transform 0.2s ease;
+  background-color: #333333;
+  border: 1px solid #555555;
+  border-radius: 8px;
+  padding: 10px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.5);
+  font-size: 16px;
+  color: #e0e0e0;
+  text-align: center;
+  transition: transform 0.2s ease;
 }
 
 .item:hover {
-    transform: scale(1.05); /* Slight zoom on hover */
+  transform: scale(1.05); /* Slight zoom on hover */
 }
 
 /* Item Text */
 .item p {
-    margin: 5px 0;
-    font-size: 14px;
-    font-weight: bold;
-    color: #000000;
+  margin: 5px 0;
+  font-size: 14px;
+  font-weight: bold;
+  color: #000000;
 }
 
 /* Sell Button in Each Item */
 .item button {
-    background-color: #ff5252; /* Red */
-    border: none;
-    color: white;
-    padding: 8px 16px;
-    font-size: 14px;
-    font-weight: bold;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    margin-top: 5px;
+  background-color: #ff5252; /* Red */
+  border: none;
+  color: white;
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: bold;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 5px;
 }
 
 .item button:hover {
-    background-color: #ff3333; /* Darker red on hover */
+  background-color: #ff3333; /* Darker red on hover */
 }
 
 .item button:active {
-    background-color: #e60000; /* Even darker red on click */
+  background-color: #e60000; /* Even darker red on click */
+}
+#shop {
+  margin: 20px auto;
+  padding: 10px;
+  border: 2px solid #444444;
+  background-color: #2a2a2a;
+  border-radius: 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
+  max-width: 90vw;
+}
+
+#upgrades {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 10px;
 }
