@@ -28,20 +28,31 @@
     </div>
 
     <!-- Sell All Popup -->
-<div id="sellAllPopup" class="popup" style="display:none;">
-    <div class="popup-content">
+    <div id="sellAllPopup" class="popup" style="display: none">
+      <div class="popup-content">
         <h2>Sell All Items by Rarity</h2>
         <form id="rarityForm">
-            <div id="rarityCheckboxes"></div>
-            <button type="button" onclick="sellSelectedRarities()">Done</button>
-            <button type="button" onclick="closePopup()">Cancel</button>
+          <div id="rarityCheckboxes"></div>
+          <button type="button" onclick="sellSelectedRarities()">Done</button>
+          <button type="button" onclick="closePopup()">Cancel</button>
         </form>
+      </div>
     </div>
-</div>
+
+    <!-- Save and Load Buttons -->
+    <div>
+      <button onclick="saveGame()">Save Game</button>
+      <input type="file" id="load-input" style="display: none" />
+      <button onclick="document.getElementById('load-input').click()">
+        Load Game
+      </button>
+    </div>
 
     <script src="modules/game.js" defer></script>
     <script src="modules/text.js" defer></script>
-    <script src="modules/upgrades.js" defer"></script>
+    <script src="modules/upgrades.js" defer></script>
     <script src="script.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pako/1.0.11/pako.min.js"></script>
+    <script src="modules/gamestate.js"></script>
   </body>
 </html>
