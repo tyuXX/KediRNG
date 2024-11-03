@@ -1,6 +1,6 @@
-let boughtUpgrades = [];
-let sellMultiplier = 1;
-let rollMultiplier = 1;
+var boughtUpgrades = [];
+var sellMultiplier = 1;
+var rollMultiplier = 1;
 
 const upgrades = [
   {

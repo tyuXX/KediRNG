@@ -15,7 +15,8 @@ h1 {
 
 /* Money and Potential Money Labels */
 #mlabel,
-#pmlabel {
+#pmlabel,
+#tlabel {
   font-size: 18px;
   font-weight: bold;
   color: #ffffff;

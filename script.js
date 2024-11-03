@@ -183,29 +183,41 @@ function sellSelectedRarities() {
 
 // Function to animate new rarity items in fullscreen
 function newRarityAnimation(rarityint) {
-    // Create a fullscreen overlay for the notification
-    const overlay = document.createElement("div");
-    overlay.classList.add("fullscreen-notification-overlay");
-  
-    // Create the content container
-    const content = document.createElement("div");
-    content.classList.add("notification-content");
-  
-    // Add rarity information
-    content.innerHTML = `
+  // Create a fullscreen overlay for the notification
+  const overlay = document.createElement("div");
+  overlay.classList.add("fullscreen-notification-overlay");
+
+  // Create the content container
+  const content = document.createElement("div");
+  content.classList.add("notification-content");
+
+  // Add rarity information
+  content.innerHTML = `
       <h1>New Rarity Unlocked!</h1>
       <h2 id="rarityText" style="color: ${rarity[rarityint].colors[0]};">Rarity Level: ${rarity[rarityint].name}</h2>
       <button class="close-button">Close</button>
     `;
-  
-    overlay.appendChild(content);
-    document.body.appendChild(overlay);
-  
-    // Add event listener to close the modal
-    content.querySelector(".close-button").addEventListener("click", () => {
-      document.body.removeChild(overlay); // Remove the overlay when closed
-    });
+
+  overlay.appendChild(content);
+  document.body.appendChild(overlay);
+
+  // Add event listener to close the modal
+  content.querySelector(".close-button").addEventListener("click", () => {
+    document.body.removeChild(overlay); // Remove the overlay when closed
+  });
+}
+
+async function renderLoop() {
+  while (true) {
+    mlabel.innerHTML = `Money: ${money}`;
+    pmlabel.innerHTML = `Potential Money: ${inventory.reduce(
+      (a, b) => a + b.sell * sellMultiplier,
+      0
+    )}`;
+    tlabel.innerHTML = `Text Count: ${inventory.length}`;
+    await new Promise((r) => setTimeout(r, 100));
   }
+}
 
 // Initial calls
 displayUpgrades();
