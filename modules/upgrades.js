@@ -1,5 +1,6 @@
 let boughtUpgrades = [];
 let sellMultiplier = 1;
+let rollMultiplier = 1;
 
 const upgrades = [
   {
@@ -12,4 +13,14 @@ const upgrades = [
       sellMultiplier++;
     },
   },
+  {
+    name: "Double Roll",
+    id: "doubleRoll",
+    description: "Roll double the items.",
+    cost: 100000,
+    limit: 1,
+    effect: () => {
+      rollMultiplier++;
+    },
+  }
 ];

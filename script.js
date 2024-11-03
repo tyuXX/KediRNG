@@ -5,15 +5,17 @@ const tlabel = document.getElementById("tlabel");
 
 // Function to roll a new item based on rarity
 function rollText() {
-  const rarit = rarity.find((r) => Math.random() < 0.5) || rarity[0]; // Get a random rarity
-  inventory.push({
-    text: rarit.texts[Math.floor(Math.random() * rarit.texts.length)],
-    rarity: rarit.value,
-    sell: Math.floor(Math.pow(2, rarit.value) * Math.random()) + 1,
-  });
-  if(!raritiesDone.includes(rarit.value)){
-    raritiesDone.push(rarit.value);
-    newRarityAnimation();
+  for (let index = 0; index < rollMultiplier; index++) {
+    const rarit = rarity.find((r) => Math.random() < 0.5) || rarity[0]; // Get a random rarity
+    inventory.push({
+      text: rarit.texts[Math.floor(Math.random() * rarit.texts.length)],
+      rarity: rarit.value,
+      sell: Math.floor(Math.pow(2, rarit.value) * Math.random()) + 1,
+    });
+    if (!raritiesDone.includes(rarit.value)) {
+      raritiesDone.push(rarit.value);
+      newRarityAnimation();
+    }
   }
   displayInventory();
 }
@@ -179,9 +181,7 @@ function sellSelectedRarities() {
   closePopup(); // Close the popup
 }
 
-function newRarityAnimation(){
-
-}
+function newRarityAnimation() {}
 
 // Render loop to update money labels
 async function renderLoop() {
