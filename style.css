@@ -16,7 +16,8 @@ h1 {
 /* Money and Potential Money Labels */
 #mlabel,
 #pmlabel,
-#tlabel {
+#tlabel,
+#shop h2 {
   font-size: 18px;
   font-weight: bold;
   color: #ffffff;
@@ -124,6 +125,22 @@ button:active {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
   gap: 10px;
+}
+
+.upgrade {
+  background-color: #333333;
+  border: 1px solid #555555;
+  border-radius: 8px;
+  padding: 10px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.5);
+  font-size: 16px;
+  color: #e0e0e0;
+  text-align: center;
+  transition: transform 0.2s ease;
+}
+
+.upgrade:hover {
+  transform: scale(1.05);
 }
 
 /* Sell All Popup */
