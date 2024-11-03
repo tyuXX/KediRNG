@@ -14,7 +14,7 @@ function rollText() {
     });
     if (!raritiesDone.includes(rarit.value)) {
       raritiesDone.push(rarit.value);
-      newRarityAnimation();
+      newRarityAnimation(rarit.value);
     }
   }
   displayInventory();
@@ -181,20 +181,31 @@ function sellSelectedRarities() {
   closePopup(); // Close the popup
 }
 
-function newRarityAnimation() {}
-
-// Render loop to update money labels
-async function renderLoop() {
-  while (true) {
-    mlabel.innerHTML = `Money: ${money}`;
-    pmlabel.innerHTML = `Potential Money: ${inventory.reduce(
-      (a, b) => a + b.sell * sellMultiplier,
-      0
-    )}`;
-    tlabel.innerHTML = `Text Count: ${inventory.length}`;
-    await new Promise((r) => setTimeout(r, 100));
+// Function to animate new rarity items in fullscreen
+function newRarityAnimation(rarityint) {
+    // Create a fullscreen overlay for the notification
+    const overlay = document.createElement("div");
+    overlay.classList.add("fullscreen-notification-overlay");
+  
+    // Create the content container
+    const content = document.createElement("div");
+    content.classList.add("notification-content");
+  
+    // Add rarity information
+    content.innerHTML = `
+      <h1>New Rarity Unlocked!</h1>
+      <h2 id="rarityText" style="color: ${rarity[rarityint].colors[0]};">Rarity Level: ${rarity[rarityint].name}</h2>
+      <button class="close-button">Close</button>
+    `;
+  
+    overlay.appendChild(content);
+    document.body.appendChild(overlay);
+  
+    // Add event listener to close the modal
+    content.querySelector(".close-button").addEventListener("click", () => {
+      document.body.removeChild(overlay); // Remove the overlay when closed
+    });
   }
-}
 
 // Initial calls
 displayUpgrades();

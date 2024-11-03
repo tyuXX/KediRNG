@@ -127,62 +127,111 @@ button:active {
 
 /* Sell All Popup */
 .popup {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.8); /* Darker background for better visibility */
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(
+    0,
+    0,
+    0,
+    0.8
+  ); /* Darker background for better visibility */
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .popup-content {
-    background: #2a2a2a; /* Match with inventory background */
-    padding: 20px;
-    border-radius: 10px; /* Match the border radius style of other elements */
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
-    color: #e0e0e0; /* Light text color for readability */
+  background: #2a2a2a; /* Match with inventory background */
+  padding: 20px;
+  border-radius: 10px; /* Match the border radius style of other elements */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
+  color: #e0e0e0; /* Light text color for readability */
 }
 
 /* Popup Title */
 .popup-content h2 {
-    color: #ffffff; /* Keep the title bright for contrast */
-    margin-bottom: 10px;
+  color: #ffffff; /* Keep the title bright for contrast */
+  margin-bottom: 10px;
 }
 
 /* Checkbox Style */
 .popup-content input[type="checkbox"] {
-    margin-right: 10px;
-    accent-color: #5a5aff; /* Custom accent color for checkboxes */
+  margin-right: 10px;
+  accent-color: #5a5aff; /* Custom accent color for checkboxes */
 }
 
 /* Checkbox Label Style */
 .popup-content label {
-    color: #e0e0e0; /* Match text color with the rest of the app */
-    font-size: 16px; /* Consistent font size */
+  color: #e0e0e0; /* Match text color with the rest of the app */
+  font-size: 16px; /* Consistent font size */
 }
 
 /* Done Button in Popup */
 .popup-content button {
-    background-color: #5a5aff; /* Darker blue */
-    border: none;
-    color: white;
-    padding: 10px 20px;
-    font-size: 16px;
-    font-weight: bold;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    margin-top: 10px; /* Add spacing above the button */
+  background-color: #5a5aff; /* Darker blue */
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 10px; /* Add spacing above the button */
 }
 
 .popup-content button:hover {
-    background-color: #4d4dff; /* Slightly lighter blue on hover */
+  background-color: #4d4dff; /* Slightly lighter blue on hover */
 }
 
 .popup-content button:active {
-    background-color: #4040e0; /* Darker shade on click */
+  background-color: #4040e0; /* Darker shade on click */
 }
 
+.fullscreen-notification-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8); /* Semi-transparent black background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Ensure it covers everything */
+}
+
+.notification-content {
+  background-color: rgba(
+    76,
+    175,
+    80,
+    0.9
+  ); /* Semi-transparent green background */
+  color: white;
+  padding: 20px;
+  border-radius: 10px; /* Rounded corners */
+  text-align: center; /* Center the text */
+}
+
+.close-button {
+  background-color: white; /* Button background */
+  color: black; /* Button text color */
+  border: none; /* Remove default border */
+  padding: 10px 20px; /* Button padding */
+  margin-top: 15px; /* Space above the button */
+  border-radius: 5px; /* Rounded button corners */
+  cursor: pointer; /* Pointer cursor on hover */
+}
+
+.close-button:hover {
+  background-color: #ccc; /* Button hover effect */
+}
+
+#rarityText {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
