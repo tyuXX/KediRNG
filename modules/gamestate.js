@@ -1,52 +1,50 @@
-// Function to save the game state with compression
+// Function to save game data
 function saveGame() {
-    const gameState = {
-        inventory,
-        boughtUpgrades,
-        money,
-        sellMultiplier,
+    const gameData = {
+      money: money,
+      inventory: inventory,
+      boughtUpgrades: boughtUpgrades,
+      // Add other game state properties as needed
     };
-
-    // Convert to JSON and then compress using pako
-    const jsonString = JSON.stringify(gameState);
-    const compressedData = pako.deflate(jsonString, { to: 'string' }); // Compress data
-    const blob = new Blob([compressedData], { type: 'application/octet-stream' }); // Create blob for download
+  
+    const json = JSON.stringify(gameData);
+    const compressed = LZString.compressToUTF16(json); // Compress the JSON string
+    const blob = new Blob([compressed], { type: 'text/plain' });
     const link = document.createElement('a');
     link.href = URL.createObjectURL(blob);
-    link.download = 'game-save.json.gz'; // Name of the download file
+    link.download = 'game_save.txt';
     link.click();
-}
+  }
+  
+  // Function to load game data
+  function loadGame(event) {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+    reader.onload = function (e) {
+      try {
+        const compressedData = e.target.result;
+        const json = LZString.decompressFromUTF16(compressedData); // Decompress the data
+        if (json) {
+          const gameData = JSON.parse(json);
+          money = gameData.money;
+          inventory = gameData.inventory;
+          boughtUpgrades = gameData.boughtUpgrades;
+          // Load other game state properties as needed
+  
+          displayInventory(); // Update UI
+          displayUpgrades(); // Update UI
+          console.log("Game loaded successfully!");
+        } else {
+          console.error("Error loading game data: data is corrupted or invalid");
+        }
+      } catch (error) {
+        console.error("Error loading game data:", error);
+      }
+    };
+  
+    reader.readAsText(file);
+  }
+  
 
-// Function to load the game state from a compressed file
-function loadGame(event) {
-    const file = event.target.files[0]; // Get the uploaded file
-
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = function (e) {
-            try {
-                const compressedData = new Uint8Array(e.target.result); // Read the file as binary
-                const decompressedData = pako.inflate(compressedData, { to: 'string' }); // Decompress data
-                const gameState = JSON.parse(decompressedData); // Parse the JSON data
-
-                // Load data into the application
-                inventory = gameState.inventory || [];
-                boughtUpgrades = gameState.boughtUpgrades || [];
-                money = gameState.money || 0;
-                sellMultiplier = gameState.sellMultiplier || 1;
-
-                displayInventory(); // Update the inventory display
-                displayUpgrades(); // Update the shop display
-                mlabel.innerHTML = `Money: ${money}`; // Update money label
-                pmlabel.innerHTML = `Potential Money: ${inventory.reduce((a, b) => a + b.sell * sellMultiplier, 0)}`;
-                tlabel.innerHTML = `Text Count: ${inventory.length}`;
-
-                alert('Game loaded successfully!');
-            } catch (error) {
-                alert('Failed to load game data: ' + error.message);
-            }
-        };
-
-        reader.readAsArrayBuffer(file); // Read the file as binary
-    }
-}
+// Adding event listener to load input
+document.getElementById("load-input").addEventListener("change", loadGame);
