@@ -83,8 +83,8 @@ body {
   .item p {
     margin: 5px 0;
     font-size: 14px;
-    font-weight: normal;
-    color: #cccccc;
+    font-weight: bold;
+    color: #000000;
   }
   
   /* Sell Button in Each Item */
