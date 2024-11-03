@@ -56,4 +56,5 @@ async function renderLoop() {
     }
 }
 
+displayInventory();
 renderLoop();
