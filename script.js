@@ -19,7 +19,7 @@ function rollText() {
 
 // Function to display the inventory
 function displayInventory() {
-  if (invDiv.style.display == "grid") {
+  if (invDiv.style.display != "none") {
     const fragment = document.createDocumentFragment();
 
     inventory.forEach((item, index) => {
