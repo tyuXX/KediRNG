@@ -1,22 +1,24 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <title>Kedi RNG</title>
     <meta name="description" content="HAHAYES" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="stylesheet" href="style.css" />
-  </head>
-  <body>
+</head>
+<body>
     <h1>Kedi RNG</h1>
     <label id="tlabel" for="Text count">Text Count:1</label>
     <label id="mlabel" for="Money">Money:0</label>
     <label id="pmlabel" for="Potential Money">Potential Money:0</label>
     <button onclick="rollText()">Roll for TEXT</button>
-    <div id="inventory"></div>
+    
+    <button id="toggleInventory" onclick="toggleInventory()">Toggle Inventory</button>
+    
+    <div id="inventory" style="display: none;"></div>
     <script src="text.js"></script>
     <script src="script.js"></script>
-    <script src="test.js"></script>
-  </body>
+</body>
 </html>
