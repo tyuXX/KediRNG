@@ -6,14 +6,15 @@ const tlabel = document.getElementById("tlabel");
 // Function to roll a new item based on rarity
 function rollText() {
   for (let index = 0; index < rollMultiplier; index++) {
-    const rarit = rarity.find((r) => Math.random() < 0.5) || rarity[0]; // Get a random rarity
-    const selectedText = rarit.texts[Math.floor(Math.random() * rarit.texts.length)];
-    inventory.push({
-      text: selectedText,
-      rarity: rarit.value,
-      sell: Math.floor(Math.pow(2, rarit.value) * Math.random()) + 1,
-    });
-    checkQuestCompletion(selectedText);
+    const rarit = rarity.find(() => Math.random() < 0.5) || rarity[0]; // Get a random rarity
+    const selectedText = getTextFromRarity(rarit);
+    if (!checkQuestCompletion(selectedText)) {
+      inventory.push({
+        text: selectedText,
+        rarity: rarit.value,
+        sell: Math.floor(Math.pow(2, rarit.value) * Math.random()) + 1,
+      });
+    }
     if (!raritiesDone.includes(rarit.value)) {
       raritiesDone.push(rarit.value);
       newRarityAnimation(rarit.value);
@@ -40,10 +41,9 @@ function displayInventory() {
       }</button>
         `;
 
-      itemDiv.style.backgroundColor =
-        rarity[item.rarity].colors[
-          Math.floor(Math.random() * rarity[item.rarity].colors.length)
-        ];
+      itemDiv.style.backgroundColor = getColorFromRarity(
+        getRarityFromInt(item.rarity)
+      );
 
       fragment.appendChild(itemDiv);
     });
@@ -54,20 +54,22 @@ function displayInventory() {
 }
 
 function displayQuests() {
-    const questsDiv = document.getElementById("quests"); // Ensure this div exists in your HTML
-    questsDiv.innerHTML = ""; // Clear existing quests
+  const questsDiv = document.getElementById("quests"); // Ensure this div exists in your HTML
+  questsDiv.innerHTML = ""; // Clear existing quests
 
-    quests.forEach((quest) => {
-        const questDiv = document.createElement("div");
-        questDiv.classList.add("quest");
-        questDiv.innerHTML = `
+  quests.forEach((quest) => {
+    const questDiv = document.createElement("div");
+    questDiv.classList.add("quest");
+    questDiv.innerHTML = `
             <p>${quest.requiredText}</p>
-            <p>${rarity[quest.rarity].name}</p>
+            <p>${getRarityFromInt(quest.rarity).name}</p>
             <p>Reward: ${quest.reward}</p>
         `;
-        questDiv.style.backgroundColor = rarity[quest.rarity].colors[0];
-        questsDiv.appendChild(questDiv);
-    });
+    questDiv.style.backgroundColor = getColorFromRarity(
+      getRarityFromInt(quest.rarity)
+    );
+    questsDiv.appendChild(questDiv);
+  });
 }
 
 // Function to delete an item from the inventory
@@ -81,12 +83,12 @@ function delItem(index) {
 
 // Function to toggle the visibility of the inventory
 function toggleInventory() {
-  displayInventory();
   if (invDiv.style.display === "none") {
     invDiv.style.display = "grid"; // Show inventory as a grid
   } else {
     invDiv.style.display = "none"; // Hide inventory
   }
+  displayInventory();
 }
 
 // Function to display upgrades in the shop
@@ -213,7 +215,9 @@ function newRarityAnimation(rarityint) {
   // Add rarity information
   content.innerHTML = `
       <h1>New Rarity Unlocked!</h1>
-      <h2 id="rarityText" style="color: ${rarity[rarityint].colors[0]};">Rarity Level: ${rarity[rarityint].name}</h2>
+      <h2 id="rarityText" style="color: ${getColorFromRarity(
+        getRarityFromInt(rarityint)
+      )};">Rarity Level: ${getColorFromRarity(rarityint)}</h2>
       <button class="close-button">Close</button>
     `;
 
@@ -228,42 +232,37 @@ function newRarityAnimation(rarityint) {
 
 // Function to generate random quests
 function generateRandomQuest() {
-    // Select a random rarity
-    let randomRarity = rarity[0];
-    for (let i = 0; i < rarity.length; i++) {
-        if (Math.random() < 0.3) {
-            randomRarity = rarity[i];
-            break;
-        }
-    }
-    
-    // Select a random text from the chosen rarity
-    const randomText = randomRarity.texts[Math.floor(Math.random() * randomRarity.texts.length)];
+  // Select a random rarity
+  const randomRarity = rarity.find(() => Math.random() < 0.3) || rarity[0]; // Get a random rarity
 
-    // Define the quest with a reward greater than the text's base value
-    const reward = Math.pow(2, randomRarity.value) * Math.random() * 10; // Example reward formula
-    const newQuest = {
-        id: quests.length + 1,
-        requiredText: randomText,
-        reward: Math.floor(reward),
-        rarity: randomRarity.value
-    };
+  // Select a random text from the chosen rarity
+  const randomText = getTextFromRarity(randomRarity);
 
-    quests.push(newQuest);
+  // Define the quest with a reward greater than the text's base value
+  const reward = Math.pow(2, randomRarity.value) * Math.random() * 10; // Example reward formula
+  const newQuest = {
+    id: quests.length + 1,
+    requiredText: randomText,
+    reward: Math.floor(reward),
+    rarity: randomRarity.value,
+  };
+
+  quests.push(newQuest);
 }
 
 function checkQuestCompletion(text) {
-    quests.forEach((quest) => {
-        if (text === quest.requiredText) {
-            money += quest.reward; // Reward the player
-            //Remove quest from list
-            quests = quests.filter((q) => q.id !== quest.id);
-            displayQuests();
-            // Add a notification or modal to inform the player
-        }
-    });
+  quests.forEach((quest) => {
+    if (text === quest.requiredText) {
+      money += quest.reward; // Reward the player
+      //Remove quest from list
+      quests = quests.filter((q) => q.id !== quest.id);
+      displayQuests();
+      // Add a notification or modal to inform the player
+      return true;
+    }
+  });
+  return false;
 }
-
 
 async function renderLoop() {
   while (true) {
@@ -288,7 +287,7 @@ async function questLoop() {
 displayUpgrades();
 displayInventory();
 for (let i = 0; i < 5; i++) {
-    generateRandomQuest();
+  generateRandomQuest();
 }
 displayQuests();
 questLoop();

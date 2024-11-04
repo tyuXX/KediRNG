@@ -88,6 +88,9 @@ button:active {
   font-size: 14px;
   font-weight: bold;
   color: #000000;
+  border: 1px solid #555555;
+  border-radius: 8px;
+  padding: 5px;
 }
 
 /* Sell Button in Each Item */
@@ -141,6 +144,15 @@ button:active {
 
 .upgrade:hover {
   transform: scale(1.05);
+}
+
+.upgrade p {
+  margin: 5px 0;
+  font-size: 14px;
+  font-weight: bold;
+  color: #ffffff;
+  border: 1px solid #555555;
+  border-radius: 8px;
 }
 
 /* Sell All Popup */
@@ -290,4 +302,13 @@ button:active {
   font-size: 14px;
   font-weight: bold;
   color: #ffffff;
+  border: 1px solid #555555;
+  border-radius: 8px;
+  padding: 5px;
 }
+
+p:hover {
+  transform: scale(1.05); /* Slight zoom on hover */
+}
+
+/*style toprak's wrath animasyon  ekran karariyor sonra mutsuz yuzler cikiyor en sondada araba yaniyo(Araba kagida cizilmis)*/

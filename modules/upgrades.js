@@ -22,5 +22,15 @@ const upgrades = [
     effect: () => {
       rollMultiplier++;
     },
-  }
+  },
+  {
+    name: "Triple Sell",
+    id: "tripleSell",
+    description: "Triple the sell value of items. (Disclamier: I farted.)",
+    cost: 100000,
+    limit: 1,
+    effect: () => {
+      sellMultiplier++;
+    },
+  },
 ];
