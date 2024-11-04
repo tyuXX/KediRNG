@@ -22,7 +22,6 @@ function rollText() {
   }
   displayInventory();
 }
-
 // Function to display the inventory
 function displayInventory() {
   if (invDiv.style.display != "none") {
@@ -229,7 +228,6 @@ function newRarityAnimation(rarityint) {
     document.body.removeChild(overlay); // Remove the overlay when closed
   });
 }
-
 // Function to generate random quests
 function generateRandomQuest() {
   // Select a random rarity

@@ -102,7 +102,12 @@ const rarity = [
   {
     name: "Cheesy",
     value: 9,
-    texts: ["Why this better", "Too cheesy to be true", "Aged to perfection","Delicius Grilled Cheese without cheese?"],
+    texts: [
+      "Why this better",
+      "Too cheesy to be true",
+      "Aged to perfection",
+      "Delicius Grilled Cheese without cheese?",
+    ],
     colors: ["#888888"],
   },
   {
@@ -110,6 +115,7 @@ const rarity = [
     value: 10,
     texts: [
       "What the 2.2.2.2.2.2.2.2.2.2",
+      "this game",
       "Extra sauce, extra spice",
       "Saucy find!",
     ],
@@ -135,19 +141,29 @@ const rarity = [
   {
     name: "Rare+",
     value: 13,
-    texts: ["I want huge pet", "Rare indeed", "Just one step away"],
+    texts: [
+      "I want huge pet",
+      "Rare indeed",
+      "Just one step away",
+      "stop this pain",
+    ],
     colors: ["#339933"],
   },
   {
     name: "Super Rare+",
     value: 14,
-    texts: ["Banana", "Beyond rare", "Quite the find!"],
+    texts: [
+      "Banana",
+      "Beyond rare",
+      "Quite the find!",
+      "Leader of gambling nothing",
+    ],
     colors: ["#333399"],
   },
   {
     name: "Epic+",
     value: 15,
-    texts: ["Gus gus op", "An epic moment", "That's epic!"],
+    texts: ["Gus gus op", "An epic moment", "That's epic!", "Shade the broken"],
     colors: ["#999933"],
   },
   {
@@ -183,7 +199,12 @@ const rarity = [
   {
     name: "Extra Sauce+",
     value: 21,
-    texts: ["The End????????", "Na' bro", "Overflowing with sauce"],
+    texts: [
+      "The End????????",
+      "Na' bro",
+      "Overflowing with sauce",
+      "is not healthy",
+    ],
     colors: ["#FFA500"],
   },
   {
@@ -209,9 +230,7 @@ const rarity = [
   {
     name: "Toprak's Wrath",
     value: 99,
-    texts: [
-      "Unlucky Car:("
-    ],
+    texts: ["Unlucky Car:(", "Not the car"],
     colors: ["#8F0000"],
   },
 ];

@@ -26,8 +26,38 @@ const upgrades = [
   {
     name: "Triple Sell",
     id: "tripleSell",
-    description: "Triple the sell value of items. (Disclamier: I farted.)",
+    description: "Triple the sell value of items.",
     cost: 100000,
+    limit: 1,
+    effect: () => {
+      sellMultiplier++;
+    },
+  },
+  {
+    name: "Triple Roll",
+    id: "tripleRoll",
+    description: "Roll triple the items.",
+    cost: 250000,
+    limit: 1,
+    effect: () => {
+      rollMultiplier++;
+    },
+  },
+  {
+    name: "Quad Roll",
+    id: "quadRoll",
+    description: "Roll quadruaple the items.",
+    cost: 500000,
+    limit: 1,
+    effect: () => {
+      rollMultiplier++;
+    },
+  },
+  {
+    name: "Little Company",
+    id: "littleCompany",
+    description: "We get bussines.",
+    cost: 250000,
     limit: 1,
     effect: () => {
       sellMultiplier++;
