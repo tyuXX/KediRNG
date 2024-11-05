@@ -290,6 +290,7 @@ button:active {
   color: #e0e0e0;
   text-align: center;
   transition: transform 0.2s ease;
+  margin: 5px;
 }
 
 .quest:hover {
@@ -311,4 +312,77 @@ p:hover {
   transform: scale(1.05); /* Slight zoom on hover */
 }
 
+#rarityCheckboxes {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  border: 1px solid #444444;
+  background-color: #2a2a2a;
+  border-radius: 10px;
+  max-width: 90vw;
+  margin: 20px auto;
+  padding: 10px;
+}
 
+/* Checkbox Style */
+#rarityCheckboxes input {
+  display: block;
+  margin: 10px auto;
+  accent-color: #5a5aff; /* Custom accent color for checkboxes */
+  cursor: pointer;
+}
+
+/* Checkbox Label Style */
+
+.checkboxdiv:hover {
+  transform: scale(1.05); /* Slight zoom on hover */
+}
+
+.checkboxdiv {
+  display: grid;
+  border: 1px solid #444444;
+  background-color: #2a2a2a;
+  border-radius: 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
+  max-width: 90vw;
+  margin: 2px;
+  padding: 3px;
+}
+
+/* Notifications Container */
+#notifications {
+  position: fixed; /* Keep notifications fixed on the screen */
+  top: 10px; /* Adjust position as needed */
+  right: 10px; /* Adjust position as needed */
+  width: 20vw; /* Set desired width */
+  max-height: 25vh; /* Set maximum height for overflow */
+  background-color: rgba(0, 0, 0, 0.8); /* Semi-transparent background */
+  color: white; /* Text color */
+  border-radius: 5px; /* Rounded corners */
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3); /* Subtle shadow */
+  overflow-y: auto; /* Enable scrolling if notifications exceed height */
+  z-index: 1000; /* Ensure notifications are displayed on top */
+}
+
+/* Notification Box */
+.notification {
+  background-color: #333333; /* Notification background color */
+  padding: 10px;
+  border-radius: 5px; /* Rounded corners */
+  margin-bottom: 5px; /* Spacing between notifications */
+  display: flex; /* Allow side-by-side content */
+  justify-content: space-between; /* Align content horizontally */
+}
+
+.notification:hover {
+  background-color: #444444; /* Slightly lighter background on hover */
+}
+
+/* Notification Text */
+.notification p {
+  margin: 10px auto; /* Remove default margin */
+  line-height: 1.2; /* Line spacing for better readability */
+}
+
+.notification button:hover {
+  color: #ccc; /* Lighter color on hover */
+}

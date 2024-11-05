@@ -32,7 +32,7 @@ function loadGame(event) {
 
         // Check the version of the save file
         if (gameData.version !== gVersion) {
-          alert("Old version detected, proceeding anyway...");
+          notify("Old version detected, proceeding anyway...");
         }
 
         money = gameData.money || 0;
@@ -45,12 +45,12 @@ function loadGame(event) {
 
         displayInventory(); // Update UI
         displayUpgrades(); // Update UI
-        console.log("Game loaded successfully!");
+        notify("Game loaded successfully!");
       } else {
-        console.error("Error loading game data: data is corrupted or invalid");
+        notify("Error loading game data: data is corrupted or invalid");
       }
     } catch (error) {
-      console.error("Error loading game data:", error);
+      notify("Error loading game data:", error);
     }
   };
 

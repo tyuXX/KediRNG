@@ -80,6 +80,18 @@ function delItem(index) {
   }
 }
 
+function sellAll() {
+  inventory = inventory.filter((item) => {
+    if (item.sell > 0) {
+      money += item.sell * sellMultiplier; // Add the sell value to money
+      return false; // Remove this item from inventory
+    }
+    return true; // Keep this item in inventory
+  });
+  closePopup();
+  displayInventory();
+}
+
 // Function to toggle the visibility of the inventory
 function toggleInventory() {
   if (invDiv.style.display === "none") {
@@ -135,7 +147,7 @@ function buyUpgrade(index) {
     displayInventory(); // Update inventory
     displayUpgrades(); // Update shop to reflect changes
   } else {
-    alert("Not enough money or upgrade limit reached!");
+    notify("Not enough money or already bought this upgrade.");
   }
 }
 
@@ -146,6 +158,8 @@ function openSellAllPopup() {
 
   // Create checkboxes for each rarity
   rarity.forEach((r, index) => {
+    const checkboxDiv = document.createElement("div");
+    checkboxDiv.classList.add("checkboxdiv"); // Add a class for styling
     const checkbox = document.createElement("input");
     checkbox.type = "checkbox";
     checkbox.id = `rarity-${index}`;
@@ -155,8 +169,9 @@ function openSellAllPopup() {
     label.htmlFor = `rarity-${index}`;
     label.innerText = r.name; // Assuming you have a 'name' property for the rarity
 
-    rarityCheckboxesDiv.appendChild(checkbox);
-    rarityCheckboxesDiv.appendChild(label);
+    checkboxDiv.appendChild(checkbox);
+    checkboxDiv.appendChild(label);
+    rarityCheckboxesDiv.appendChild(checkboxDiv);
     rarityCheckboxesDiv.appendChild(document.createElement("br")); // Line break for better spacing
   });
 
@@ -182,14 +197,14 @@ function sellSelectedRarities() {
   });
 
   if (selectedRarities.length === 0) {
-    alert("No rarities selected!");
+    notify("Please select at least one rarity to sell.");
     return;
   }
 
   // Sell items of selected rarities
   selectedRarities.forEach((rarityValue) => {
     inventory = inventory.filter((item) => {
-      if (item.rarity === rarityValue) {
+      if (item.rarity === rarityValue && item.sell > 0) {
         money += item.sell * sellMultiplier; // Add the sell value to money
         return false; // Remove this item from inventory
       }

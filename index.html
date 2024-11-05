@@ -9,6 +9,13 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
+    <div id="topMenu">
+      <a href="https://github.com/tyuXX/KediRNG">This game is open source!</a>
+      <a href="https://github.com/tyuXX/KediRNG/issues">Please report bugs, and help us improve the game.</a>
+    </div>
+
+    <div id="notifications"></div>
+
     <h1>Kedi RNG</h1>
     <label id="tlabel" for="Text count">Text Count:1</label>
     <label id="mlabel" for="Money">Money:0</label>
@@ -35,6 +42,7 @@
         <form id="rarityForm">
           <div id="rarityCheckboxes"></div>
           <button type="button" onclick="sellSelectedRarities()">Done</button>
+          <button type="button" onclick="sellAll()">Sell All</button>
           <button type="button" onclick="closePopup()">Cancel</button>
         </form>
       </div>
@@ -49,12 +57,13 @@
       </button>
     </div>
 
-    <script src="modules/defaults.js"></script>
+    <script src="modules/defaults.js" defer></script>
     <script src="modules/game.js" defer></script>
     <script src="modules/text.js" defer></script>
+    <script src="modules/temp.js" defer></script>
     <script src="modules/upgrades.js" defer></script>
     <script src="script.js" defer></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.4.4/lz-string.min.js"></script>
-    <script src="modules/gamestate.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.4.4/lz-string.min.js" defer></script>
+    <script src="modules/gamestate.js" defer></script>
   </body>
 </html>
