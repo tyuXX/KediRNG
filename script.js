@@ -306,8 +306,8 @@ function changeMoney(amount) {
 function addXP(amount) {
   level.xp += amount;
   while (level.xp >= Math.ceil(Math.pow(1.2, level.level) * 10)) {
-    level.level++;
     level.xp -= Math.ceil(Math.pow(1.2, level.level) * 10);
+    level.level++;
   }
 }
 
