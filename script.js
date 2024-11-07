@@ -5,6 +5,10 @@ const tlabel = document.getElementById("tlabel");
 
 // Function to roll a new item based on rarity
 function rollText() {
+  if (getUpgradesLevel("spammer") === 0 && rollCooldown > 0) {
+    notify("On cooldown for " + rollCooldown + "ms");
+    return;
+  }
   for (let index = 0; index < rollMultiplier; index++) {
     const rarit = rarity.find(() => Math.random() < 0.5) || rarity[0]; // Get a random rarity
     const selectedText = getTextFromRarity(rarit);
@@ -17,9 +21,10 @@ function rollText() {
     }
     if (!raritiesDone.includes(rarit.value)) {
       raritiesDone.push(rarit.value);
-      newRarityAnimation(rarit.value);
+      notify("New rarity found!\n" + rarit.name, getColorFromRarity(rarit));
     }
   }
+  rollCooldown = 1000 - getUpgradesLevel("lessCooldown") * 200;
   displayInventory();
 }
 // Function to display the inventory
@@ -74,7 +79,7 @@ function displayQuests() {
 // Function to delete an item from the inventory
 function delItem(index) {
   if (inventory[index].sell > 0) {
-    money += inventory[index].sell * sellMultiplier;
+    changeMoney(inventory[index].sell * sellMultiplier);
     inventory.splice(index, 1);
     displayInventory();
   }
@@ -83,7 +88,7 @@ function delItem(index) {
 function sellAll() {
   inventory = inventory.filter((item) => {
     if (item.sell > 0) {
-      money += item.sell * sellMultiplier; // Add the sell value to money
+      changeMoney(item.sell * sellMultiplier); // Add the sell value to money
       return false; // Remove this item from inventory
     }
     return true; // Keep this item in inventory
@@ -126,29 +131,6 @@ function displayUpgrades() {
 
     upgradesDiv.appendChild(upgradeDiv);
   });
-}
-
-// Function to buy an upgrade
-function buyUpgrade(index) {
-  const upgrade = upgrades[index];
-  const boughtUpgrade = boughtUpgrades.find((up) => up[0] === upgrade.id);
-  const boughtCount = boughtUpgrade ? boughtUpgrade[1] : 0;
-
-  if (money >= upgrade.cost && boughtCount < upgrade.limit) {
-    money -= upgrade.cost;
-    upgrade.effect(); // Apply the effect of the upgrade
-
-    if (boughtUpgrade) {
-      boughtUpgrade[1]++; // Increment count of the upgrade
-    } else {
-      boughtUpgrades.push([upgrade.id, 1]); // Add new upgrade with count 1
-    }
-
-    displayInventory(); // Update inventory
-    displayUpgrades(); // Update shop to reflect changes
-  } else {
-    notify("Not enough money or already bought this upgrade.");
-  }
 }
 
 // Function to open the Sell All popup
@@ -205,7 +187,7 @@ function sellSelectedRarities() {
   selectedRarities.forEach((rarityValue) => {
     inventory = inventory.filter((item) => {
       if (item.rarity === rarityValue && item.sell > 0) {
-        money += item.sell * sellMultiplier; // Add the sell value to money
+        changeMoney(item.sell * sellMultiplier); // Add the sell value to money
         return false; // Remove this item from inventory
       }
       return true; // Keep this item in inventory
@@ -266,9 +248,13 @@ function generateRandomQuest() {
 function checkQuestCompletion(text) {
   quests.forEach((quest) => {
     if (text === quest.requiredText) {
-      money += quest.reward; // Reward the player
+      changeMoney(quest.reward); // Reward the player
       //Remove quest from list
       quests = quests.filter((q) => q.id !== quest.id);
+      notify(
+        "Quest completed (" + quest.requiredText + ")! Reward: " + quest.reward,
+        getColorFromRarity(getRarityFromInt(quest.rarity))
+      );
       displayQuests();
       // Add a notification or modal to inform the player
       return true;
@@ -296,6 +282,22 @@ async function questLoop() {
   }
 }
 
+async function tickLoop() {
+  while (true) {
+    if (rollCooldown > 0) {
+      rollCooldown -= 100;
+    }
+    await new Promise((r) => setTimeout(r, 100));
+  }
+}
+
+function changeMoney(amount) {
+  money += amount;
+  if (amount > 0) {
+    allTimeMoney += amount;
+  }
+}
+
 // Initial calls
 displayUpgrades();
 displayInventory();
@@ -303,5 +305,6 @@ for (let i = 0; i < 5; i++) {
   generateRandomQuest();
 }
 displayQuests();
+tickLoop();
 questLoop();
 renderLoop();

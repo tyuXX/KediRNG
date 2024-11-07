@@ -1,6 +1,7 @@
 var boughtUpgrades = [];
 var sellMultiplier = 1;
 var rollMultiplier = 1;
+var rollCooldown = 0;
 
 const upgrades = [
   {
@@ -11,6 +12,7 @@ const upgrades = [
     limit: 1,
     effect: () => {
       sellMultiplier++;
+      displayInventory();
     },
   },
   {
@@ -31,6 +33,7 @@ const upgrades = [
     limit: 1,
     effect: () => {
       sellMultiplier++;
+      displayInventory();
     },
   },
   {
@@ -61,6 +64,51 @@ const upgrades = [
     limit: 1,
     effect: () => {
       sellMultiplier++;
+      displayInventory();
     },
   },
+  {
+    name:"Not so cool",
+    id:"lessCooldown",
+    description:"Lower roll cooldown",
+    cost:1000,
+    limit:4,
+    effect:() => {}
+  },
+  {
+    name: "Spammer",
+    id: "spammer",
+    description: "Remove roll cooldown",
+    cost: 50000,
+    limit: 1,
+    effect: () => {},
+  },
 ];
+
+function getUpgradesLevel(id) {
+  const boughtUpgrade = boughtUpgrades.find((up) => up[0] === id);
+  return boughtUpgrade ? boughtUpgrade[1] : 0;
+}
+
+// Function to buy an upgrade
+function buyUpgrade(index) {
+  const upgrade = upgrades[index];
+  const boughtUpgrade = boughtUpgrades.find((up) => up[0] === upgrade.id);
+  const boughtCount = boughtUpgrade ? boughtUpgrade[1] : 0;
+
+  if (money < upgrade.cost) {
+    notify("Not enough money to buy this upgrade.");
+  } else if (boughtCount >= upgrade.limit) {
+    notify("Already bought this upgrade.");
+  } else {
+    money -= upgrade.cost;
+    upgrade.effect(); // Apply the effect of the upgrade
+
+    if (boughtUpgrade) {
+      boughtUpgrade[1]++; // Increment count of the upgrade
+    } else {
+      boughtUpgrades.push([upgrade.id, 1]); // Add new upgrade with count 1
+    }
+    displayUpgrades(); // Update shop to reflect changes
+  }
+}

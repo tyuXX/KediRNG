@@ -17,7 +17,8 @@ h1 {
 #mlabel,
 #pmlabel,
 #tlabel,
-#shop h2 {
+#shop h2,
+#questsContainer h2 {
   font-size: 18px;
   font-weight: bold;
   color: #ffffff;
@@ -128,6 +129,7 @@ button:active {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
   gap: 10px;
+  overflow-y: auto;
 }
 
 .upgrade {
@@ -270,13 +272,17 @@ button:active {
 #quests {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-  margin: 20px auto;
-  padding: 10px;
+  overflow-y: auto;
+}
+
+#questsContainer {
   border: 2px solid #444444;
   background-color: #2a2a2a;
   border-radius: 10px;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
   max-width: 90vw;
+  margin: 20px auto;
+  padding: 10px;
 }
 
 /* Quest Item Style */
@@ -319,6 +325,7 @@ p:hover {
   background-color: #2a2a2a;
   border-radius: 10px;
   max-width: 90vw;
+  max-height: 70vh;
   margin: 20px auto;
   padding: 10px;
 }
@@ -385,4 +392,34 @@ p:hover {
 
 .notification button:hover {
   color: #ccc; /* Lighter color on hover */
+}
+
+#versionInfo {
+  top: 0px;
+  left: 0px;
+  position: fixed;
+  z-index: 1000;
+  color: white;
+}
+
+/* Mobile styling */
+@media (max-width: 600px) {
+  #inventory, #upgrades, #quests, #rarityCheckboxes {
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  }
+  
+  /* Adjust button and font sizes for smaller screens */
+  button, .item button, .popup-content button {
+    padding: 10px 20px;
+    font-size: 14px;
+  }
+  
+  /* Adjust notification width */
+  #notifications {
+    width: 90vw;
+  }
+  
+  .popup-content {
+    max-width: 90%;
+  }
 }

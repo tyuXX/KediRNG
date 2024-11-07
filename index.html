@@ -9,11 +9,13 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-	<div id="version-info" style="position: fixed; top: 0; right: 0; padding: 5px; background-color: rgba(255, 255, 255, 0.8); z-index: 1000;"></div>
+    <div id="versionInfo"></div>
 
     <div id="topMenu">
       <a href="https://github.com/tyuXX/KediRNG">This game is open source!</a>
-      <a href="https://github.com/tyuXX/KediRNG/issues">Please report bugs, and help us improve the game.</a>
+      <a href="https://github.com/tyuXX/KediRNG/issues"
+        >Please report bugs, and help us improve the game.</a
+      >
     </div>
 
     <div id="notifications"></div>
@@ -35,7 +37,10 @@
       <h2>Shop</h2>
       <div id="upgrades"></div>
     </div>
-    <div id="quests"></div>
+    <div id = "questsContainer">
+      <h2>Quests</h2>
+      <div id="quests"></div>
+    </div>
 
     <!-- Sell All Popup -->
     <div id="sellAllPopup" class="popup" style="display: none">
@@ -50,23 +55,25 @@
       </div>
     </div>
 
-    <!-- Save and Load Buttons -->
     <div>
-      <button onclick="saveGame()">Save Game</button>
+      <button id="saveButton" onclick="saveGame()">Save Game</button>
       <input type="file" id="load-input" style="display: none" />
       <button onclick="document.getElementById('load-input').click();">
         Load Game
       </button>
     </div>
 
-	<script src="modules/version.js" defer></script>
+    <script src="modules/version.js" defer></script>
     <script src="modules/defaults.js" defer></script>
     <script src="modules/game.js" defer></script>
     <script src="modules/text.js" defer></script>
     <script src="modules/temp.js" defer></script>
     <script src="modules/upgrades.js" defer></script>
     <script src="script.js" defer></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.4.4/lz-string.min.js" defer></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.4.4/lz-string.min.js"
+      defer
+    ></script>
     <script src="modules/gamestate.js" defer></script>
   </body>
 </html>

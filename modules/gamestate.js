@@ -3,6 +3,7 @@ function saveGame() {
   const gameData = {
     version: gVersion, // Add a version number to the save file
     money: money,
+    allTimeMoney: allTimeMoney,
     inventory: inventory,
     boughtUpgrades: boughtUpgrades,
     raritiesDone: raritiesDone,
@@ -15,7 +16,7 @@ function saveGame() {
   const blob = new Blob([compressed], { type: "text/plain" });
   const link = document.createElement("a");
   link.href = URL.createObjectURL(blob);
-  link.download = "kediRNG_save.txt";
+  link.download = "kediRNG(v" + gVersion + ").gsdsv";
   link.click();
 }
 
@@ -32,10 +33,16 @@ function loadGame(event) {
 
         // Check the version of the save file
         if (gameData.version !== gVersion) {
-          notify("Old version detected, proceeding anyway...");
+          notify(
+            "Old version detected (v" +
+              gameData.version +
+              "), proceeding anyway...",
+            "red"
+          );
         }
 
         money = gameData.money || 0;
+        allTimeMoney = gameData.allTimeMoney || 0;
         inventory = gameData.inventory || defInventory;
         boughtUpgrades = gameData.boughtUpgrades || [];
         raritiesDone = gameData.raritiesDone || defRaritiesDone;
@@ -45,12 +52,12 @@ function loadGame(event) {
 
         displayInventory(); // Update UI
         displayUpgrades(); // Update UI
-        notify("Game loaded successfully!");
+        notify("Game loaded successfully!", "green");
       } else {
-        notify("Error loading game data: data is corrupted or invalid");
+        notify("Error loading game data: data is corrupted or invalid", "red");
       }
     } catch (error) {
-      notify("Error loading game data:", error);
+      notify("Error loading game data:" + error, "red");
     }
   };
 
@@ -59,3 +66,5 @@ function loadGame(event) {
 
 // Adding event listener to load input
 document.getElementById("load-input").addEventListener("change", loadGame);
+
+document.getElementById("saveButton").textContent += " (v" + gVersion + ")";
