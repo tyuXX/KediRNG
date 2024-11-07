@@ -1,5 +1,6 @@
 // Function to get game data
 function getGameData() {
+  lastSave = Date.now();
   return {
     version: gVersion,
     money: money,
@@ -9,6 +10,7 @@ function getGameData() {
     raritiesDone: raritiesDone,
     quests: quests,
     level: level,
+    lastSave: lastSave,
     // Add any new properties here
   };
 }
@@ -30,6 +32,7 @@ function setGameData(gameData) {
   raritiesDone = gameData.raritiesDone || defRaritiesDone;
   quests = gameData.quests || [];
   level = gameData.level || defLevel;
+  lastSave = gameData.lastSave || Date.now();
 
   // Load other properties here as needed
 
@@ -52,6 +55,7 @@ function saveGameToLocalStorage() {
   notify("Saving game...");
   const compressed = LZString.compressToUTF16(JSON.stringify(getGameData()));
   localStorage.setItem("autosave", compressed); // Save to localStorage
+  notify("Game saved successfully!", "green");
 }
 
 // Function to load game data from a compressed string

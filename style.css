@@ -116,6 +116,8 @@ button:active {
 .item button:active {
   background-color: #e60000; /* Even darker red on click */
 }
+
+/* Shop Styles */
 #shop {
   margin: 20px auto;
   padding: 10px;
@@ -131,6 +133,7 @@ button:active {
   grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
   gap: 10px;
   overflow-y: auto;
+  max-height: 60vh;
 }
 
 .upgrade {
@@ -274,6 +277,7 @@ button:active {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
   overflow-y: auto;
+  max-height: 60vh;
 }
 
 #questsContainer {
@@ -329,11 +333,12 @@ p:hover {
   max-height: 70vh;
   margin: 20px auto;
   padding: 10px;
+  overflow-y: auto;
 }
 
 /* Checkbox Style */
 #rarityCheckboxes input {
-  display: block;
+  display: grid;
   margin: 10px auto;
   accent-color: #5a5aff; /* Custom accent color for checkboxes */
   cursor: pointer;
@@ -405,22 +410,56 @@ p:hover {
 
 /* Mobile styling */
 @media (max-width: 600px) {
-  #inventory, #upgrades, #quests, #rarityCheckboxes {
+  /* Inventory, upgrades, and quests grid */
+  #inventory,
+  #upgrades,
+  #quests,
+  #rarityCheckboxes {
     grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 8px; /* Reduce gap between items for mobile */
   }
-  
+
   /* Adjust button and font sizes for smaller screens */
-  button, .item button, .popup-content button {
+  button,
+  .item button,
+  .popup-content button {
     padding: 10px 20px;
     font-size: 14px;
   }
-  
+
   /* Adjust notification width */
   #notifications {
     width: 90vw;
   }
-  
+
   .popup-content {
     max-width: 90%;
+  }
+
+  /* Adjust text for better readability on smaller screens */
+  .item p,
+  .upgrade p,
+  .quest p {
+    font-size: 12px; /* Smaller text for mobile */
+  }
+
+  /* Adjust padding and margins for containers */
+  #shop,
+  #questsContainer,
+  #rarityCheckboxes {
+    padding: 8px;
+    margin: 10px auto;
+  }
+
+  /* Make popup content fit better on mobile */
+  .popup-content {
+    padding: 15px;
+    width: 80%;
+  }
+
+  /* Reduce size of the quest container */
+  #questsContainer {
+    max-width: 90%;
+    padding: 8px;
   }
 }
