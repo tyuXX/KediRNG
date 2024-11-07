@@ -10,8 +10,7 @@ async function loadVersionInfo() {
     // Display version information on the game UI
     const versionInfoContainer = document.getElementById('versionInfo');
     versionInfoContainer.innerHTML = `
-      <p>Version: ${versionData.commitHash}</p>
-      <a href="${versionData.githubLink}" target="_blank">View Commit</a>
+      <a href="${versionData.githubLink}" target="_blank">${versionData.commitHash}</a>
     `;
   } catch (error) {
     console.error('Error loading version info:', error);
