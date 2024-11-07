@@ -24,7 +24,7 @@ function rollText() {
       notify("New rarity found!\n" + rarit.name, getColorFromRarity(rarit));
     }
   }
-  rollCooldown = 1000 - getUpgradesLevel("lessCooldown") * 200;
+  rollCooldown = 500 - getUpgradesLevel("lessCooldown") * 100;
   displayInventory();
 }
 // Function to display the inventory
@@ -271,6 +271,9 @@ async function renderLoop() {
       0
     )}`;
     tlabel.innerHTML = `Text Count: ${inventory.length}`;
+    document.getElementById("levelLabel").innerHTML = `Level: ${
+      level.level
+    } (EXP: ${level.xp}/${Math.ceil(Math.pow(1.2, level.level) * 10)})`;
     await new Promise((r) => setTimeout(r, 100));
   }
 }
@@ -292,9 +295,27 @@ async function tickLoop() {
 }
 
 function changeMoney(amount) {
-  money += amount;
+  const famount = Math.floor(amount * (1 + level.level / 10));
+  money += famount;
+  addXP(famount);
   if (amount > 0) {
-    allTimeMoney += amount;
+    allTimeMoney += famount;
+  }
+}
+
+function addXP(amount) {
+  level.xp += amount;
+  while (level.xp >= Math.ceil(Math.pow(1.2, level.level) * 10)) {
+    level.level++;
+    level.xp -= Math.ceil(Math.pow(1.2, level.level) * 10);
+  }
+}
+
+function toggleNotifications() {
+  if (document.getElementById("notifications").style.display !== "none") {
+    document.getElementById("notifications").style.display = "none";
+  } else {
+    document.getElementById("notifications").style.display = "block";
   }
 }
 

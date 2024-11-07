@@ -18,7 +18,8 @@ h1 {
 #pmlabel,
 #tlabel,
 #shop h2,
-#questsContainer h2 {
+#questsContainer h2,
+#levelLabel {
   font-size: 18px;
   font-weight: bold;
   color: #ffffff;
