@@ -1,19 +1,45 @@
-// Function to save game data
-function saveGame() {
-  const gameData = {
-    version: gVersion, // Add a version number to the save file
+// Function to get game data
+function getGameData() {
+  return {
+    version: gVersion,
     money: money,
     allTimeMoney: allTimeMoney,
     inventory: inventory,
     boughtUpgrades: boughtUpgrades,
     raritiesDone: raritiesDone,
     quests: quests,
-    level:level,
+    level: level,
     // Add any new properties here
   };
+}
 
-  const json = JSON.stringify(gameData);
-  const compressed = LZString.compressToUTF16(json); // Compress the JSON string
+// Function to set game data
+function setGameData(gameData) {
+  // Check the version of the save file
+  if (gameData.version !== gVersion) {
+    notify(
+      "Old version detected (v" + gameData.version + "), proceeding anyway...",
+      "red"
+    );
+  }
+
+  money = gameData.money || 0;
+  allTimeMoney = gameData.allTimeMoney || 0;
+  inventory = gameData.inventory || defInventory;
+  boughtUpgrades = gameData.boughtUpgrades || [];
+  raritiesDone = gameData.raritiesDone || defRaritiesDone;
+  quests = gameData.quests || [];
+  level = gameData.level || defLevel;
+
+  // Load other properties here as needed
+
+  displayInventory(); // Update UI
+  displayUpgrades(); // Update UI
+}
+
+// Function to save game data to file
+function saveGame() {
+  const compressed = LZString.compressToUTF16(JSON.stringify(getGameData())); // Compress the JSON string
   const blob = new Blob([compressed], { type: "text/plain" });
   const link = document.createElement("a");
   link.href = URL.createObjectURL(blob);
@@ -21,52 +47,64 @@ function saveGame() {
   link.click();
 }
 
-// Function to load game data
+// Function to save game data to localStorage (for autosave)
+function saveGameToLocalStorage() {
+  notify("Saving game...");
+  const compressed = LZString.compressToUTF16(JSON.stringify(getGameData()));
+  localStorage.setItem("autosave", compressed); // Save to localStorage
+}
+
+// Function to load game data from a compressed string
+function loadGameData(compressedData, notifySuccess = true) {
+  try {
+    const json = LZString.decompressFromUTF16(compressedData);
+    if (json) {
+      const gameData = JSON.parse(json);
+      setGameData(gameData);
+      if (notifySuccess) notify("Game loaded successfully!", "green");
+    } else {
+      notify("Error loading game data: data is corrupted or invalid", "red");
+    }
+  } catch (error) {
+    notify("Error loading game data: " + error, "red");
+  }
+}
+
+// Function to load game data from localStorage (for autosave)
+function loadGameFromLocalStorage() {
+  const compressedData = localStorage.getItem("autosave");
+  if (compressedData) {
+    loadGameData(compressedData, false); // Load without success notification
+  }
+}
+
+// Function to load game data from a file input
 function loadGame(event) {
   const file = event.target.files[0];
   const reader = new FileReader();
   reader.onload = function (e) {
-    try {
-      const compressedData = e.target.result;
-      const json = LZString.decompressFromUTF16(compressedData); // Decompress the data
-      if (json) {
-        const gameData = JSON.parse(json);
-
-        // Check the version of the save file
-        if (gameData.version !== gVersion) {
-          notify(
-            "Old version detected (v" +
-              gameData.version +
-              "), proceeding anyway...",
-            "red"
-          );
-        }
-
-        money = gameData.money || 0;
-        allTimeMoney = gameData.allTimeMoney || 0;
-        inventory = gameData.inventory || defInventory;
-        boughtUpgrades = gameData.boughtUpgrades || [];
-        raritiesDone = gameData.raritiesDone || defRaritiesDone;
-        quests = gameData.quests || [];
-        level = gameData.level || defLevel;
-
-        // Load other properties here as needed
-
-        displayInventory(); // Update UI
-        displayUpgrades(); // Update UI
-        notify("Game loaded successfully!", "green");
-      } else {
-        notify("Error loading game data: data is corrupted or invalid", "red");
-      }
-    } catch (error) {
-      notify("Error loading game data:" + error, "red");
-    }
+    loadGameData(e.target.result); // Load with success notification
   };
-
   reader.readAsText(file);
 }
 
+// Function to periodically autosave
+function startAutosave(interval = 30000) {
+  // Default to 30 seconds
+  setInterval(saveGameToLocalStorage, interval);
+}
+
+function resetAutosave(){
+  localStorage.setItem("autosave", null); // Clear storage
+  window.location.reload(); // Reload the page
+}
+
+// Initialize autosave and load localStorage data on page load
+document.addEventListener("DOMContentLoaded", () => {
+  loadGameFromLocalStorage(); // Load game from localStorage on page load
+  startAutosave(); // Start autosaving every 30 seconds
+});
+
 // Adding event listener to load input
 document.getElementById("load-input").addEventListener("change", loadGame);
-
 document.getElementById("saveButton").textContent += " (v" + gVersion + ")";

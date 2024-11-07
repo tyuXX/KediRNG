@@ -228,6 +228,15 @@ const rarity = [
     colors: ["#1B2F4B"],
   },
   {
+    name: "Enchancing",
+    value: 24,
+    texts: [
+      "The age of cheese and magic",
+      "burn him he is a dark wizard!"
+    ],
+    colors: ["#C46927"],
+  },
+  {
     name: "Toprak's Wrath",
     value: 99,
     texts: ["Unlucky Car:(", "Not the car"],
