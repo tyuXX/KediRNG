@@ -8,7 +8,7 @@ async function loadVersionInfo() {
     const versionData = await response.json();
 
     // Display version information on the game UI
-    const versionInfoContainer = document.getElementById('version-info');
+    const versionInfoContainer = document.getElementById('versionInfo');
     versionInfoContainer.innerHTML = `
       <p>Version: ${versionData.commitHash}</p>
       <a href="${versionData.githubLink}" target="_blank">View Commit</a>
