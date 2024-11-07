@@ -1,0 +1,32 @@
+name: Update Version Info
+
+on:
+  push:
+    branches:
+      - main   # Trigger on pushes to the main branch (or your deployment branch)
+
+jobs:
+  update-version:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Get the latest commit hash
+        id: get_commit
+        run: echo "commit_hash=$(git rev-parse HEAD)" >> $GITHUB_ENV
+
+      - name: Create version.json with commit hash and link
+        run: |
+          echo "{ \"commitHash\": \"$commit_hash\", \"githubLink\": \"https://github.com/${{ github.repository }}/commit/$commit_hash\" }" > version.json
+
+      - name: Commit and push version.json
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add version.json
+          git commit -m "Update version.json with the latest commit hash"
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
