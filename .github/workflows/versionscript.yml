@@ -3,7 +3,7 @@ name: Update Version Info
 on:
   push:
     branches:
-      - main   # Trigger on pushes to the main branch (or your deployment branch)
+      - master   # Trigger on pushes to the main branch (or your deployment branch)
 
 jobs:
   update-version:
