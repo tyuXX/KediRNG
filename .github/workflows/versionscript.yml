@@ -19,7 +19,7 @@ jobs:
 
       - name: Create version.json with commit hash and link
         run: |
-          echo "{ \"commitHash\": \"$commit_hash\", \"githubLink\": \"https://github.com/${{ github.repository }}/commit/$commit_hash\" }" > version.json
+          echo "{ \"commitHash\": \"${{ env.commit_hash }}\", \"githubLink\": \"https://github.com/${{ github.repository }}/commit/${{ env.commit_hash }}\" }" > version.json
 
       - name: Commit and push version.json
         run: |
