@@ -100,8 +100,8 @@ function startAutosave(interval = 30000) {
   setInterval(saveGameToLocalStorage, interval);
 }
 
-function resetAutosave(){
-  localStorage.setItem("autosave", null); // Clear storage
+function resetGame(){
+  localStorage.removeItem("autosave"); // Clear storage
   window.location.reload(); // Reload the page
 }
 
