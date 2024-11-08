@@ -1,4 +1,4 @@
-const gVersion = 4;
+const gVersion = 5;
 var raritiesDone = defRaritiesDone;
 var inventory = defInventory;
 var allTimeMoney = 0;

@@ -9,7 +9,7 @@ function rollText() {
     notify("On cooldown for " + rollCooldown + "ms");
     return;
   }
-  for (let index = 0; index < rollMultiplier; index++) {
+  for (let index = 0; index < getUpgradeValue("rollMultiplier"); index++) {
     const rarit = rarity.find(() => Math.random() < 0.5) || rarity[0]; // Get a random rarity
     const selectedText = getTextFromRarity(rarit);
     if (!checkQuestCompletion(selectedText)) {
@@ -41,7 +41,7 @@ function displayInventory() {
             <p>${item.text}</p>
             <p>${rarity[item.rarity].name}</p>
             <button onclick="delItem(${index})">Sell: ${
-        item.sell * sellMultiplier
+        item.sell * getUpgradeValue("sellMultiplier")
       }</button>
         `;
 
@@ -79,7 +79,7 @@ function displayQuests() {
 // Function to delete an item from the inventory
 function delItem(index) {
   if (inventory[index].sell > 0) {
-    changeMoney(inventory[index].sell * sellMultiplier);
+    changeMoney(inventory[index].sell * getUpgradeValue("sellMultiplier"));
     inventory.splice(index, 1);
     displayInventory();
   }
@@ -88,7 +88,7 @@ function delItem(index) {
 function sellAll() {
   inventory = inventory.filter((item) => {
     if (item.sell > 0) {
-      changeMoney(item.sell * sellMultiplier); // Add the sell value to money
+      changeMoney(item.sell * getUpgradeValue("sellMultiplier")); // Add the sell value to money
       return false; // Remove this item from inventory
     }
     return true; // Keep this item in inventory
@@ -187,7 +187,7 @@ function sellSelectedRarities() {
   selectedRarities.forEach((rarityValue) => {
     inventory = inventory.filter((item) => {
       if (item.rarity === rarityValue && item.sell > 0) {
-        changeMoney(item.sell * sellMultiplier); // Add the sell value to money
+        changeMoney(item.sell * getUpgradeValue("sellMultiplier")); // Add the sell value to money
         return false; // Remove this item from inventory
       }
       return true; // Keep this item in inventory
@@ -267,7 +267,7 @@ async function renderLoop() {
   while (true) {
     mlabel.innerHTML = `Money: ${money}`;
     pmlabel.innerHTML = `Potential Money: ${inventory.reduce(
-      (a, b) => a + b.sell * sellMultiplier,
+      (a, b) => a + b.sell * getUpgradeValue("sellMultiplier"),
       0
     )}`;
     tlabel.innerHTML = `Text Count: ${inventory.length}`;

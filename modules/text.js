@@ -214,6 +214,7 @@ const rarity = [
       "Lucky, what about next time",
       "Luck is on your side",
       "Not bad at all!",
+      "Kedimsel RNG"
     ],
     colors: ["#FF9B00"],
   },
@@ -224,6 +225,7 @@ const rarity = [
       "Who the rizzing ohio skibidi is this guy?",
       "Is this even real?",
       "Brainrot level: high",
+      "Skibidi Skibidi, AHHHHHHHHHHH SKIBIDIIIIIIIII"
     ],
     colors: ["#1B2F4B"],
   },

@@ -11,6 +11,7 @@ function getGameData() {
     quests: quests,
     level: level,
     lastSave: lastSave,
+    upgradeValues: upgradeValues,
     // Add any new properties here
   };
 }
@@ -33,6 +34,7 @@ function setGameData(gameData) {
   quests = gameData.quests || [];
   level = gameData.level || defLevel;
   lastSave = gameData.lastSave || Date.now();
+  upgradeValues = gameData.upgradeValues || defUpgradeValues;
 
   // Load other properties here as needed
 

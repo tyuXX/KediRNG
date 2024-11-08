@@ -1,6 +1,5 @@
 var boughtUpgrades = [];
-var sellMultiplier = 1;
-var rollMultiplier = 1;
+var upgradeValues = defUpgradeValues;
 var rollCooldown = 0;
 
 const upgrades = [
@@ -11,7 +10,7 @@ const upgrades = [
     cost: 10000,
     limit: 1,
     effect: () => {
-      sellMultiplier++;
+      changeUpgradeValue("sellMultiplier", 1);
       displayInventory();
     },
   },
@@ -22,7 +21,7 @@ const upgrades = [
     cost: 100000,
     limit: 1,
     effect: () => {
-      rollMultiplier++;
+      changeUpgradeValue("rollMultiplier", 1);
     },
   },
   {
@@ -32,7 +31,7 @@ const upgrades = [
     cost: 100000,
     limit: 1,
     effect: () => {
-      sellMultiplier++;
+      changeUpgradeValue("sellMultiplier", 1);
       displayInventory();
     },
   },
@@ -43,7 +42,7 @@ const upgrades = [
     cost: 250000,
     limit: 1,
     effect: () => {
-      rollMultiplier++;
+      changeUpgradeValue("rollMultiplier", 1);
     },
   },
   {
@@ -53,7 +52,7 @@ const upgrades = [
     cost: 500000,
     limit: 1,
     effect: () => {
-      rollMultiplier++;
+      changeUpgradeValue("rollMultiplier", 1);
     },
   },
   {
@@ -63,7 +62,7 @@ const upgrades = [
     cost: 250000,
     limit: 1,
     effect: () => {
-      sellMultiplier++;
+      changeUpgradeValue("sellMultiplier", 1);
       displayInventory();
     },
   },
@@ -111,4 +110,12 @@ function buyUpgrade(index) {
     }
     displayUpgrades(); // Update shop to reflect changes
   }
+}
+
+function getUpgradeValue(id) {
+  return upgradeValues[id];
+}
+
+function changeUpgradeValue(id, value) {
+  upgradeValues[id] = upgradeValues[id] + value;
 }
