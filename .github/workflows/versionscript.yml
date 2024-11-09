@@ -3,7 +3,7 @@ name: Update Version Info
 on:
   push:
     branches:
-      - master   # Trigger on pushes to the main branch (or your deployment branch)
+      - master
 
 jobs:
   update-version:
@@ -11,22 +11,34 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@main
+        uses: actions/checkout@v3
 
       - name: Get the latest commit hash
         id: get_commit
         run: echo "commit_hash=$(git rev-parse HEAD)" >> $GITHUB_ENV
 
-      - name: Create version.json with commit hash and link
+      - name: Check and increment version number
         run: |
-          echo "{ \"commitHash\": \"${{ env.commit_hash }}\", \"githubLink\": \"https://github.com/${{ github.repository }}/commit/${{ env.commit_hash }}\" }" > version.json
+          # Check if version.v exists
+          if [ -f version.v ]; then
+            version=$(cat version.v)
+            version=$((version + 1))
+          else
+            version=1
+          fi
+          echo "$version" > version.v
+          echo "version=$version" >> $GITHUB_ENV
 
-      - name: Commit and push version.json
+      - name: Create version.json with commit hash
+        run: |
+          echo "{ \"commitHash\": \"${{ env.commit_hash }}\"}" > version.json
+
+      - name: Commit and push version.json and version.v
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add version.json
-          git commit -m "Update version.json with the latest commit hash"
+          git add version.json version.v
+          git commit -m "Update version files with the latest version and commit hash"
           git push
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

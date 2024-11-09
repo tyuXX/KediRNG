@@ -266,10 +266,10 @@ function checkQuestCompletion(text) {
 async function renderLoop() {
   while (true) {
     mlabel.innerHTML = `Money: ${money}`;
-    pmlabel.innerHTML = `Potential Money: ${inventory.reduce(
+    pmlabel.innerHTML = `Potential Money: ${Math.floor((inventory.reduce(
       (a, b) => a + b.sell * getUpgradeValue("sellMultiplier"),
       0
-    )}`;
+    ))*(1 + level.level / 10))}`;
     tlabel.innerHTML = `Text Count: ${inventory.length}`;
     document.getElementById("levelLabel").innerHTML = `Level: ${
       level.level

@@ -7,10 +7,17 @@ async function loadVersionInfo() {
     }
     const versionData = await response.json();
 
+    const response2 = await fetch('version.json');
+    if (!response2.ok) {
+      throw new Error(`Failed to fetch version info: ${response2.statusText}`);
+    }
+    const versionData2 = await response2();
+
     // Display version information on the game UI
     const versionInfoContainer = document.getElementById('versionInfo');
     versionInfoContainer.innerHTML = `
-      <a href="${versionData.githubLink}" target="_blank">${versionData.commitHash}</a>
+      <a href="https://github.com/tyuXX/KediRNG/commit/${versionData.commitHash}" target="_blank">${versionData.commitHash}</a>
+      <label id="versionLabel" for="version">Version: ${versionData}</label>
     `;
   } catch (error) {
     console.error('Error loading version info:', error);
