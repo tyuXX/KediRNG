@@ -24,10 +24,12 @@ function closeNotification(id) {
 }
 
 function notify(text, color = "#333333") {
-  const notification = { id: Math.random(),text: text,color: color };
+  if (notifications.length >= 20) {
+    notifications.pop();
+  }
+  const notification = { id: Math.random(), text: text, color: color };
   notifications.push(notification);
   displayNotifications();
-
   setTimeout(() => {
     closeNotification(notification.id);
   }, notificationInterval);

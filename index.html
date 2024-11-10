@@ -9,46 +9,48 @@
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
-    <div id="versionInfo"></div>
-
     <div id="topMenu">
+      <div id="versionInfo">Pending...</div>
       <a href="https://github.com/tyuXX/KediRNG">This game is open source!</a>
       <a href="https://github.com/tyuXX/KediRNG/issues"
         >Please report bugs, and help us improve the game.</a
       >
+      <label id="fpsLabel" for="fps">Fps: Pending...</label>
     </div>
 
     <div id="notifications"></div>
 
     <h1>Kedi RNG</h1>
-    <label id="levelLabel">Level: 1 (EXP: 0/100)</label>
-    <label id="tlabel" for="Text count">Text Count:1</label>
-    <label id="mlabel" for="Money">Money:0</label>
-    <label id="pmlabel" for="Potential Money">Potential Money:0</label>
+    <label class="label" id="levelLabel">Pending...</label>
+    <label class="label" id="tlabel" for="Text count">Pending...</label>
+    <label class="label" id="mlabel" for="Money">Pending...</label>
+    <label class="label" id="pmlabel" for="Potential Money">Pending...</label>
     <button onclick="rollText()">Roll for TEXT</button>
 
     <button id="toggleInventory" onclick="toggleInventory()">
       Toggle Inventory
     </button>
-    <button id="toggleNotifications" onclick="toggleNotifications()">Toggle Notifications</button>
+    <button id="toggleNotifications" onclick="toggleNotifications()">
+      Toggle Notifications
+    </button>
 
     <button onclick="openSellAllPopup()">Sell All</button>
 
-    <div id="inventory"></div>
-    <div id="shop">
+    <div class="page" id="inventory" class="grid-container"></div>
+    <div class="page" id="shop">
       <h2>Shop</h2>
-      <div id="upgrades"></div>
+      <div id="upgrades" class="grid-container"></div>
     </div>
-    <div id = "questsContainer">
+    <div class="page" id="questsContainer">
       <h2>Quests</h2>
-      <div id="quests"></div>
+      <div id="quests" class="grid-container"></div>
     </div>
 
     <!-- Sell All Popup -->
     <div id="sellAllPopup" class="popup" style="display: none">
       <div class="popup-content">
         <h2>Sell All Items by Rarity</h2>
-        <form id="rarityForm">
+        <form id="rarityForm" class="page">
           <div id="rarityCheckboxes"></div>
           <button type="button" onclick="sellSelectedRarities()">Done</button>
           <button type="button" onclick="sellAll()">Sell All</button>
@@ -59,14 +61,24 @@
 
     <div>
       <button id="saveButton" onclick="saveGame()">Save Game to file</button>
-      <button id="saveButton" onclick="saveGameToLocalStorage()">Save Game to browser</button>
+      <button id="saveButton" onclick="saveGameToLocalStorage()">
+        Save Game to browser
+      </button>
       <input type="file" id="load-input" style="display: none" />
       <button onclick="document.getElementById('load-input').click();">
         Load Game
       </button>
-      <button id="resetButton" onclick="resetGame()" style="background-color: red;">Reset Game</button>
+      <button
+        id="resetButton"
+        onclick="resetGame()"
+        style="background-color: red"
+      >
+        Reset Game
+      </button>
     </div>
 
+    <script src="modules/performance.js" defer></script>
+    <script src="modules/stats.js" defer></script>
     <script src="modules/version.js" defer></script>
     <script src="modules/defaults.js" defer></script>
     <script src="modules/game.js" defer></script>

@@ -11,6 +11,16 @@ const rarity = [
       "L",
       "Is that the best you can do?",
       "Keep trying, rookie!",
+      "Commonly common",
+      "Pehhhhhhhhhhhhhhhhhhhhhhhhhhhh",
+      "C-o-m-m-o-n",
+      "1/2 chance",
+      "Annoying for people who don't understand common's power",
+      "Worst of the worst",
+      "nooooooooooooooooooooooooooooooooooooooooo way so lucky(joke)",
+      "CEO of bad luck",
+      "Nerf Common!!!",
+      "Could be uncommon later(very)"
     ],
     colors: ["#AAAAAA"],
   },
@@ -24,6 +34,7 @@ const rarity = [
       "Little L",
       "Almost there!",
       "This isn't quite rare yet...",
+      "One of a kind"
     ],
     colors: ["#CC3333"],
   },
@@ -72,6 +83,8 @@ const rarity = [
       "WOW you luck itself actually noob",
       "Super epic level reached!",
       "You're on fire!",
+      "Epic but superman",
+      "only that lol"
     ],
     colors: ["#CC33CC"],
   },
@@ -118,6 +131,7 @@ const rarity = [
       "this game",
       "Extra sauce, extra spice",
       "Saucy find!",
+      "Best of the worst"
     ],
     colors: ["#7B7B7B"],
   },
@@ -204,10 +218,8 @@ const rarity = [
       "Na' bro",
       "Overflowing with sauce",
       "is not healthy",
+      "Mexican",
     ],
-    colors: ["#FFA500"],
-  },
-  {
     name: "Lucky",
     value: 22,
     texts: [
@@ -237,6 +249,14 @@ const rarity = [
       "burn him he is a dark wizard!"
     ],
     colors: ["#C46927"],
+  },
+  {
+    name: "Goofy",
+    value: 25,
+    texts: [
+      "Goofy as goofy",
+    ],
+    colors: ["#823C2A"],
   },
   {
     name: "Toprak's Wrath",

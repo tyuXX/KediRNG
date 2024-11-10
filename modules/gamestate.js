@@ -1,3 +1,5 @@
+const gVersion = 5;
+
 // Function to get game data
 function getGameData() {
   lastSave = Date.now();

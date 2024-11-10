@@ -1,5 +1,5 @@
 var boughtUpgrades = [];
-var upgradeValues = defUpgradeValues;
+var upgradeValues = {};
 var rollCooldown = 0;
 
 const upgrades = [
@@ -49,7 +49,7 @@ const upgrades = [
     name: "Quad Roll",
     id: "quadRoll",
     description: "Roll quadruaple the items.",
-    cost: 500000,
+    cost: 1000000,
     limit: 1,
     effect: () => {
       changeUpgradeValue("rollMultiplier", 1);
@@ -82,6 +82,58 @@ const upgrades = [
     limit: 1,
     effect: () => {},
   },
+  {
+    name: "Small Invesments",
+    id: "smallInvesments",
+    description: "We need to scam.",
+    cost: 750000,
+    limit: 1,
+    effect: () => {
+      changeUpgradeValue("sellMultiplier", 1);
+      displayInventory();
+    },
+  },
+  {
+    name: "Company",
+    id: "company",
+    description: "We get real bussines.",
+    cost: 5000000,
+    limit: 1,
+    effect: () => {
+      changeUpgradeValue("sellMultiplier", 1);
+      displayInventory();
+    },
+  },
+  {
+    name: "Quintuple Roll",
+    id: "quintupleRoll",
+    description: "Roll quintuple the items.",
+    cost: 5000000,
+    limit: 1,
+    effect: () => {
+      changeUpgradeValue("rollMultiplier", 1);
+    },
+  },
+  {
+    name: "Luckery",
+    id: "luckery",
+    description: "We get real lucky this time.",
+    cost: 10000000,
+    limit: 10,
+    effect: () => {
+      changeUpgradeValue("luck", 1);
+    },
+  },
+  {
+    name: "Questing Luckery",
+    id: "qluckery",
+    description: "Questable luck.",
+    cost: 10000000,
+    limit: 10,
+    effect: () => {
+      changeUpgradeValue("qluck", 1);
+    },
+  },
 ];
 
 function getUpgradesLevel(id) {
@@ -113,9 +165,14 @@ function buyUpgrade(index) {
 }
 
 function getUpgradeValue(id) {
-  return upgradeValues[id];
+  return upgradeValues[id] || 1;
 }
 
 function changeUpgradeValue(id, value) {
-  upgradeValues[id] = upgradeValues[id] + value;
+  if(upgradeValues[id]){
+    upgradeValues[id] = upgradeValues[id] + value;
+  }
+  else{
+    upgradeValues[id] = value;
+  }
 }

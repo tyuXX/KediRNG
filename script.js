@@ -10,7 +10,7 @@ function rollText() {
     return;
   }
   for (let index = 0; index < getUpgradeValue("rollMultiplier"); index++) {
-    const rarit = rarity.find(() => Math.random() < 0.5) || rarity[0]; // Get a random rarity
+    const rarit = rarity.find(() => Math.random() < (0.5 - ((getUpgradeValue("luck")-1)/100))) || rarity[0]; // Get a random rarity
     const selectedText = getTextFromRarity(rarit);
     if (!checkQuestCompletion(selectedText)) {
       inventory.push({
@@ -25,37 +25,35 @@ function rollText() {
     }
   }
   rollCooldown = 500 - getUpgradesLevel("lessCooldown") * 100;
-  displayInventory();
+  displayInventory(true);
 }
 // Function to display the inventory
-function displayInventory() {
-  if (invDiv.style.display != "none") {
-    const fragment = document.createDocumentFragment();
+async function displayInventory(half = false) {
+  if (invDiv.style.display === "none") return;
 
-    inventory.forEach((item, index) => {
-      const itemDiv = document.createElement("div");
-      itemDiv.classList.add("item");
-      itemDiv.setAttribute("data-rvalue", item.rarity);
+  const fragment = document.createDocumentFragment();
+  const startIndex = half ? invDiv.childElementCount : 0;
 
-      itemDiv.innerHTML = `
-            <p>${item.text}</p>
-            <p>${rarity[item.rarity].name}</p>
-            <button onclick="delItem(${index})">Sell: ${
-        item.sell * getUpgradeValue("sellMultiplier")
-      }</button>
-        `;
+  for (let index = startIndex; index < inventory.length; index++) {
+    const item = inventory[index];
+    const itemDiv = document.createElement("div");
+    itemDiv.classList.add("item");
+    itemDiv.dataset.rvalue = item.rarity;
+    itemDiv.style.backgroundColor = getColorFromRarity(getRarityFromInt(item.rarity));
+    
+    itemDiv.innerHTML = `
+      <p>${item.text}</p>
+      <p>${rarity[item.rarity].name}</p>
+      <button onclick="delItem(${index})">Sell: ${getFAmount(item.sell * getUpgradeValue("sellMultiplier"))}</button>
+    `;
 
-      itemDiv.style.backgroundColor = getColorFromRarity(
-        getRarityFromInt(item.rarity)
-      );
-
-      fragment.appendChild(itemDiv);
-    });
-
-    invDiv.innerHTML = "";
-    invDiv.appendChild(fragment);
+    fragment.appendChild(itemDiv);
   }
+
+  if (!half) invDiv.innerHTML = "";
+  invDiv.appendChild(fragment);
 }
+
 
 function displayQuests() {
   const questsDiv = document.getElementById("quests"); // Ensure this div exists in your HTML
@@ -67,7 +65,7 @@ function displayQuests() {
     questDiv.innerHTML = `
             <p>${quest.requiredText}</p>
             <p>${getRarityFromInt(quest.rarity).name}</p>
-            <p>Reward: ${quest.reward}</p>
+            <p>Reward: ${getFAmount(quest.reward).toLocaleString()}</p>
         `;
     questDiv.style.backgroundColor = getColorFromRarity(
       getRarityFromInt(quest.rarity)
@@ -101,10 +99,10 @@ function sellAll() {
 function toggleInventory() {
   if (invDiv.style.display === "none") {
     invDiv.style.display = "grid"; // Show inventory as a grid
+    displayInventory();
   } else {
     invDiv.style.display = "none"; // Hide inventory
   }
-  displayInventory();
 }
 
 // Function to display upgrades in the shop
@@ -120,7 +118,7 @@ function displayUpgrades() {
     upgradeDiv.classList.add("upgrade");
     upgradeDiv.innerHTML = `
         <p>${upgrade.name} - ${upgrade.description} (Level: ${boughtCount})</p>
-        <p>Cost: ${upgrade.cost}</p>
+        <p>Cost: ${upgrade.cost.toLocaleString()}</p>
       `;
 
     if (boughtCount >= upgrade.limit) {
@@ -228,7 +226,7 @@ function newRarityAnimation(rarityint) {
 // Function to generate random quests
 function generateRandomQuest() {
   // Select a random rarity
-  const randomRarity = rarity.find(() => Math.random() < 0.3) || rarity[0]; // Get a random rarity
+  const randomRarity = rarity.find(() => Math.random() < (0.3 - ((getUpgradeValue("luck")-1)/100))) || rarity[0]; // Get a random rarity
 
   // Select a random text from the chosen rarity
   const randomText = getTextFromRarity(randomRarity);
@@ -248,7 +246,7 @@ function generateRandomQuest() {
 function checkQuestCompletion(text) {
   quests.forEach((quest) => {
     if (text === quest.requiredText) {
-      changeMoney(quest.reward); // Reward the player
+      changeMoney(getFAmount(quest.reward)); // Reward the player
       //Remove quest from list
       quests = quests.filter((q) => q.id !== quest.id);
       notify(
@@ -265,15 +263,14 @@ function checkQuestCompletion(text) {
 
 async function renderLoop() {
   while (true) {
-    mlabel.innerHTML = `Money: ${money}`;
-    pmlabel.innerHTML = `Potential Money: ${Math.floor((inventory.reduce(
-      (a, b) => a + b.sell * getUpgradeValue("sellMultiplier"),
-      0
-    ))*(1 + level.level / 10))}`;
-    tlabel.innerHTML = `Text Count: ${inventory.length}`;
+    mlabel.innerHTML = `Money: ${money.toLocaleString()}`;
+    pmlabel.innerHTML = `Potential Money: ${inventory.reduce(
+      (a, b) => a + getFAmount(b.sell * getUpgradeValue("sellMultiplier")),0
+    ).toLocaleString()}`;
+    tlabel.innerHTML = `Text Count: ${inventory.length.toLocaleString()}`;
     document.getElementById("levelLabel").innerHTML = `Level: ${
       level.level
-    } (EXP: ${level.xp}/${Math.ceil(Math.pow(1.2, level.level) * 10)})`;
+    } (EXP: ${level.xp.toLocaleString()} / ${Math.ceil(Math.pow(1.2, level.level) * 10).toLocaleString()})`;
     await new Promise((r) => setTimeout(r, 100));
   }
 }
@@ -290,12 +287,13 @@ async function tickLoop() {
     if (rollCooldown > 0) {
       rollCooldown -= 100;
     }
+    timePlayed++;
     await new Promise((r) => setTimeout(r, 100));
   }
 }
 
 function changeMoney(amount) {
-  const famount = Math.floor(amount * (1 + level.level / 10));
+  const famount = getFAmount(amount);
   money += famount;
   addXP(famount);
   if (amount > 0) {
@@ -317,6 +315,10 @@ function toggleNotifications() {
   } else {
     document.getElementById("notifications").style.display = "block";
   }
+}
+
+function getFAmount(amount) {
+  return Math.floor(amount * (1 + level.level / 10));
 }
 
 // Initial calls

@@ -14,12 +14,7 @@ h1 {
 }
 
 /* Money and Potential Money Labels */
-#mlabel,
-#pmlabel,
-#tlabel,
-#shop h2,
-#questsContainer h2,
-#levelLabel {
+.label {
   font-size: 18px;
   font-weight: bold;
   color: #ffffff;
@@ -115,25 +110,6 @@ button:active {
 
 .item button:active {
   background-color: #e60000; /* Even darker red on click */
-}
-
-/* Shop Styles */
-#shop {
-  margin: 20px auto;
-  padding: 10px;
-  border: 2px solid #444444;
-  background-color: #2a2a2a;
-  border-radius: 10px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
-  max-width: 90vw;
-}
-
-#upgrades {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-  gap: 10px;
-  overflow-y: auto;
-  max-height: 60vh;
 }
 
 .upgrade {
@@ -272,24 +248,6 @@ button:active {
   margin-bottom: 10px;
 }
 
-/* Quest Container */
-#quests {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-  overflow-y: auto;
-  max-height: 60vh;
-}
-
-#questsContainer {
-  border: 2px solid #444444;
-  background-color: #2a2a2a;
-  border-radius: 10px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
-  max-width: 90vw;
-  margin: 20px auto;
-  padding: 10px;
-}
-
 /* Quest Item Style */
 .quest {
   background-color: #333333;
@@ -331,14 +289,12 @@ p:hover {
   border-radius: 10px;
   max-width: 90vw;
   max-height: 70vh;
-  margin: 20px auto;
   padding: 10px;
   overflow-y: auto;
 }
 
 /* Checkbox Style */
 #rarityCheckboxes input {
-  display: grid;
   margin: 10px auto;
   accent-color: #5a5aff; /* Custom accent color for checkboxes */
   cursor: pointer;
@@ -400,12 +356,33 @@ p:hover {
   color: #ccc; /* Lighter color on hover */
 }
 
-#versionInfo {
-  top: 0px;
-  left: 0px;
-  position: fixed;
-  z-index: 1000;
-  color: white;
+.page {
+  margin: 20px auto;
+  padding: 10px;
+  border: 2px solid #444444;
+  background-color: #2a2a2a;
+  border-radius: 10px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
+  max-width: 90vw;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 10px;
+  overflow-y: auto;
+  max-height: 60vh;
+}
+
+.page h2 {
+  font-size: 18px;
+  font-weight: bold;
+  color: #ffffff;
+  margin: 10px;
+  padding: 8px;
+  border-radius: 5px;
+  display: inline-block;
+  background-color: #333333;
 }
 
 /* Mobile styling */
