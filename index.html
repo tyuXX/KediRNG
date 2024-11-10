@@ -21,29 +21,40 @@
     <div id="notifications"></div>
 
     <h1>Kedi RNG</h1>
-    <label class="label" id="levelLabel">Pending...</label>
-    <label class="label" id="tlabel" for="Text count">Pending...</label>
-    <label class="label" id="mlabel" for="Money">Pending...</label>
-    <label class="label" id="pmlabel" for="Potential Money">Pending...</label>
-    <button onclick="rollText()">Roll for TEXT</button>
-
-    <button id="toggleInventory" onclick="toggleInventory()">
-      Toggle Inventory
-    </button>
-    <button id="toggleNotifications" onclick="toggleNotifications()">
-      Toggle Notifications
-    </button>
-
-    <button onclick="openSellAllPopup()">Sell All</button>
-
-    <div class="page" id="inventory" class="grid-container"></div>
-    <div class="page" id="shop">
-      <h2>Shop</h2>
-      <div id="upgrades" class="grid-container"></div>
+    <div class="page" id="leveling">
+      <label class="label" id="levelLabel">Pending...</label>
+      <div id="levelBarI"></div>
     </div>
-    <div class="page" id="questsContainer">
-      <h2>Quests</h2>
-      <div id="quests" class="grid-container"></div>
+    <div>
+      <label class="label" id="tlabel" for="Text count">Pending...</label>
+      <label class="label" id="mlabel" for="Money">Pending...</label>
+      <label class="label" id="pmlabel" for="Potential Money">Pending...</label>
+    </div>
+    <div>
+      <button onclick="rollText()">Roll for TEXT</button>
+      <button id="toggleInventory" onclick="toggleInventory()">
+        Toggle Inventory
+      </button>
+      <button id="toggleNotifications" onclick="toggleNotifications()">
+        Toggle Notifications
+      </button>
+      <button onclick="openSellAllPopup()">Sell All</button>
+    </div>
+
+    <div id="pages">
+      <div class="page" id="inventory" class="grid-container"></div>
+      <div class="page" id="shop">
+        <h2>Shop</h2>
+        <div id="upgrades" class="grid-container"></div>
+      </div>
+      <div class="page" id="questsContainer">
+        <h2>Quests</h2>
+        <div id="quests" class="grid-container"></div>
+      </div>
+      <div class="page" id="statsContainer">
+        <h2>Stats</h2>
+        <div class="grid-container" id="stats"></div>
+      </div>
     </div>
 
     <!-- Sell All Popup -->
@@ -59,7 +70,7 @@
       </div>
     </div>
 
-    <div>
+    <div id="saveLoad">
       <button id="saveButton" onclick="saveGame()">Save Game to file</button>
       <button id="saveButton" onclick="saveGameToLocalStorage()">
         Save Game to browser
@@ -77,19 +88,21 @@
       </button>
     </div>
 
-    <script src="modules/performance.js" defer></script>
-    <script src="modules/stats.js" defer></script>
-    <script src="modules/version.js" defer></script>
-    <script src="modules/defaults.js" defer></script>
-    <script src="modules/game.js" defer></script>
-    <script src="modules/text.js" defer></script>
-    <script src="modules/temp.js" defer></script>
-    <script src="modules/upgrades.js" defer></script>
-    <script src="script.js" defer></script>
-    <script
-      src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.4.4/lz-string.min.js"
-      defer
-    ></script>
-    <script src="modules/gamestate.js" defer></script>
+    <div id="scripts">
+      <script src="modules/performance.js" defer></script>
+      <script src="modules/defaults.js" defer></script>
+      <script src="modules/stats.js" defer></script>
+      <script src="modules/version.js" defer></script>
+      <script src="modules/game.js" defer></script>
+      <script src="modules/text.js" defer></script>
+      <script src="modules/temp.js" defer></script>
+      <script src="modules/upgrades.js" defer></script>
+      <script src="script.js" defer></script>
+      <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.4.4/lz-string.min.js"
+        defer
+      ></script>
+      <script src="modules/gamestate.js" defer></script>
+    </div>
   </body>
 </html>

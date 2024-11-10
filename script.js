@@ -10,7 +10,10 @@ function rollText() {
     return;
   }
   for (let index = 0; index < getUpgradeValue("rollMultiplier"); index++) {
-    const rarit = rarity.find(() => Math.random() < (0.5 - ((getUpgradeValue("luck")-1)/100))) || rarity[0]; // Get a random rarity
+    const rarit =
+      rarity.find(
+        () => Math.random() < 0.5 - (getUpgradeValue("luck") - 1) / 100
+      ) || rarity[0]; // Get a random rarity
     const selectedText = getTextFromRarity(rarit);
     if (!checkQuestCompletion(selectedText)) {
       inventory.push({
@@ -22,6 +25,17 @@ function rollText() {
     if (!raritiesDone.includes(rarit.value)) {
       raritiesDone.push(rarit.value);
       notify("New rarity found!\n" + rarit.name, getColorFromRarity(rarit));
+    }
+    changeStat("totalRolls", 1);
+    if (
+      getStat("topSellPay") <
+      Math.floor(Math.pow(2, rarit.value) * Math.random()) + 1
+    ) {
+      changeStat(
+        "topSellPay",
+        Math.floor(Math.pow(2, rarit.value) * Math.random()) + 1
+      ),
+        true;
     }
   }
   rollCooldown = 500 - getUpgradesLevel("lessCooldown") * 100;
@@ -39,12 +53,16 @@ async function displayInventory(half = false) {
     const itemDiv = document.createElement("div");
     itemDiv.classList.add("item");
     itemDiv.dataset.rvalue = item.rarity;
-    itemDiv.style.backgroundColor = getColorFromRarity(getRarityFromInt(item.rarity));
-    
+    itemDiv.style.backgroundColor = getColorFromRarity(
+      getRarityFromInt(item.rarity)
+    );
+
     itemDiv.innerHTML = `
       <p>${item.text}</p>
       <p>${rarity[item.rarity].name}</p>
-      <button onclick="delItem(${index})">Sell: ${getFAmount(item.sell * getUpgradeValue("sellMultiplier"))}</button>
+      <button onclick="delItem(${index})">Sell: ${getFAmount(
+      item.sell * getUpgradeValue("sellMultiplier")
+    )}</button>
     `;
 
     fragment.appendChild(itemDiv);
@@ -54,11 +72,9 @@ async function displayInventory(half = false) {
   invDiv.appendChild(fragment);
 }
 
-
 function displayQuests() {
   const questsDiv = document.getElementById("quests"); // Ensure this div exists in your HTML
   questsDiv.innerHTML = ""; // Clear existing quests
-
   quests.forEach((quest) => {
     const questDiv = document.createElement("div");
     questDiv.classList.add("quest");
@@ -226,7 +242,10 @@ function newRarityAnimation(rarityint) {
 // Function to generate random quests
 function generateRandomQuest() {
   // Select a random rarity
-  const randomRarity = rarity.find(() => Math.random() < (0.3 - ((getUpgradeValue("luck")-1)/100))) || rarity[0]; // Get a random rarity
+  const randomRarity =
+    rarity.find(
+      () => Math.random() < 0.3 - (getUpgradeValue("luck") - 1) / 100
+    ) || rarity[0]; // Get a random rarity
 
   // Select a random text from the chosen rarity
   const randomText = getTextFromRarity(randomRarity);
@@ -246,6 +265,7 @@ function generateRandomQuest() {
 function checkQuestCompletion(text) {
   quests.forEach((quest) => {
     if (text === quest.requiredText) {
+      changeStat("questsCompleted", 1);
       changeMoney(getFAmount(quest.reward)); // Reward the player
       //Remove quest from list
       quests = quests.filter((q) => q.id !== quest.id);
@@ -264,15 +284,29 @@ function checkQuestCompletion(text) {
 async function renderLoop() {
   while (true) {
     mlabel.innerHTML = `Money: ${money.toLocaleString()}`;
-    pmlabel.innerHTML = `Potential Money: ${inventory.reduce(
-      (a, b) => a + getFAmount(b.sell * getUpgradeValue("sellMultiplier")),0
-    ).toLocaleString()}`;
+    pmlabel.innerHTML = `Potential Money: ${inventory
+      .reduce(
+        (a, b) => a + getFAmount(b.sell * getUpgradeValue("sellMultiplier")),
+        0
+      )
+      .toLocaleString()}`;
     tlabel.innerHTML = `Text Count: ${inventory.length.toLocaleString()}`;
     document.getElementById("levelLabel").innerHTML = `Level: ${
       level.level
-    } (EXP: ${level.xp.toLocaleString()} / ${Math.ceil(Math.pow(1.2, level.level) * 10).toLocaleString()})`;
+    } (EXP: ${level.xp.toLocaleString()} / ${Math.ceil(
+      Math.pow(1.2, level.level) * 10
+    ).toLocaleString()})`;
+    renderLevelBar();
+    displayStats();
     await new Promise((r) => setTimeout(r, 100));
   }
+}
+
+function renderLevelBar() {
+  const levelBar = document.getElementById("levelBarI");
+  levelBar.style.width = `${
+    (level.xp / Math.ceil(Math.pow(1.2, level.level) * 10)) * 100
+  }%`;
 }
 
 async function questLoop() {
@@ -287,7 +321,7 @@ async function tickLoop() {
     if (rollCooldown > 0) {
       rollCooldown -= 100;
     }
-    timePlayed++;
+    changeStat("timePlayed", 1);
     await new Promise((r) => setTimeout(r, 100));
   }
 }
@@ -297,7 +331,7 @@ function changeMoney(amount) {
   money += famount;
   addXP(famount);
   if (amount > 0) {
-    allTimeMoney += famount;
+    changeStat("totalMoney", famount);
   }
 }
 

@@ -1,4 +1,4 @@
-const gVersion = 5;
+const gVersion = 6;
 
 // Function to get game data
 function getGameData() {
@@ -14,6 +14,7 @@ function getGameData() {
     level: level,
     lastSave: lastSave,
     upgradeValues: upgradeValues,
+    stats: stats,
     // Add any new properties here
   };
 }
@@ -37,6 +38,7 @@ function setGameData(gameData) {
   level = gameData.level || defLevel;
   lastSave = gameData.lastSave || Date.now();
   upgradeValues = gameData.upgradeValues || defUpgradeValues;
+  stats = gameData.stats || defStats;
 
   // Load other properties here as needed
 
@@ -55,7 +57,7 @@ function saveGame() {
 }
 
 // Function to save game data to localStorage (for autosave)
-function saveGameToLocalStorage() {
+async function saveGameToLocalStorage() {
   notify("Saving game...");
   const compressed = LZString.compressToUTF16(JSON.stringify(getGameData()));
   localStorage.setItem("autosave", compressed); // Save to localStorage
@@ -96,12 +98,6 @@ function loadGame(event) {
   reader.readAsText(file);
 }
 
-// Function to periodically autosave
-function startAutosave(interval = 30000) {
-  // Default to 30 seconds
-  setInterval(saveGameToLocalStorage, interval);
-}
-
 function resetGame(){
   localStorage.removeItem("autosave"); // Clear storage
   window.location.reload(); // Reload the page
@@ -110,7 +106,7 @@ function resetGame(){
 // Initialize autosave and load localStorage data on page load
 document.addEventListener("DOMContentLoaded", () => {
   loadGameFromLocalStorage(); // Load game from localStorage on page load
-  startAutosave(); // Start autosaving every 30 seconds
+  setInterval(saveGameToLocalStorage, 30000); // Start autosaving every 30 seconds
 });
 
 // Adding event listener to load input

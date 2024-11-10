@@ -385,6 +385,38 @@ p:hover {
   background-color: #333333;
 }
 
+#leveling {
+  width: 15vw;
+}
+
+#levelBarI {
+  width: 100%; /* Set the width to 100% of the container */
+  height: 20px; /* Set the height of the progress bar */
+  border-radius: 5px; /* Set the border radius of the progress bar */
+  overflow: hidden; /* Hide any overflow of the progress bar */
+  background-color: #5a5aff; /* Set the background color of the progress bar */
+}
+
+.stat {
+  border: 1px solid #555555;
+  border-radius: 8px;
+  padding: 10px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.5);
+  font-size: 16px;
+  color: #e0e0e0;
+  text-align: center;
+  transition: transform 0.2s ease;
+  margin: 5px;
+  gap: 8px;
+}
+
+.stat p {
+  margin: 5px 0;
+  font-size: 14px;
+  font-weight: bold;
+  border-radius: 8px;
+}
+
 /* Mobile styling */
 @media (max-width: 600px) {
   /* Inventory, upgrades, and quests grid */

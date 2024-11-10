@@ -259,6 +259,20 @@ const rarity = [
     colors: ["#823C2A"],
   },
   {
+    name: "Rolling down",
+    value: 26,
+    texts: [
+      "Never gonna give you up!",
+      "Never gonna let you down.",
+      "Never gonna run around and desert you.",
+      "Never gonna make you cry.",
+      "Never gonna say goodbye.",
+      "Never gonna tell a lie and hurt you.",
+      "Get rick rolled lol"
+    ],
+    colors: ["#C46927"],
+  },
+  {
     name: "Toprak's Wrath",
     value: 99,
     texts: ["Unlucky Car:(", "Not the car"],
