@@ -39,6 +39,14 @@ function setGameData(gameData) {
   lastSave = gameData.lastSave || Date.now();
   upgradeValues = gameData.upgradeValues || defUpgradeValues;
   stats = gameData.stats || defStats;
+  stats.forEach(stat => {
+    let st = defStats.find(s => s.id === stat.id);
+    if(st){
+      if(stat.name !== st.name){
+        stat.name = st.name;
+      }
+    }
+  });
 
   // Load other properties here as needed
 
