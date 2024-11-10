@@ -52,6 +52,7 @@ function setGameData(gameData) {
 
   displayInventory(); // Update UI
   displayUpgrades(); // Update UI
+  displayQuests(); // Update UI
 }
 
 // Function to save game data to file
