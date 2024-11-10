@@ -11,7 +11,7 @@ async function loadVersionInfo() {
     if (!response2.ok) {
       throw new Error(`Failed to fetch version info: ${response2.statusText}`);
     }
-    const versionData2 = response2.text;
+    const versionData2 = response2.text();
 
     // Display version information on the game UI
     const versionInfoContainer = document.getElementById('versionInfo');
