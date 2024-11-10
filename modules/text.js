@@ -20,7 +20,7 @@ const rarity = [
       "nooooooooooooooooooooooooooooooooooooooooo way so lucky(joke)",
       "CEO of bad luck",
       "Nerf Common!!!",
-      "Could be uncommon later(very)"
+      "Could be uncommon later(very)",
     ],
     colors: ["#AAAAAA"],
   },
@@ -34,7 +34,7 @@ const rarity = [
       "Little L",
       "Almost there!",
       "This isn't quite rare yet...",
-      "One of a kind"
+      "One of a kind",
     ],
     colors: ["#CC3333"],
   },
@@ -84,7 +84,7 @@ const rarity = [
       "Super epic level reached!",
       "You're on fire!",
       "Epic but superman",
-      "only that lol"
+      "only that lol",
     ],
     colors: ["#CC33CC"],
   },
@@ -131,7 +131,7 @@ const rarity = [
       "this game",
       "Extra sauce, extra spice",
       "Saucy find!",
-      "Best of the worst"
+      "Best of the worst",
     ],
     colors: ["#7B7B7B"],
   },
@@ -226,7 +226,7 @@ const rarity = [
       "Lucky, what about next time",
       "Luck is on your side",
       "Not bad at all!",
-      "Kedimsel RNG"
+      "Kedimsel RNG",
     ],
     colors: ["#FF9B00"],
   },
@@ -237,25 +237,20 @@ const rarity = [
       "Who the rizzing ohio skibidi is this guy?",
       "Is this even real?",
       "Brainrot level: high",
-      "Skibidi Skibidi, AHHHHHHHHHHH SKIBIDIIIIIIIII"
+      "Skibidi Skibidi, AHHHHHHHHHHH SKIBIDIIIIIIIII",
     ],
     colors: ["#1B2F4B"],
   },
   {
     name: "Enchancing",
     value: 24,
-    texts: [
-      "The age of cheese and magic",
-      "burn him he is a dark wizard!"
-    ],
+    texts: ["The age of cheese and magic", "burn him he is a dark wizard!"],
     colors: ["#C46927"],
   },
   {
     name: "Goofy",
     value: 25,
-    texts: [
-      "Goofy as goofy",
-    ],
+    texts: ["Goofy as goofy"],
     colors: ["#823C2A"],
   },
   {
@@ -268,9 +263,30 @@ const rarity = [
       "Never gonna make you cry.",
       "Never gonna say goodbye.",
       "Never gonna tell a lie and hurt you.",
-      "Get rick rolled lol"
+      "Get rick rolled lol",
     ],
-    colors: ["#C46927"],
+    colors: ["#96FFF1"],
+  },
+  {
+    name: "Insanity",
+    value: 27,
+    texts: ["Blud what r u doin?", "bruh"],
+    colors: ["#7100FF"],
+  },
+  {
+    name: "Chez",
+    value: 27,
+    texts: [
+      "Cheese+ membership not included",
+      "Chez, the ulterior version of cheese",
+    ],
+    colors: ["#FC00FF"],
+  },
+  {
+    name: "Discord mod",
+    value: 28,
+    texts: ["Go touch grass", "Get a life", "Go run a mile or smth"],
+    colors: ["#037C05"],
   },
   {
     name: "Toprak's Wrath",
