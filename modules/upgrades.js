@@ -67,12 +67,12 @@ const upgrades = [
     },
   },
   {
-    name:"Not so cool",
-    id:"lessCooldown",
-    description:"Lower roll cooldown",
-    cost:1000,
-    limit:4,
-    effect:() => {}
+    name: "Not so cool",
+    id: "lessCooldown",
+    description: "Lower roll cooldown",
+    cost: 1000,
+    limit: 4,
+    effect: () => {},
   },
   {
     name: "Spammer",
@@ -134,6 +134,26 @@ const upgrades = [
       changeUpgradeValue("qluck", 1);
     },
   },
+  {
+    name: "Experianced roller",
+    id: "experiancedRoller",
+    description: "Increase xp gain",
+    cost: 1000000,
+    limit: 3,
+    effect: () => {
+      changeUpgradeValue("xpbonus", 1);
+    },
+  },
+  {
+    name: "Experianced roller 2",
+    id: "experiancedRoller2",
+    description: "Increase xp gain",
+    cost: 100000000,
+    limit: 5,
+    effect: () => {
+      changeUpgradeValue("xpbonus", 1);
+    },
+  }
 ];
 
 function getUpgradesLevel(id) {
@@ -169,10 +189,9 @@ function getUpgradeValue(id) {
 }
 
 function changeUpgradeValue(id, value) {
-  if(upgradeValues[id]){
+  if (upgradeValues[id]) {
     upgradeValues[id] = upgradeValues[id] + value;
-  }
-  else{
+  } else {
     upgradeValues[id] = value;
   }
 }

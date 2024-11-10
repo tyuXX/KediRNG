@@ -59,10 +59,10 @@ async function displayInventory(half = false) {
 
     itemDiv.innerHTML = `
       <p>${item.text}</p>
-      <p>${rarity[item.rarity].name}</p>
+      <p>${getRarityFromInt(item.rarity).name}</p>
       <button onclick="delItem(${index})">Sell: ${getFAmount(
       item.sell * getUpgradeValue("sellMultiplier")
-    )}</button>
+    ).toLocaleString()}</button>
     `;
 
     fragment.appendChild(itemDiv);
@@ -293,9 +293,7 @@ async function renderLoop() {
     tlabel.innerHTML = `Text Count: ${inventory.length.toLocaleString()}`;
     document.getElementById("levelLabel").innerHTML = `Level: ${
       level.level
-    } (EXP: ${level.xp.toLocaleString()} / ${Math.ceil(
-      Math.pow(1.2, level.level) * 10
-    ).toLocaleString()})`;
+    } (EXP: ${level.xp.toLocaleString()} / ${getXpReq().toLocaleString()})`;
     renderLevelBar();
     displayStats();
     await new Promise((r) => setTimeout(r, 100));
@@ -305,7 +303,7 @@ async function renderLoop() {
 function renderLevelBar() {
   const levelBar = document.getElementById("levelBarI");
   levelBar.style.width = `${
-    (level.xp / Math.ceil(Math.pow(1.2, level.level) * 10)) * 100
+    (level.xp / getXpReq()) * 100
   }%`;
 }
 
@@ -336,11 +334,15 @@ function changeMoney(amount) {
 }
 
 function addXP(amount) {
-  level.xp += amount;
-  while (level.xp >= Math.ceil(Math.pow(1.2, level.level) * 10)) {
-    level.xp -= Math.ceil(Math.pow(1.2, level.level) * 10);
+  level.xp += amount * (1 + (getUpgradeValue("xpbonus")/10));
+  while (level.xp >= getXpReq()) {
+    level.xp -= getXpReq();
     level.level++;
   }
+}
+
+function getXpReq(){
+  return Math.ceil(Math.pow(1.2, level.level) * 10);
 }
 
 function toggleNotifications() {
