@@ -2,6 +2,7 @@ const rarity = [
   {
     name: "Common",
     value: 0,
+    id: "common",
     texts: [
       "Bruh",
       "Trash",
@@ -27,6 +28,7 @@ const rarity = [
   {
     name: "Uncommon",
     value: 1,
+    id: "uncommon",
     texts: [
       "Unlucky",
       "oh my god i am a noob",
@@ -41,6 +43,7 @@ const rarity = [
   {
     name: "Rare",
     value: 2,
+    id: "rare",
     texts: [
       "Bad try",
       "Microscopic L",
@@ -53,6 +56,7 @@ const rarity = [
   {
     name: "Super Rare",
     value: 3,
+    id: "superRare",
     texts: [
       "Good try",
       "Rare=Ender but Ender is an arabic name so dynamike is super arab and you too?",
@@ -65,6 +69,7 @@ const rarity = [
   {
     name: "Epic",
     value: 4,
+    id: "epic",
     texts: [
       "VAV",
       "VAVAV",
@@ -78,6 +83,7 @@ const rarity = [
   {
     name: "Super Epic",
     value: 5,
+    id: "superEpic",
     texts: [
       "Lucky",
       "WOW you luck itself actually noob",
@@ -91,6 +97,7 @@ const rarity = [
   {
     name: "Legendary",
     value: 6,
+    id: "legendary",
     texts: [
       "I want my meat legendary",
       "Cat la best",
@@ -103,18 +110,21 @@ const rarity = [
   {
     name: "Mythical",
     value: 7,
+    id: "mythical",
     texts: ["Mythic", "The stuff of legends", "A true myth!"],
     colors: ["#B45F06"],
   },
   {
     name: "Godly",
     value: 8,
+    id: "godly",
     texts: ["What is better", "A divine pull!", "Beyond mere mortal items"],
     colors: ["#9932CC"],
   },
   {
     name: "Cheesy",
     value: 9,
+    id: "cheesy",
     texts: [
       "Why this better",
       "Too cheesy to be true",
@@ -126,6 +136,7 @@ const rarity = [
   {
     name: "Extra Sauce",
     value: 10,
+    id: "extraSauce",
     texts: [
       "What the 2.2.2.2.2.2.2.2.2.2",
       "this game",
@@ -135,10 +146,10 @@ const rarity = [
     ],
     colors: ["#7B7B7B"],
   },
-  // Continuation for "+ Levels" rarities and higher values
   {
     name: "Common+",
     value: 11,
+    id: "commonPlus",
     texts: [
       "?+?",
       "Just a bit more rare than common",
@@ -149,12 +160,14 @@ const rarity = [
   {
     name: "Uncommon+",
     value: 12,
+    id: "uncommonPlus",
     texts: ["Infinite loop?", "Uncommonly uncommon", "On the rise"],
     colors: ["#800000"],
   },
   {
     name: "Rare+",
     value: 13,
+    id: "rarePlus",
     texts: [
       "I want huge pet",
       "Rare indeed",
@@ -166,6 +179,7 @@ const rarity = [
   {
     name: "Super Rare+",
     value: 14,
+    id: "superRarePlus",
     texts: [
       "Banana",
       "Beyond rare",
@@ -177,42 +191,49 @@ const rarity = [
   {
     name: "Epic+",
     value: 15,
+    id: "epicPlus",
     texts: ["Gus gus op", "An epic moment", "That's epic!", "Shade the broken"],
     colors: ["#999933"],
   },
   {
     name: "Super Epic+",
     value: 16,
+    id: "superEpicPlus",
     texts: ["Stop it...", "Super epic win!", "You're on another level"],
     colors: ["#990033"],
   },
   {
     name: "Legendary+",
     value: 17,
+    id: "legendaryPlus",
     texts: ["How did we get here", "Legend in the making", "Beyond legendary!"],
     colors: ["#FF6347"],
   },
   {
     name: "Mythical+",
     value: 18,
+    id: "mythicalPlus",
     texts: ["Nibble", "A myth reborn", "Mythic upgrade!"],
     colors: ["#CD853F"],
   },
   {
     name: "Godly+",
     value: 19,
+    id: "godlyPlus",
     texts: ["Near end", "Godly indeed", "Almost divine"],
     colors: ["#FF77FF"],
   },
   {
     name: "Cheesy+",
     value: 20,
+    id: "cheesyPlus",
     texts: ["-1 step ahead", "Extra cheesy!", "Grated greatness"],
     colors: ["#FFD700"],
   },
   {
     name: "Extra Sauce+",
     value: 21,
+    id: "extraSaucePlus",
     texts: [
       "The End????????",
       "Na' bro",
@@ -220,8 +241,12 @@ const rarity = [
       "is not healthy",
       "Mexican",
     ],
+    colors: ["#FFD700"],
+  },
+  {
     name: "Lucky",
     value: 22,
+    id: "lucky",
     texts: [
       "Lucky, what about next time",
       "Luck is on your side",
@@ -233,6 +258,7 @@ const rarity = [
   {
     name: "Prof. Dr. Brainrot",
     value: 23,
+    id: "brainrot",
     texts: [
       "Who the rizzing ohio skibidi is this guy?",
       "Is this even real?",
@@ -244,18 +270,21 @@ const rarity = [
   {
     name: "Enchancing",
     value: 24,
+    id: "enchancing",
     texts: ["The age of cheese and magic", "burn him he is a dark wizard!"],
     colors: ["#C46927"],
   },
   {
     name: "Goofy",
     value: 25,
+    id: "goofy",
     texts: ["Goofy as goofy"],
     colors: ["#823C2A"],
   },
   {
     name: "Rolling down",
     value: 26,
+    id: "rollingDown",
     texts: [
       "Never gonna give you up!",
       "Never gonna let you down.",
@@ -270,12 +299,14 @@ const rarity = [
   {
     name: "Insanity",
     value: 27,
+    id: "insanity",
     texts: ["Blud what r u doin?", "bruh"],
     colors: ["#7100FF"],
   },
   {
     name: "Chez",
-    value: 27,
+    value: 28,
+    id: "chez",
     texts: [
       "Cheese+ membership not included",
       "Chez, the ulterior version of cheese",
@@ -284,13 +315,15 @@ const rarity = [
   },
   {
     name: "Discord mod",
-    value: 28,
+    value: 29,
+    id: "discordMod",
     texts: ["Go touch grass", "Get a life", "Go run a mile or smth"],
     colors: ["#037C05"],
   },
   {
     name: "Toprak's Wrath",
     value: 99,
+    id: "topraksWrath",
     texts: ["Unlucky Car:(", "Not the car"],
     colors: ["#8F0000"],
   },

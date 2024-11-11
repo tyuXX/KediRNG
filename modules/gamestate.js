@@ -46,6 +46,7 @@ function setGameData(gameData) {
     if(st){
       if(stat.name !== st.name){
         stat.name = st.name;
+        stat.show = st.show;
       }
     }
   });
