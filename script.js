@@ -2,6 +2,7 @@ const invDiv = document.getElementById("inventory");
 const mlabel = document.getElementById("mlabel");
 const pmlabel = document.getElementById("pmlabel");
 const tlabel = document.getElementById("tlabel");
+var iSell = false;
 
 // Function to roll a new item based on rarity
 function rollText() {
@@ -15,12 +16,17 @@ function rollText() {
         () => Math.random() < 0.5 - (getUpgradeValue("luck") - 1) / 100
       ) || rarity[0]; // Get a random rarity
     const selectedText = getTextFromRarity(rarit);
-    if (!checkQuestCompletion(selectedText)) {
-      inventory.push({
-        text: selectedText,
-        rarity: rarit.value,
-        sell: Math.floor(Math.pow(2, rarit.value) * Math.random()) + 1,
-      });
+    if(!iSell){
+      if (!checkQuestCompletion(selectedText)) {
+        inventory.push({
+          text: selectedText,
+          rarity: rarit.value,
+          sell: Math.floor(Math.pow(2, rarit.value) * Math.random()) + 1,
+        });
+      }
+    }
+    else{
+      changeMoney(Math.floor(Math.pow(2, rarit.value) * Math.random()) + 1);
     }
     if (!raritiesDone.includes(rarit.value)) {
       raritiesDone.push(rarit.value);
@@ -116,6 +122,15 @@ function sellAll() {
   });
   closePopup();
   displayInventory();
+}
+
+function toggleISell(){
+  iSell = !iSell;
+  if(iSell) {
+    document.getElementById("toggleISell").innerHTML = "Immediate Sell (ON)"
+  } else {
+    document.getElementById("toggleISell").innerHTML = "Immediate Sell (OFF)"
+  }
 }
 
 // Function to toggle the visibility of the inventory

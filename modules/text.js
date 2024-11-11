@@ -22,6 +22,11 @@ const rarity = [
       "CEO of bad luck",
       "Nerf Common!!!",
       "Could be uncommon later(very)",
+      "Luck? What's that?",
+      "Cry about it.",
+      "Hahayes.exe",
+      "Can you not?",
+      "Blud got that peasant treatment",
     ],
     colors: ["#AAAAAA"],
   },
@@ -154,6 +159,8 @@ const rarity = [
       "?+?",
       "Just a bit more rare than common",
       "Slightly upgraded common",
+      "Just a Huge Pet",
+      "Worst of the Best"
     ],
     colors: ["#D2691E"],
   },
@@ -185,6 +192,7 @@ const rarity = [
       "Beyond rare",
       "Quite the find!",
       "Leader of gambling nothing",
+      "Super + studios",
     ],
     colors: ["#333399"],
   },
@@ -227,7 +235,7 @@ const rarity = [
     name: "Cheesy+",
     value: 20,
     id: "cheesyPlus",
-    texts: ["-1 step ahead", "Extra cheesy!", "Grated greatness"],
+    texts: ["-1 step ahead", "Extra cheesy!", "Grated greatness","Grilled +"],
     colors: ["#FFD700"],
   },
   {
@@ -319,6 +327,34 @@ const rarity = [
     id: "discordMod",
     texts: ["Go touch grass", "Get a life", "Go run a mile or smth"],
     colors: ["#037C05"],
+  },
+  {
+    name: "Divine",
+    value: 30,
+    id: "divine",
+    texts: ["Divivion by 0?","Reference to godly+??","Holeh moleh"],
+    colors: ["#FFB4F6"]
+  },
+  {
+    name: "Good game",
+    value: 31,
+    id: "goodGame",
+    texts: ["GG","You win"],
+    colors: ["#E2AE3E"]
+  },
+  {
+    name: "Grilled",
+    value: 32,
+    id: "grilled",
+    texts: ["Grilled Cheese Simulator","Tasty"],
+    colors: ["#F0FF00"]
+  },
+  {
+    name: "Grilled+",
+    value: 33,
+    id: "grilled+",
+    texts: ["You ruined it<:(","No, its burning!"],
+    colors: ["#FF4E00"]
   },
   {
     name: "Toprak's Wrath",
