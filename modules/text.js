@@ -27,6 +27,7 @@ const rarity = [
       "Hahayes.exe",
       "Can you not?",
       "Blud got that peasant treatment",
+      "Common video's comment from common answered by common liked by common disliked by Common+ talked about CEO of common founded by common, common video from common"
     ],
     colors: ["#AAAAAA"],
   },

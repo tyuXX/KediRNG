@@ -5,12 +5,84 @@ const settings = [
     id: "autoRoll",
     description: "Enables auto roll",
     defaultValue: true,
+    onchange: () =>{}
   },
   {
     name: "Immediate Sell",
     id: "iSell",
     description: "Sells Texts immediately",
     defaultValue: false,
+    onchange: () =>{}
+  },
+  {
+    name: "Toggle Shop",
+    id: "toggleShop",
+    description: "Toggles Shop",
+    defaultValue: true,
+    onchange: () =>{
+      if(getSettingValue("toggleShop")){
+        document.getElementById("shop").style.display = "";
+      }
+      else{
+        document.getElementById("shop").style.display = "none";
+      }
+    }
+  },
+  {
+    name: "Toggle Quests",
+    id: "toggleQuests",
+    description: "Toggles Quests",
+    defaultValue: true,
+    onchange: () =>{
+      if(getSettingValue("toggleQuests")){
+        document.getElementById("questsContainer").style.display = "";
+      }
+      else{
+        document.getElementById("questsContainer").style.display = "none";
+      }
+    }
+  },
+  {
+    name: "Toggle Stats",
+    id: "toggleStats",
+    description: "Toggles Stats",
+    defaultValue: true,
+    onchange: () =>{
+      if(getSettingValue("toggleStats")){
+        document.getElementById("statsContainer").style.display = "";
+      }
+      else{
+        document.getElementById("statsContainer").style.display = "none";
+      }
+    }
+  },
+  {
+    name: "Toggle Achievements",
+    id: "toggleAchivements",
+    description: "Toggles Achievements",
+    defaultValue: true,
+    onchange: () =>{
+      if(getSettingValue("toggleAchivements")){
+        document.getElementById("achivements").style.display = "";
+      }
+      else{
+        document.getElementById("achivements").style.display = "none";
+      }
+    }
+  },
+  {
+    name: "Toggle Leveling",
+    id: "toggleLeveling",
+    description: "Toggles Leveling",
+    defaultValue: true,
+    onchange: () =>{
+      if(getSettingValue("toggleLeveling")){
+        document.getElementById("leveling").style.display = "";
+      }
+      else{
+        document.getElementById("leveling").style.display = "none";
+      }
+    }
   }
 ];
 var setSettings = {}; // Store settings here
@@ -21,6 +93,9 @@ function initSettings() {
     if(setSettings[setting.id] === undefined){
       setSettings[setting.id] = setting.defaultValue;
     }
+  });
+  settings.forEach((setting) => {
+    setting.onchange();
   });
 }
 
@@ -47,6 +122,7 @@ function displaySettings() {
 // Toggle setting value and update the display
 function toggleSetting(id) {
   setSettings[id] = !getSettingValue(id);
+  settings.find((setting) => setting.id === id).onchange();
   displaySettings();
 }
 

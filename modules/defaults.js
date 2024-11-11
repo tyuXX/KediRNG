@@ -13,4 +13,10 @@ const defStats = [
     show: true,
   },
   { name: "Highest rarity", id: "highestRarity", value: 0, show: false },
+  {
+    name: "Total money this rebirth",
+    id: "totalMoneyRebirth",
+    value: 0,
+    show: true,
+  },
 ];

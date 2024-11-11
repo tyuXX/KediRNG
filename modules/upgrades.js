@@ -9,6 +9,7 @@ const upgrades = [
     description: "Doubles the sell value of items.",
     cost: 10000,
     limit: 1,
+    req: () => true,
     effect: () => {
       changeUpgradeValue("sellMultiplier", 1);
       displayInventory();
@@ -20,6 +21,7 @@ const upgrades = [
     description: "Roll double the items.",
     cost: 100000,
     limit: 1,
+    req: () => true,
     effect: () => {
       changeUpgradeValue("rollMultiplier", 1);
     },
@@ -30,6 +32,7 @@ const upgrades = [
     description: "Triple the sell value of items.",
     cost: 100000,
     limit: 1,
+    req: () => getUpgradesLevel("doubleSell") > 0,
     effect: () => {
       changeUpgradeValue("sellMultiplier", 1);
       displayInventory();
@@ -41,6 +44,7 @@ const upgrades = [
     description: "Roll triple the items.",
     cost: 250000,
     limit: 1,
+    req: () => getUpgradesLevel("doubleRoll") > 0,
     effect: () => {
       changeUpgradeValue("rollMultiplier", 1);
     },
@@ -51,6 +55,7 @@ const upgrades = [
     description: "Roll quadruaple the items.",
     cost: 1000000,
     limit: 1,
+    req: () => getUpgradesLevel("tripleRoll") > 0,
     effect: () => {
       changeUpgradeValue("rollMultiplier", 1);
     },
@@ -61,6 +66,7 @@ const upgrades = [
     description: "We get bussines.",
     cost: 250000,
     limit: 1,
+    req: () => getUpgradesLevel("tripleSell") > 0,
     effect: () => {
       changeUpgradeValue("sellMultiplier", 1);
       displayInventory();
@@ -72,6 +78,7 @@ const upgrades = [
     description: "Lower roll cooldown",
     cost: 1000,
     limit: 4,
+    req: () => true,
     effect: () => {},
   },
   {
@@ -80,6 +87,7 @@ const upgrades = [
     description: "Remove roll cooldown",
     cost: 50000,
     limit: 1,
+    req: () => getUpgradesLevel("lessCooldown") > 3,
     effect: () => {},
   },
   {
@@ -88,6 +96,7 @@ const upgrades = [
     description: "We need to scam.",
     cost: 750000,
     limit: 1,
+    req: () => getUpgradesLevel("littleCompany") > 0,
     effect: () => {
       changeUpgradeValue("sellMultiplier", 1);
       displayInventory();
@@ -99,6 +108,31 @@ const upgrades = [
     description: "We get real bussines.",
     cost: 5000000,
     limit: 1,
+    req: () => getUpgradesLevel("smallInvesments") > 0,
+    effect: () => {
+      changeUpgradeValue("sellMultiplier", 1);
+      displayInventory();
+    },
+  },
+  {
+    name: "Invesments",
+    id: "invesments",
+    description: "Scammery strikes again.",
+    cost: 50000000,
+    limit: 1,
+    req: () => getUpgradesLevel("company") > 0,
+    effect: () => {
+      changeUpgradeValue("sellMultiplier", 1);
+      displayInventory();
+    },
+  },
+  {
+    name: "Big Company",
+    id: "bigCompany",
+    description: "Pet simulator goes brrr",
+    cost: 500000000,
+    limit: 1,
+    req: () => getUpgradesLevel("invesments") > 0,
     effect: () => {
       changeUpgradeValue("sellMultiplier", 1);
       displayInventory();
@@ -110,6 +144,7 @@ const upgrades = [
     description: "Roll automatically.",
     cost: 5000000,
     limit: 1,
+    req: () => true,
     effect: () => {
       changeUpgradeValue("autoRoll", 1);
     },
@@ -120,6 +155,7 @@ const upgrades = [
     description: "It ain't slavery if it's robots.",
     cost: 50000000,
     limit: 2,
+    req: () => getUpgradesLevel("autoRoll") > 0,
     effect: () => {
       changeUpgradeValue("autoRoll", 1);
     },
@@ -130,6 +166,7 @@ const upgrades = [
     description: "Roll quintuple the items.",
     cost: 5000000,
     limit: 1,
+    req: () => getUpgradesLevel("quadRoll") > 0,
     effect: () => {
       changeUpgradeValue("rollMultiplier", 1);
     },
@@ -140,6 +177,7 @@ const upgrades = [
     description: "We get real lucky this time.",
     cost: 10000000,
     limit: 10,
+    req: () => true,
     effect: () => {
       changeUpgradeValue("luck", 1);
     },
@@ -150,6 +188,7 @@ const upgrades = [
     description: "Questable luck.",
     cost: 10000000,
     limit: 10,
+    req: () => true,
     effect: () => {
       changeUpgradeValue("qluck", 1);
     },
@@ -160,6 +199,7 @@ const upgrades = [
     description: "Increase xp gain",
     cost: 1000000,
     limit: 3,
+    req: () => true,
     effect: () => {
       changeUpgradeValue("xpbonus", 1);
     },
@@ -170,6 +210,7 @@ const upgrades = [
     description: "Increase xp gain",
     cost: 100000000,
     limit: 5,
+    req: () => getUpgradesLevel("experiancedRoller") > 0,
     effect: () => {
       changeUpgradeValue("xpbonus", 1);
     },
@@ -180,6 +221,7 @@ const upgrades = [
     description: "Decrease quest generation time",
     cost: 1000000,
     limit: 40,
+    req: () => true,
     effect: () => {
       changeUpgradeValue("questSpeed", 1);
     },
@@ -190,6 +232,7 @@ const upgrades = [
     description: "Decrease quest generation time",
     cost: 10000000,
     limit: 20,
+    req: () => getUpgradesLevel("questSpeedup") > 0,
     effect: () => {
       changeUpgradeValue("questSpeed", 1);
     },
@@ -200,6 +243,7 @@ const upgrades = [
     description: "Decrease quest generation time",
     cost: 1000000000,
     limit: 10,
+    req: () => getUpgradesLevel("questSpeedupplus") > 0,
     effect: () => {
       changeUpgradeValue("questSpeed", 1);
     },
@@ -212,23 +256,25 @@ function displayUpgrades() {
   upgradesDiv.innerHTML = ""; // Clear existing upgrades
 
   upgrades.forEach((upgrade, index) => {
-    const boughtUpgrade = boughtUpgrades.find((up) => up[0] === upgrade.id);
-    const boughtCount = boughtUpgrade ? boughtUpgrade[1] : 0;
+    if (upgrade.req()) {
+      const boughtUpgrade = boughtUpgrades.find((up) => up[0] === upgrade.id);
+      const boughtCount = boughtUpgrade ? boughtUpgrade[1] : 0;
 
-    const upgradeDiv = document.createElement("div");
-    upgradeDiv.classList.add("upgrade");
-    upgradeDiv.innerHTML = `
+      const upgradeDiv = document.createElement("div");
+      upgradeDiv.classList.add("upgrade");
+      upgradeDiv.innerHTML = `
         <p>${upgrade.name} - ${upgrade.description} (Level: ${boughtCount})</p>
         <p>Cost: ${upgrade.cost.toLocaleString()}</p>
       `;
 
-    if (boughtCount >= upgrade.limit) {
-      upgradeDiv.innerHTML += `<button disabled style="background-color: gray;">Sold out</button>`;
-    } else {
-      upgradeDiv.innerHTML += `<button onclick="buyUpgrade(${index})">Buy</button>`;
-    }
+      if (boughtCount >= upgrade.limit) {
+        upgradeDiv.innerHTML += `<button disabled style="background-color: gray;">Sold out</button>`;
+      } else {
+        upgradeDiv.innerHTML += `<button onclick="buyUpgrade(${index})">Buy</button>`;
+      }
 
-    upgradesDiv.appendChild(upgradeDiv);
+      upgradesDiv.appendChild(upgradeDiv);
+    }
   });
 }
 
@@ -272,7 +318,7 @@ function changeUpgradeValue(id, value) {
   }
 }
 
-function hasUpgradeValue(id){
+function hasUpgradeValue(id) {
   return upgradeValues[id] ? true : false;
 }
 

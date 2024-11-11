@@ -281,16 +281,20 @@ async function renderLoop() {
     document.getElementById("levelLabel").innerHTML = `Level: ${
       level.level
     } (EXP: ${level.xp.toLocaleString()} / ${getXpReq().toLocaleString()})`;
+     document.getElementById("rebirthLabel").innerHTML = `Rebirth: ${
+      rebirth
+    } (Level: ${level.level} / ${getRebirthReq()})`;
     renderLevelBar();
+    renderRebirthBar();
+    if(level.level > getRebirthReq() && document.getElementById("rebirthButton").style.display === "none") {
+      document.getElementById("rebirthButton").style.display = "";
+    }
     displayStats();
     await new Promise((r) => setTimeout(r, 100));
   }
 }
 
-function renderLevelBar() {
-  const levelBar = document.getElementById("levelBarI");
-  levelBar.style.width = `${(level.xp / getXpReq()) * 100}%`;
-}
+
 
 async function questLoop() {
   while (true) {
@@ -322,19 +326,8 @@ function changeMoney(amount) {
   addXP(famount);
   if (amount > 0) {
     changeStat("totalMoney", famount);
+    changeStat("totalMoneyRebirth", famount);
   }
-}
-
-function addXP(amount) {
-  level.xp += amount * (1 + getUpgradeValue("xpbonus") / 10);
-  while (level.xp >= getXpReq()) {
-    level.xp -= getXpReq();
-    level.level++;
-  }
-}
-
-function getXpReq() {
-  return Math.ceil(Math.pow(1.2, level.level) * 10);
 }
 
 function toggleNotifications() {
@@ -352,7 +345,7 @@ function toggleNotifications() {
 }
 
 function getFAmount(amount) {
-  return Math.floor(amount * (1 + level.level / 10));
+  return Math.floor(amount * (Math.pow(rebirth, 2)) * (1 + level.level / 10));
 }
 
 // Initial calls

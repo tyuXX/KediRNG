@@ -182,7 +182,7 @@ var achivements = [
         id: "questCompleter1",
         description: "Complete 25 quests.",
         req: () => {
-            return getCompositeStat("questsCompleted") > 24;
+            return getStat("questsCompleted") > 24;
         }
     },
     {
@@ -190,7 +190,7 @@ var achivements = [
         id: "questCompleter1plus",
         description: "Complete 100 quests.",
         req: () => {
-            return getCompositeStat("questsCompleted") > 99;
+            return getStat("questsCompleted") > 99;
         }
     },
     {
@@ -198,7 +198,7 @@ var achivements = [
         id: "questCompleter2",
         description: "Complete 250 quests.",
         req: () => {
-            return getCompositeStat("questsCompleted") > 249;
+            return getStat("questsCompleted") > 249;
         }
     },
     {
@@ -206,7 +206,7 @@ var achivements = [
         id: "questCompleter2plus",
         description: "Complete 1000 quests.",
         req: () => {
-            return getCompositeStat("questsCompleted") > 999;
+            return getStat("questsCompleted") > 999;
         }
     },
     {
@@ -214,7 +214,7 @@ var achivements = [
         id: "questCompleter3",
         description: "Complete 2500 quests.",
         req: () => {
-            return getCompositeStat("questsCompleted") > 2499;
+            return getStat("questsCompleted") > 2499;
         }
     },
     {
@@ -222,7 +222,7 @@ var achivements = [
         id: "omegaQuester",
         description: "Complete 25000 quests.",
         req: () => {
-            return getCompositeStat("questsCompleted") > 24999;
+            return getStat("questsCompleted") > 24999;
         }
     },
 ];

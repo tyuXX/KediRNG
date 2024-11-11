@@ -1,4 +1,4 @@
-const gVersion = 9;
+const gVersion = 10;
 var UUID = Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2);
 
 // Function to get game data
@@ -18,6 +18,7 @@ function getGameData() {
     UUID: UUID,
     doneAchivements: doneAchivements,
     setSettings: setSettings,
+    rebirth: rebirth,
     // Add any new properties here
   };
 }
@@ -54,6 +55,7 @@ function setGameData(gameData) {
   doneAchivements = gameData.doneAchivements || [];
   setSettings = gameData.setSettings || {};
   initSettings();
+  rebirth = gameData.rebirth || 1;
 
   // Load other properties here as needed
 
