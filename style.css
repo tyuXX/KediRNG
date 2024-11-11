@@ -368,7 +368,7 @@ p:hover {
 
 .grid-container {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(120px, 10vw));
   gap: 10px;
   overflow-y: auto;
   max-height: 60vh;
@@ -415,6 +415,36 @@ p:hover {
   font-size: 14px;
   font-weight: bold;
   border-radius: 8px;
+}
+
+.achivement {
+  border: 1px solid #555555;
+  border-radius: 8px;
+  padding: 10px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.5);
+  font-size: 16px;
+  color: #e0e0e0;
+  text-align: center;
+  transition: transform 0.2s ease;
+  margin: 5px;
+  gap: 8px;
+}
+
+.achivement p {
+  margin: 5px 0;
+  font-size: 14px;
+  font-weight: bold;
+  border-radius: 8px;
+}
+
+.achivement #done {
+  border: 1px solid #555555;
+  color: green;
+}
+
+.achivement #name {
+  border: 1px solid white;
+  color: #e0e0e0;
 }
 
 /* Mobile styling */

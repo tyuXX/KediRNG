@@ -352,9 +352,16 @@ const rarity = [
   {
     name: "Grilled+",
     value: 33,
-    id: "grilled+",
+    id: "grilledplus",
     texts: ["You ruined it<:(","No, its burning!"],
     colors: ["#FF4E00"]
+  },
+  {
+    name: "+",
+    value: 34,
+    id: "plus",
+    texts: ["Huh?"],
+    colors: ["#FFFFFF"]
   },
   {
     name: "Toprak's Wrath",
@@ -363,6 +370,13 @@ const rarity = [
     texts: ["Unlucky Car:(", "Not the car"],
     colors: ["#8F0000"],
   },
+  /*{
+    name: "Default",
+    value: 0,
+    id: "default",
+    texts: ["Error?", "Ç"],
+    colors: ["#8F0000"],
+  },*/
 ];
 
 function getRarityFromInt(int) {

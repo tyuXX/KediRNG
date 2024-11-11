@@ -1,4 +1,4 @@
-const gVersion = 7;
+const gVersion = 8;
 var UUID = Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2);
 
 // Function to get game data
@@ -17,6 +17,7 @@ function getGameData() {
     upgradeValues: upgradeValues,
     stats: stats,
     UUID: UUID,
+    doneAchivements: doneAchivements,
     // Add any new properties here
   };
 }
@@ -27,7 +28,7 @@ function setGameData(gameData) {
   if (gameData.version !== gVersion) {
     notify(
       "Old version detected (v" + gameData.version + "), proceeding anyway...",
-      "yellow"
+      "wheat"
     );
   }
 
@@ -51,6 +52,7 @@ function setGameData(gameData) {
     }
   });
   UUID = gameData.UUID || Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2);
+  doneAchivements = gameData.doneAchivements || [];
 
   // Load other properties here as needed
 
@@ -59,10 +61,11 @@ function setGameData(gameData) {
   }
   else{
     invDiv.style.display = "none";
-    notify("Inventory hidded to reduce lag, Press Toggle to show it", "yellow");
+    notify("Inventory hidden to reduce lag, Press Toggle to show it", "wheat");
   }
   displayUpgrades(); // Update UI
   displayQuests(); // Update UI
+  displayAchivements();
 }
 
 // Function to save game data to file

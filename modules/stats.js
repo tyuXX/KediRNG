@@ -57,9 +57,16 @@ var compositeStats = [
     name: "Lifelessness",
     id: "lifelessness",
     value: () => {
-      return (getStat("totalRolls") * getStat("timePlayed")).toLocaleString();
+      return (getStat("totalRolls") * getStat("timePlayed"));
     },
   },
+  {
+    name: "Achievements",
+    id: "achievements",
+    value: () => {
+      return `Done: ${doneAchivements.length} / ${achivements.length}`;
+    },
+  }
 ];
 
 function displayStats() {
