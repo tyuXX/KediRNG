@@ -32,12 +32,11 @@
     </div>
     <div>
       <button onclick="rollText()">Roll for TEXT</button>
-      <button id="toggleISell" onclick="toggleISell()">Immediate Sell (OFF)</button>
       <button id="toggleInventory" onclick="toggleInventory()">
         Toggle Inventory
       </button>
       <button id="toggleNotifications" onclick="toggleNotifications()">
-        Toggle Notifications
+        Notifications (ON)
       </button>
       <button onclick="openSellAllPopup()">Sell All</button>
     </div>
@@ -59,6 +58,10 @@
       <div class="page" id="achivements">
         <h2>Achivements</h2>
         <div class="grid-container" id="achivementsContiner"></div>
+      </div>
+      <div class="page" id="settings">
+        <h2>Settings</h2>
+        <div class="grid-container" id="settingsContainer"></div>
       </div>
     </div>
 
@@ -93,13 +96,14 @@
       </button>
     </div>
 
-    <div id="scripts">
+    <div id="built-inScripts">
       <script src="modules/performance.js" defer></script>
       <script src="modules/defaults.js" defer></script>
+      <script src="modules/settings.js" defer></script>
       <script src="modules/version.js" defer></script>
       <script src="modules/game.js" defer></script>
       <script src="modules/text.js" defer></script>
-      <script src="modules/temp.js" defer></script>
+      <script src="modules/notifications.js" defer></script>
       <script src="modules/upgrades.js" defer></script>
       <script src="modules/stats.js" defer></script>
       <script src="modules/achivement.js"></script>
@@ -110,5 +114,6 @@
       ></script>
       <script src="modules/gamestate.js" defer></script>
     </div>
+    <div id="injected"></div>
   </body>
 </html>

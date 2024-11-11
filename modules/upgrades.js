@@ -105,6 +105,26 @@ const upgrades = [
     },
   },
   {
+    name: "Auto Roll",
+    id: "autoRoll",
+    description: "Roll automatically.",
+    cost: 5000000,
+    limit: 1,
+    effect: () => {
+      changeUpgradeValue("autoRoll", 1);
+    },
+  },
+  {
+    name: "Automatic Labor",
+    id: "automaticLabor",
+    description: "It ain't slavery if it's robots.",
+    cost: 50000000,
+    limit: 2,
+    effect: () => {
+      changeUpgradeValue("autoRoll", 1);
+    },
+  },
+  {
     name: "Quintuple Roll",
     id: "quintupleRoll",
     description: "Roll quintuple the items.",
@@ -153,8 +173,64 @@ const upgrades = [
     effect: () => {
       changeUpgradeValue("xpbonus", 1);
     },
-  }
+  },
+  {
+    name: "Quest Speedup",
+    id: "questSpeedup",
+    description: "Decrease quest generation time",
+    cost: 1000000,
+    limit: 40,
+    effect: () => {
+      changeUpgradeValue("questSpeed", 1);
+    },
+  },
+  {
+    name: "Quest Speedup+",
+    id: "questSpeedupplus",
+    description: "Decrease quest generation time",
+    cost: 10000000,
+    limit: 20,
+    effect: () => {
+      changeUpgradeValue("questSpeed", 1);
+    },
+  },
+  {
+    name: "Quest Speedup [Ultimate]",
+    id: "questSpeedupUlt",
+    description: "Decrease quest generation time",
+    cost: 10000000,
+    limit: 10,
+    effect: () => {
+      changeUpgradeValue("questSpeed", 1);
+    },
+  },
 ];
+
+// Function to display upgrades in the shop
+function displayUpgrades() {
+  const upgradesDiv = document.getElementById("upgrades");
+  upgradesDiv.innerHTML = ""; // Clear existing upgrades
+
+  upgrades.forEach((upgrade, index) => {
+    const boughtUpgrade = boughtUpgrades.find((up) => up[0] === upgrade.id);
+    const boughtCount = boughtUpgrade ? boughtUpgrade[1] : 0;
+
+    const upgradeDiv = document.createElement("div");
+    upgradeDiv.classList.add("upgrade");
+    upgradeDiv.innerHTML = `
+        <p>${upgrade.name} - ${upgrade.description} (Level: ${boughtCount})</p>
+        <p>Cost: ${upgrade.cost.toLocaleString()}</p>
+      `;
+
+    if (boughtCount >= upgrade.limit) {
+      upgradeDiv.innerHTML += `<button disabled style="background-color: gray;">Sold out</button>`;
+    } else {
+      upgradeDiv.innerHTML += `<button onclick="buyUpgrade(${index})">Buy</button>`;
+    }
+
+    upgradesDiv.appendChild(upgradeDiv);
+  });
+}
 
 function getUpgradesLevel(id) {
   const boughtUpgrade = boughtUpgrades.find((up) => up[0] === id);
@@ -195,3 +271,9 @@ function changeUpgradeValue(id, value) {
     upgradeValues[id] = value;
   }
 }
+
+function hasUpgradeValue(id){
+  return upgradeValues[id] ? true : false;
+}
+
+displayUpgrades();

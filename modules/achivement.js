@@ -98,11 +98,43 @@ var achivements = [
         }
     },
     {
+        name: "KediRNG HyperFan",
+        id: "kediRNGHyperfan",
+        description: "Have a lifelessness above 7.500.000.000",
+        req: () => {
+            return getCompositeStat("lifelessness") > 7500000000;
+        }
+    },
+    {
+        name: "KediRNG UltiFan",
+        id: "kediRNGUltiFan",
+        description: "Have a lifelessness above 150.000.000.000",
+        req: () => {
+            return getCompositeStat("lifelessness") > 150000000000;
+        }
+    },
+    {
+        name: "KediRNG OmegaFan",
+        id: "kediRNGOmegaFan",
+        description: "I am become kedi, not haver of life. Have a lifelessness above 5.000.000.000.000",
+        req: () => {
+            return getCompositeStat("lifelessness") > 5000000000000;
+        }
+    },
+    {
         name: "Complete all achivements",
         id: "finishAchivements",
         description: "Except for this one",
         req: () => {
             return doneAchivements.length == achivements.length - 1;
+        }
+    },
+    {
+        name: "Achievement Collector",
+        id: "achCol",
+        description: "Collect 25 achivements",
+        req: () => {
+            return doneAchivements.length > 24;
         }
     },
     {
@@ -144,7 +176,55 @@ var achivements = [
         req: () => {
             return money > 1000000000;
         }
-    }
+    },
+    {
+        name: "Quest Completer 1",
+        id: "questCompleter1",
+        description: "Complete 25 quests.",
+        req: () => {
+            return getCompositeStat("questsCompleted") > 24;
+        }
+    },
+    {
+        name: "Quest Completer 1+",
+        id: "questCompleter1plus",
+        description: "Complete 100 quests.",
+        req: () => {
+            return getCompositeStat("questsCompleted") > 99;
+        }
+    },
+    {
+        name: "Quest Completer 2",
+        id: "questCompleter2",
+        description: "Complete 250 quests.",
+        req: () => {
+            return getCompositeStat("questsCompleted") > 249;
+        }
+    },
+    {
+        name: "Quest Completer 2+",
+        id: "questCompleter2plus",
+        description: "Complete 1000 quests.",
+        req: () => {
+            return getCompositeStat("questsCompleted") > 999;
+        }
+    },
+    {
+        name: "Quest Completer 3",
+        id: "questCompleter3",
+        description: "Complete 2500 quests.",
+        req: () => {
+            return getCompositeStat("questsCompleted") > 2499;
+        }
+    },
+    {
+        name: "Omega Quester",
+        id: "omegaQuester",
+        description: "Complete 25000 quests.",
+        req: () => {
+            return getCompositeStat("questsCompleted") > 24999;
+        }
+    },
 ];
 
 function displayAchivements() {

@@ -2,7 +2,6 @@ const invDiv = document.getElementById("inventory");
 const mlabel = document.getElementById("mlabel");
 const pmlabel = document.getElementById("pmlabel");
 const tlabel = document.getElementById("tlabel");
-var iSell = false;
 
 // Function to roll a new item based on rarity
 function rollText() {
@@ -10,13 +9,19 @@ function rollText() {
     notify("On cooldown for " + rollCooldown + "ms");
     return;
   }
-  for (let index = 0; index < getUpgradeValue("rollMultiplier"); index++) {
+  backgroundRoll();
+  rollCooldown = 500 - getUpgradesLevel("lessCooldown") * 100;
+  displayInventory(true);
+}
+
+function backgroundRoll(num = getUpgradeValue("rollMultiplier")) {
+  for (let index = 0; index < num; index++) {
     const rarit =
       rarity.find(
         () => Math.random() < 0.5 - (getUpgradeValue("luck") - 1) / 100
       ) || rarity[0]; // Get a random rarity
     const selectedText = getTextFromRarity(rarit);
-    if(!iSell){
+    if (!getSettingValue("iSell")) {
       if (!checkQuestCompletion(selectedText)) {
         inventory.push({
           text: selectedText,
@@ -24,8 +29,7 @@ function rollText() {
           sell: Math.floor(Math.pow(2, rarit.value) * Math.random()) + 1,
         });
       }
-    }
-    else{
+    } else {
       changeMoney(Math.floor(Math.pow(2, rarit.value) * Math.random()) + 1);
     }
     if (!raritiesDone.includes(rarit.value)) {
@@ -45,15 +49,11 @@ function rollText() {
     }
     if (rarit.value > getStat("highestRarity")) {
       changeStat("highestRarity", rarit.value, true);
-      notify(
-        "New highest rarity!\n" + rarit.name,
-        getColorFromRarity(rarit)
-      );
+      notify("New highest rarity!\n" + rarit.name, getColorFromRarity(rarit));
     }
   }
-  rollCooldown = 500 - getUpgradesLevel("lessCooldown") * 100;
-  displayInventory(true);
 }
+
 // Function to display the inventory
 async function displayInventory(half = false) {
   if (invDiv.style.display === "none") return;
@@ -124,15 +124,6 @@ function sellAll() {
   displayInventory();
 }
 
-function toggleISell(){
-  iSell = !iSell;
-  if(iSell) {
-    document.getElementById("toggleISell").innerHTML = "Immediate Sell (ON)"
-  } else {
-    document.getElementById("toggleISell").innerHTML = "Immediate Sell (OFF)"
-  }
-}
-
 // Function to toggle the visibility of the inventory
 function toggleInventory() {
   if (invDiv.style.display === "none") {
@@ -141,32 +132,6 @@ function toggleInventory() {
   } else {
     invDiv.style.display = "none"; // Hide inventory
   }
-}
-
-// Function to display upgrades in the shop
-function displayUpgrades() {
-  const upgradesDiv = document.getElementById("upgrades");
-  upgradesDiv.innerHTML = ""; // Clear existing upgrades
-
-  upgrades.forEach((upgrade, index) => {
-    const boughtUpgrade = boughtUpgrades.find((up) => up[0] === upgrade.id);
-    const boughtCount = boughtUpgrade ? boughtUpgrade[1] : 0;
-
-    const upgradeDiv = document.createElement("div");
-    upgradeDiv.classList.add("upgrade");
-    upgradeDiv.innerHTML = `
-        <p>${upgrade.name} - ${upgrade.description} (Level: ${boughtCount})</p>
-        <p>Cost: ${upgrade.cost.toLocaleString()}</p>
-      `;
-
-    if (boughtCount >= upgrade.limit) {
-      upgradeDiv.innerHTML += `<button disabled style="background-color: gray;">Sold out</button>`;
-    } else {
-      upgradeDiv.innerHTML += `<button onclick="buyUpgrade(${index})">Buy</button>`;
-    }
-
-    upgradesDiv.appendChild(upgradeDiv);
-  });
 }
 
 // Function to open the Sell All popup
@@ -330,7 +295,10 @@ function renderLevelBar() {
 async function questLoop() {
   while (true) {
     generateRandomQuest();
-    await new Promise((r) => setTimeout(r, 100000));
+    displayQuests();
+    await new Promise((r) =>
+      setTimeout(r, 100000 - getUpgradeValue("questSpeed") * 1000)
+    );
   }
 }
 
@@ -338,6 +306,10 @@ async function tickLoop() {
   while (true) {
     if (rollCooldown > 0) {
       rollCooldown -= 100;
+    }
+    if (hasUpgradeValue("autoRoll") && getSettingValue("autoRoll")) {
+      backgroundRoll(getUpgradeValue("autoRoll"));
+      displayInventory(true);
     }
     changeStat("timePlayed", 1);
     await new Promise((r) => setTimeout(r, 100));
@@ -366,10 +338,16 @@ function getXpReq() {
 }
 
 function toggleNotifications() {
-  if (document.getElementById("notifications").style.display !== "none") {
-    document.getElementById("notifications").style.display = "none";
+  const notifications = document.getElementById("notifications");
+  const toggleButton = document.getElementById("toggleNotifications");
+
+  // Toggle display and update button text based on current state
+  if (notifications.style.display !== "none") {
+    notifications.style.display = "none";
+    toggleButton.innerHTML = "Notifications (Off)";
   } else {
-    document.getElementById("notifications").style.display = "block";
+    notifications.style.display = "block";
+    toggleButton.innerHTML = "Notifications (On)";
   }
 }
 
@@ -378,7 +356,7 @@ function getFAmount(amount) {
 }
 
 // Initial calls
-displayUpgrades();
+
 displayInventory();
 for (let i = 0; i < 5; i++) {
   generateRandomQuest();

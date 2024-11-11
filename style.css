@@ -447,6 +447,27 @@ p:hover {
   color: #e0e0e0;
 }
 
+.setting {
+  border: 1px solid #555555;
+  border-radius: 8px;
+  padding: 10px;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.5);
+  font-size: 16px;
+  color: #e0e0e0;
+  text-align: center;
+  transition: transform 0.2s ease;
+  margin: 5px;
+  gap: 8px;
+}
+
+.setting p {
+  margin: 5px 0;
+  font-size: 14px;
+  font-weight: bold;
+  border-radius: 8px;
+}
+
+
 /* Mobile styling */
 @media (max-width: 600px) {
   /* Inventory, upgrades, and quests grid */

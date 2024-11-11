@@ -1,4 +1,4 @@
-const gVersion = 8;
+const gVersion = 9;
 var UUID = Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2);
 
 // Function to get game data
@@ -7,7 +7,6 @@ function getGameData() {
   return {
     version: gVersion,
     money: money,
-    allTimeMoney: allTimeMoney,
     inventory: inventory,
     boughtUpgrades: boughtUpgrades,
     raritiesDone: raritiesDone,
@@ -18,6 +17,7 @@ function getGameData() {
     stats: stats,
     UUID: UUID,
     doneAchivements: doneAchivements,
+    setSettings: setSettings,
     // Add any new properties here
   };
 }
@@ -33,7 +33,6 @@ function setGameData(gameData) {
   }
 
   money = gameData.money || 0;
-  allTimeMoney = gameData.allTimeMoney || 0;
   inventory = gameData.inventory || defInventory;
   boughtUpgrades = gameData.boughtUpgrades || [];
   raritiesDone = gameData.raritiesDone || defRaritiesDone;
@@ -53,6 +52,8 @@ function setGameData(gameData) {
   });
   UUID = gameData.UUID || Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2);
   doneAchivements = gameData.doneAchivements || [];
+  setSettings = gameData.setSettings || {};
+  initSettings();
 
   // Load other properties here as needed
 
@@ -65,7 +66,8 @@ function setGameData(gameData) {
   }
   displayUpgrades(); // Update UI
   displayQuests(); // Update UI
-  displayAchivements();
+  displayAchivements(); // Update UI
+  displaySettings(); // Update UI
 }
 
 // Function to save game data to file
