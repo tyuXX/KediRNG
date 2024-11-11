@@ -1,4 +1,4 @@
-const gVersion = 6;
+const gVersion = 7;
 var UUID = Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2);
 
 // Function to get game data
