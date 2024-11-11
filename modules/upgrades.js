@@ -198,7 +198,7 @@ const upgrades = [
     name: "Quest Speedup [Ultimate]",
     id: "questSpeedupUlt",
     description: "Decrease quest generation time",
-    cost: 10000000,
+    cost: 1000000000,
     limit: 10,
     effect: () => {
       changeUpgradeValue("questSpeed", 1);
