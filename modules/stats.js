@@ -3,6 +3,12 @@ var lastSave = Date.now();
 var stats = defStats;
 var compositeStats = [
   {
+    name: "Time played (Seconds)",
+    value: () => {
+      return (getStat("timePlayed")/10).toLocaleString();
+    },
+  },
+  {
     name: "Average money per roll",
     value: () => {
       return (getStat("totalMoney") / getStat("totalRolls")).toLocaleString();

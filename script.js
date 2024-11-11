@@ -37,6 +37,13 @@ function rollText() {
       ),
         true;
     }
+    if (rarit.value > getStat("highestRarity")) {
+      changeStat("highestRarity", rarit.value, true);
+      notify(
+        "New highest rarity!\n" + rarit.name,
+        getColorFromRarity(rarit)
+      );
+    }
   }
   rollCooldown = 500 - getUpgradesLevel("lessCooldown") * 100;
   displayInventory(true);
@@ -302,9 +309,7 @@ async function renderLoop() {
 
 function renderLevelBar() {
   const levelBar = document.getElementById("levelBarI");
-  levelBar.style.width = `${
-    (level.xp / getXpReq()) * 100
-  }%`;
+  levelBar.style.width = `${(level.xp / getXpReq()) * 100}%`;
 }
 
 async function questLoop() {
@@ -334,14 +339,14 @@ function changeMoney(amount) {
 }
 
 function addXP(amount) {
-  level.xp += amount * (1 + (getUpgradeValue("xpbonus")/10));
+  level.xp += amount * (1 + getUpgradeValue("xpbonus") / 10);
   while (level.xp >= getXpReq()) {
     level.xp -= getXpReq();
     level.level++;
   }
 }
 
-function getXpReq(){
+function getXpReq() {
   return Math.ceil(Math.pow(1.2, level.level) * 10);
 }
 

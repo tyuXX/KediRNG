@@ -1,4 +1,5 @@
 const gVersion = 6;
+var UUID = Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2);
 
 // Function to get game data
 function getGameData() {
@@ -15,6 +16,7 @@ function getGameData() {
     lastSave: lastSave,
     upgradeValues: upgradeValues,
     stats: stats,
+    UUID: UUID,
     // Add any new properties here
   };
 }
@@ -47,6 +49,7 @@ function setGameData(gameData) {
       }
     }
   });
+  UUID = gameData.UUID || Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2);
 
   // Load other properties here as needed
 
@@ -61,7 +64,7 @@ function saveGame() {
   const blob = new Blob([compressed], { type: "text/plain" });
   const link = document.createElement("a");
   link.href = URL.createObjectURL(blob);
-  link.download = "kediRNG(v" + gVersion + ").gsdsv";
+  link.download = UUID + "(v" + gVersion + ").gsdsv";
   link.click();
 }
 

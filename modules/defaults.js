@@ -7,4 +7,5 @@ const defStats = [
   { name: "Total Rolls", id: "totalRolls", value: 0 },
   { name: "Quests Completed", id: "questsCompleted", value: 0 },
   { name: "Highest sell payout without bonuses", id: "topSellPay", value: 0 },
+  { name: "Highest rarity", id: "highestRarity", value: 0},
 ];
