@@ -27,7 +27,7 @@ function setGameData(gameData) {
   if (gameData.version !== gVersion) {
     notify(
       "Old version detected (v" + gameData.version + "), proceeding anyway...",
-      "red"
+      "yellow"
     );
   }
 
@@ -53,7 +53,13 @@ function setGameData(gameData) {
 
   // Load other properties here as needed
 
-  displayInventory(); // Update UI
+  if(inventory.length < 10000){
+    displayInventory(); // Update UI
+  }
+  else{
+    invDiv.style.display = "none";
+    notify("Inventory hidded to reduce lag, Press Toggle to show it", "yellow");
+  }
   displayUpgrades(); // Update UI
   displayQuests(); // Update UI
 }
