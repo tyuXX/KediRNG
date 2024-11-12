@@ -450,6 +450,81 @@ const rarity = [
   },*/
 ];
 
+const grades = [
+  {
+    name: "F",
+    id: "f",
+    value: 0,
+    color: "#FF0000",
+  },
+  {
+    name: "D",
+    id: "d",
+    value: 1,
+    color: "#FF7F00",
+  },
+  {
+    name: "C",
+    id: "c",
+    value: 2,
+    color: "#FFFF00",
+  },
+  {
+    name: "B",
+    id: "b",
+    value: 3,
+    color: "#00FF00",
+  },
+  {
+    name: "A",
+    id: "a",
+    value: 4,
+    color: "#0000FF",
+  },
+  {
+    name: "S",
+    id: "s",
+    value: 5,
+    color: "#4B0082",
+  },
+  {
+    name: "S+",
+    id: "splus",
+    value: 6,
+    color: "#4B0082",
+  },
+  {
+    name: "SS",
+    id: "ss",
+    value: 7,
+    color: "#9400D3",
+  },
+  {
+    name: "SSS",
+    id: "sss",
+    value: 8,
+    color: "#FF00FF",
+  },
+  {
+    name: "P",
+    id: "p",
+    value: 9,
+    color: "#FF00FF",
+  },
+  {
+    name: "Delta",
+    id: "delta",
+    value: 10,
+    color: "#FFFFFF",
+  },
+  {
+    name: "Omega",
+    id: "omega",
+    value: 11,
+    color: "#000000",
+  },
+]
+
 function getRarityFromInt(int) {
   return rarity.find((rarity) => rarity.value === int);
 }
@@ -460,4 +535,8 @@ function getTextFromRarity(rarity) {
 
 function getColorFromRarity(rarity) {
   return rarity.colors[Math.floor(Math.random() * rarity.colors.length)];
+}
+
+function getGradeFromInt(int) {
+  return grades.find((grade) => grade.value === int);
 }

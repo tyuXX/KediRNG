@@ -20,13 +20,15 @@ function backgroundRoll(num = getUpgradeValue("rollMultiplier")) {
       rarity.find(
         () => Math.random() < 0.5 - (getUpgradeValue("luck") - 1) / 100
       ) || rarity[0]; // Get a random rarity
+    const grit = grades.find(() => Math.random() < 0.7);
     const selectedText = getTextFromRarity(rarit);
     if (!getSettingValue("iSell")) {
       if (!checkQuestCompletion(selectedText)) {
         inventory.push({
           text: selectedText,
           rarity: rarit.value,
-          sell: Math.floor(Math.pow(2, rarit.value) * Math.random()) + 1,
+          grade: grit.value,
+          sell: Math.floor(Math.pow(2, rarit.value) * Math.pow(1.8, grit.value) * Math.random()) + 1,
         });
       }
     } else {
@@ -73,6 +75,7 @@ async function displayInventory(half = false) {
     itemDiv.innerHTML = `
       <p>${item.text}</p>
       <p>${getRarityFromInt(item.rarity).name}</p>
+      <p style="background-color: ${getGradeFromInt(item.grade).color}">${getGradeFromInt(item.grade).name}</p>
       <button onclick="delItem(${index})">Sell: ${getFAmount(
       item.sell * getUpgradeValue("sellMultiplier")
     ).toLocaleString()}</button>

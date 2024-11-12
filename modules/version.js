@@ -36,12 +36,17 @@ async function loadVersionInfo() {
 
 async function versionCheckloop() {
   while (true) {
-    const response = await fetch(
-      "https://raw.githubusercontent.com/tyuXX/KediRNG/refs/heads/versioning/version.v?v=" +
-        new Date().getTime()
-    );
-    if (versionString !== (await response.text()).trim()) {
-      versionInfoContainer.innerHTML = "New version ready! Refresh to apply.";
+    try {
+      const response = await fetch(
+        "https://raw.githubusercontent.com/tyuXX/KediRNG/refs/heads/versioning/version.v?v=" +
+          new Date().getTime()
+      );
+      if (versionString !== (await response.text()).trim()) {
+        versionInfoContainer.innerHTML = "New version ready! Refresh to apply.";
+      }
+    }
+    catch (error) {
+      notify("Error checking for updates: " + error, "red");
     }
     await new Promise((r) => setTimeout(r, 10000));
   }
