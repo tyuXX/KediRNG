@@ -13,10 +13,13 @@ const defStats = [
     show: true,
   },
   { name: "Highest rarity", id: "highestRarity", value: 0, show: false },
+  { name: "Highest grade", id: "highestGrade", value: 0, show: false },
   {
     name: "Total money this rebirth",
     id: "totalMoneyRebirth",
     value: 0,
     show: true,
   },
+  { name: "Highest valued Texts grade", id: "highestVGrade", value: 0, show: false },
+  { name: "Highest valued Texts rarity", id: "highestVRarity", value: 0, show: false },
 ];

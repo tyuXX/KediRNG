@@ -38,6 +38,9 @@ function backgroundRoll(num = getUpgradeValue("rollMultiplier")) {
       raritiesDone.push(rarit.value);
       notify("New rarity found!\n" + rarit.name, getColorFromRarity(rarit));
     }
+    if(!combinationsDone.includes(rarit.value + "-" + grit.value)) {
+      combinationsDone.push(rarit.value + "-" + grit.value);
+    }
     changeStat("totalRolls", 1);
     if (
       getStat("topSellPay") <
@@ -52,6 +55,17 @@ function backgroundRoll(num = getUpgradeValue("rollMultiplier")) {
     if (rarit.value > getStat("highestRarity")) {
       changeStat("highestRarity", rarit.value, true);
       notify("New highest rarity!\n" + rarit.name, getColorFromRarity(rarit));
+    }
+    if (grit.value > getStat("highestGrade")) {
+      changeStat("highestGrade", grit.value, true);
+      notify("New highest grade!\n" + grit.name, grit.color);
+    }
+    const textValue = Math.pow(rarit.value, 2) * Math.pow(1.8, grit.value);
+    const previousValue = Math.pow(2, getStat("highestVRarity")) * Math.pow(1.8, getStat("highestVGrade"));
+    if(textValue > previousValue) {
+      changeStat("highestVRarity", rarit.value, true);
+      changeStat("highestVGrade", grit.value, true);
+      notify("New valued highest Text!\n " + rarit.name + "-" + grit.name, getColorFromRarity(rarit));
     }
   }
 }

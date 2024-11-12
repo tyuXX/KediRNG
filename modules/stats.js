@@ -10,10 +10,31 @@ var compositeStats = [
     },
   },
   {
+    name: "Highest grade",
+    id: "highestGrade",
+    value: () => {
+      return getGradeFromInt(getStat("highestGrade")).name;
+    },
+  },
+  {
+    name: "Highest valued Text",
+    id: "highestVText",
+    value: () => {
+      return getRarityFromInt(getStat("highestVRarity")).name + "-" + getGradeFromInt(getStat("highestVGrade")).name;
+    },
+  },
+  {
     name: "Rarities",
     id: "raritiesGotten",
     value: () => {
       return `Gotten: ${raritiesDone.length} / ${rarity.length}`;
+    },
+  },
+  {
+    name: "Rarity-Grade combinations",
+    id: "combinationsGotten",
+    value: () => {
+      return `Gotten: ${combinationsDone.length} / ${rarity.length * grades.length}`;
     },
   },
   {

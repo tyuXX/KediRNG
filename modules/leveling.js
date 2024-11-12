@@ -12,7 +12,7 @@ function addXP(amount) {
 }
 
 function rebirthHandler() {
-  if (level.level > getRebirthReq()) {
+  if (level.level >= getRebirthReq()) {
     rebirth++;
     level.level = 1;
     level.xp = 0;

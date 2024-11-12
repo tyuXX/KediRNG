@@ -1,4 +1,4 @@
-const gVersion = 11;
+const gVersion = 12;
 var UUID =
   Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2);
 
@@ -21,6 +21,7 @@ function getGameData() {
     setSettings: setSettings,
     rebirth: rebirth,
     updateVersion: versionString,
+    combinationsDone: combinationsDone,
     // Add any new properties here
   };
 }
@@ -60,9 +61,11 @@ function setGameData(gameData) {
   setSettings = gameData.setSettings || {};
   initSettings();
   rebirth = gameData.rebirth || 1;
-  migrate(gameData.versionString, gameData.version);
-
+  combinationsDone = gameData.combinationsDone || [];
   // Load other properties here as needed
+  
+  // Migrate game data
+  migrate(gameData.versionString, gameData.version);
 
   if (inventory.length < 10000) {
     displayInventory(); // Update UI
