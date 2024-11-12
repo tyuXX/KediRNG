@@ -14,9 +14,12 @@ function addXP(amount) {
 function rebirthHandler() {
   if (level.level > getRebirthReq()) {
     rebirth++;
-    level = defLevel;
+    level.level = 1;
+    level.xp = 0;
     changeStat("totalMoneyRebirth", 0, true);
     inventory = defInventory;
+    money = 0;
+    boughtUpgrades = [];
     document.getElementById("rebirthButton").style.display = "none";
   }
 }
