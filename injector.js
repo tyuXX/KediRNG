@@ -15,10 +15,12 @@ const scripts = [
     "modules/gamestate.js",
 ];
 
-scripts.forEach(src => {
-    const script = document.createElement("script");
-    script.src = `${src}?v=${new Date().getTime()}`;  // Adding a unique timestamp as a cache-buster
-    script.async = false;
-    scriptContainer.appendChild(script);
+document.addEventListener("DOMContentLoaded", () => {
+    scripts.forEach(src => {
+        const script = document.createElement("script");
+        script.src = `${src}?v=${new Date().getTime()}`;  // Adding a unique timestamp as a cache-buster
+        script.async = false;
+        scriptContainer.appendChild(script);
+    });
 });
 

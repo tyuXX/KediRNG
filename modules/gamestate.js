@@ -1,5 +1,6 @@
 const gVersion = 10;
-var UUID = Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2);
+var UUID =
+  Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2);
 
 // Function to get game data
 function getGameData() {
@@ -42,16 +43,18 @@ function setGameData(gameData) {
   lastSave = gameData.lastSave || Date.now();
   upgradeValues = gameData.upgradeValues || defUpgradeValues;
   stats = gameData.stats || defStats;
-  stats.forEach(stat => {
-    let st = defStats.find(s => s.id === stat.id);
-    if(st){
-      if(stat.name !== st.name){
+  stats.forEach((stat) => {
+    let st = defStats.find((s) => s.id === stat.id);
+    if (st) {
+      if (stat.name !== st.name) {
         stat.name = st.name;
         stat.show = st.show;
       }
     }
   });
-  UUID = gameData.UUID || Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2);
+  UUID =
+    gameData.UUID ||
+    Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2);
   doneAchivements = gameData.doneAchivements || [];
   setSettings = gameData.setSettings || {};
   initSettings();
@@ -59,10 +62,9 @@ function setGameData(gameData) {
 
   // Load other properties here as needed
 
-  if(inventory.length < 10000){
+  if (inventory.length < 10000) {
     displayInventory(); // Update UI
-  }
-  else{
+  } else {
     invDiv.style.display = "none";
     notify("Inventory hidden to reduce lag, Press Toggle to show it", "wheat");
   }
@@ -124,13 +126,13 @@ function loadGame(event) {
   reader.readAsText(file);
 }
 
-function resetGame(){
+function resetGame() {
   localStorage.removeItem("autosave"); // Clear storage
   window.location.reload(); // Reload the page
 }
 
 // Initialize autosave and load localStorage data on page load
-document.addEventListener("DOMContentLoaded", () => {
+window.addEventListener("load", () => {
   loadGameFromLocalStorage(); // Load game from localStorage on page load
   setInterval(saveGameToLocalStorage, 30000); // Start autosaving every 30 seconds
 });
