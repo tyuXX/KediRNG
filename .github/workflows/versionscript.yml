@@ -11,9 +11,14 @@ jobs:
 
     steps:
       - name: Checkout versioning branch
-        uses: actions/checkout@v3
+        uses: actions/checkout@main
         with:
           ref: versioning
+
+      - name: Set Git configuration for commit
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
       - name: Get the latest commit hash
         id: get_commit
