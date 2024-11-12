@@ -6,6 +6,12 @@
     <title>Kedi RNG</title>
     <meta name="description" content="HAHAYES" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      http-equiv="Cache-Control"
+      content="no-cache, no-store, must-revalidate"
+    />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
     <link rel="stylesheet" href="style.css" />
   </head>
   <body>
@@ -26,7 +32,13 @@
       <div id="levelBarI"></div>
       <label class="label" id="rebirthLabel">Pending...</label>
       <div id="rebirthBarI"></div>
-      <button id="rebirthButton" onclick="rebirthHandler()" style="display: none; margin: 10px;">Rebirth</button>
+      <button
+        id="rebirthButton"
+        onclick="rebirthHandler()"
+        style="display: none; margin: 10px"
+      >
+        Rebirth
+      </button>
     </div>
     <div>
       <label class="label" id="tlabel" for="Text count">Pending...</label>
@@ -99,24 +111,9 @@
       </button>
     </div>
 
-    <div id="built-inScripts">
+    <div id="forced">
       <script src="modules/performance.js" defer></script>
-      <script src="modules/defaults.js" defer></script>
-      <script src="modules/settings.js" defer></script>
-      <script src="modules/version.js" defer></script>
-      <script src="modules/game.js" defer></script>
-      <script src="modules/text.js" defer></script>
-      <script src="modules/notifications.js" defer></script>
-      <script src="modules/leveling.js" defer></script>
-      <script src="modules/achivement.js" defer></script>
-      <script src="modules/stats.js" defer></script>
-      <script src="modules/upgrades.js" defer></script>
-      <script src="script.js" defer></script>
-      <script
-        src="https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.4.4/lz-string.min.js"
-        defer
-      ></script>
-      <script src="modules/gamestate.js" defer></script>
+      <script src="injector.js" defer></script>
     </div>
     <div id="injected"></div>
   </body>

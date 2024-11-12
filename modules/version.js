@@ -1,13 +1,13 @@
 // Load version info and display it in your game
 async function loadVersionInfo() {
   try {
-    const response = await fetch('version.json');
+    const response = await fetch('version.json?v=' + new Date().getTime());
     if (!response.ok) {
       throw new Error(`Failed to fetch version info: ${response.statusText}`);
     }
     const versionData = await response.json();
 
-    const response2 = await fetch('version.v');
+    const response2 = await fetch('version.v?v=' + new Date().getTime());
     if (!response2.ok) {
       throw new Error(`Failed to fetch version info: ${response2.statusText}`);
     }
