@@ -345,7 +345,7 @@ function toggleNotifications() {
 }
 
 function getFAmount(amount) {
-  return Math.floor(amount * (Math.pow(rebirth, 2)) * (1 + level.level / 10));
+  return (Math.floor(amount * (Math.pow(rebirth, 2)) * (1 + level.level / 10))) * getUpgradeValue("moneyMultiplier");
 }
 
 // Initial calls

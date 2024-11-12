@@ -172,6 +172,61 @@ const upgrades = [
     },
   },
   {
+    name: "Sextuple Roll",
+    id: "sextupleRoll",
+    description: "Roll 6 items at once.",
+    cost: 5000000000,
+    limit: 1,
+    req: () => getUpgradesLevel("quintupleRoll") > 0,
+    effect: () => {
+      changeUpgradeValue("rollMultiplier", 1);
+    },
+  },
+  {
+    name: "Septuple Roll",
+    id: "septupleRoll",
+    description: "Roll 7 items at once.",
+    cost: 50000000000,
+    limit: 1,
+    req: () => getUpgradesLevel("sextupleRoll") > 0,
+    effect: () => {
+      changeUpgradeValue("rollMultiplier", 1);
+    }
+  },
+  {
+    name: "Octuple Roll",
+    id: "octupleRoll",
+    description: "Roll 8 items at once.",
+    cost: 500000000000,
+    limit: 1,
+    req: () => getUpgradesLevel("septupleRoll") > 0,
+    effect: () => {
+      changeUpgradeValue("rollMultiplier", 1);
+    }
+  },
+  {
+    name: "Novuple Roll",
+    id: "novupleRoll",
+    description: "Roll 9 items at once.",
+    cost: 5000000000000,
+    limit: 1,
+    req: () => getUpgradesLevel("octupleRoll") > 0,
+    effect: () => {
+      changeUpgradeValue("rollMultiplier", 1);
+    }
+  },
+  {
+    name: "Decuple Roll",
+    id: "decupleRoll",
+    description: "Roll 10 items at once.",
+    cost: 50000000000000,
+    limit: 1,
+    req: () => getUpgradesLevel("novupleRoll") > 0,
+    effect: () => {
+      changeUpgradeValue("rollMultiplier", 1);
+    }
+  },
+  {
     name: "Luckery",
     id: "luckery",
     description: "We get real lucky this time.",
@@ -180,6 +235,17 @@ const upgrades = [
     req: () => true,
     effect: () => {
       changeUpgradeValue("luck", 1);
+    },
+  },
+  {
+    name: "Quantum Luck",
+    id: "qluck",
+    description: "Luck, but quantum. Cus' i understand neither.",
+    cost: 10000000000,
+    limit: 3,
+    req: () => getUpgradesLevel("luckery") > 0,
+    effect: () => {
+      changeUpgradeValue("luck",1);
     },
   },
   {
@@ -216,6 +282,50 @@ const upgrades = [
     },
   },
   {
+    name: "Experianced roller 3",
+    id: "experiancedRoller3",
+    description: "Increase xp gain",
+    cost: 1000000000,
+    limit: 5,
+    req: () => getUpgradesLevel("experiancedRoller2") > 0,
+    effect: () => {
+      changeUpgradeValue("xpbonus", 1);
+    }
+  },
+  {
+    name: "Experianced roller 4",
+    id: "experiancedRoller4",
+    description: "Increase xp gain",
+    cost: 10000000000,
+    limit: 5,
+    req: () => getUpgradesLevel("experiancedRoller3") > 0,
+    effect: () => {
+      changeUpgradeValue("xpbonus", 1);
+    }
+  },
+  {
+    name: "Experianced roller 5",
+    id: "experiancedRoller5",
+    description: "Increase xp gain",
+    cost: 100000000000,
+    limit: 5,
+    req: () => getUpgradesLevel("experiancedRoller4") > 0,
+    effect: () => {
+      changeUpgradeValue("xpbonus", 1);
+    }
+  },
+  {
+    name: "Rollmaster",
+    id: "rollmaster",
+    description: "Rollmaster",
+    cost: 1000000000000,
+    limit: 2,
+    req: () => getUpgradesLevel("experiancedRoller5") > 0,
+    effect: () => {
+      changeUpgradeValue("xpbonus", 3);
+    },
+  },
+  {
     name: "Quest Speedup",
     id: "questSpeedup",
     description: "Decrease quest generation time",
@@ -248,6 +358,118 @@ const upgrades = [
       changeUpgradeValue("questSpeed", 1);
     },
   },
+  {
+    name: "Double money",
+    id: "doubleMoney",
+    description: "Double money",
+    cost: 10000000,
+    limit: 1,
+    req: () => true,
+    effect: () => {
+      changeUpgradeValue("moneyMultiplier", 1);
+    }
+  },
+  {
+    name: "Triple money",
+    id: "tripleMoney",
+    description: "Triple money",
+    cost: 100000000,
+    limit: 1,
+    req: () => getUpgradesLevel("doubleMoney") > 0,
+    effect: () => {
+      changeUpgradeValue("moneyMultiplier", 1);
+    }
+  },
+  {
+    name: "Quadruple money",
+    id: "quadrupleMoney",
+    description: "Quadruple money",
+    cost: 1000000000,
+    limit: 1,
+    req: () => getUpgradesLevel("tripleMoney") > 0,
+    effect: () => {
+      changeUpgradeValue("moneyMultiplier", 1);
+    }
+  },
+  {
+    name: "Quintuple money",
+    id: "quintupleMoney",
+    description: "Quintuple money",
+    cost: 10000000000,
+    limit: 1,
+    req: () => getUpgradesLevel("quadrupleMoney") > 0,
+    effect: () => {
+      changeUpgradeValue("moneyMultiplier", 1);
+    }
+  },
+  {
+    name: "Sextuple money",
+    id: "sextupleMoney",
+    description: "Sextuple money",
+    cost: 100000000000,
+    limit: 1,
+    req: () => getUpgradesLevel("quintupleMoney") > 0,
+    effect: () => {
+      changeUpgradeValue("moneyMultiplier", 1);
+    }
+  },
+  {
+    name: "Septuple money",
+    id: "septupleMoney",
+    description: "Septuple money",
+    cost: 1000000000000,
+    limit: 1,
+    req: () => getUpgradesLevel("sextupleMoney") > 0,
+    effect: () => {
+      changeUpgradeValue("moneyMultiplier", 1);
+    }
+  },
+  {
+    name: "Octuple money",
+    id: "octupleMoney",
+    description: "Octuple money",
+    cost: 10000000000000,
+    limit: 1,
+    req: () => getUpgradesLevel("septupleMoney") > 0,
+    effect: () => {
+      changeUpgradeValue("moneyMultiplier", 1);
+    }
+  },
+  {
+    name: "Novuple money",
+    id: "novupleMoney",
+    description: "Novuple money",
+    cost: 100000000000000,
+    limit: 1,
+    req: () => getUpgradesLevel("octupleMoney") > 0,
+    effect: () => {
+      changeUpgradeValue("moneyMultiplier", 1);
+    }
+  },
+  {
+    name: "Decuple money",
+    id: "decupleMoney",
+    description: "Decuple money",
+    cost: 1000000000000000,
+    limit: 1,
+    req: () => getUpgradesLevel("novupleMoney") > 0,
+    effect: () => {
+      changeUpgradeValue("moneyMultiplier", 1);
+    }
+  },
+  {
+    name: "Gamble",
+    id: "gamble",
+    description: "What will i become?",
+    cost: 10000000000000000,
+    limit: 3,
+    req: () => true,
+    effect: () => {
+      const valueT = upgrades[Math.floor(Math.random() * upgrades.length)].id;
+      upgrades.find((upgrade) => upgrade.id === valueT).effect();
+      notify("Upgrade effect applied: " + upgrades.find((upgrade) => upgrade.id === valueT).name);
+    }
+  }
 ];
 
 // Function to display upgrades in the shop

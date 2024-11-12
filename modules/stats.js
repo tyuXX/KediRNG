@@ -10,6 +10,13 @@ var compositeStats = [
     },
   },
   {
+    name: "Rarities",
+    id: "raritiesGotten",
+    value: () => {
+      return `Gotten: ${raritiesDone.length} / ${rarity.length}`;
+    },
+  },
+  {
     name: "Time played (Seconds)",
     id: "timePlayedS",
     value: () => {
@@ -57,7 +64,7 @@ var compositeStats = [
     name: "Lifelessness",
     id: "lifelessness",
     value: () => {
-      return (getStat("totalRolls") * getStat("timePlayed"));
+      return getStat("totalRolls") * getStat("timePlayed");
     },
   },
   {
@@ -66,7 +73,7 @@ var compositeStats = [
     value: () => {
       return `Done: ${doneAchivements.length} / ${achivements.length}`;
     },
-  }
+  },
 ];
 
 function displayStats() {

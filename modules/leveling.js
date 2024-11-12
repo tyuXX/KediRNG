@@ -34,7 +34,7 @@ function getRebirthReq() {
 }
 
 function renderLevelBar() {
-  levelBar.style.width = `${(level.xp / getXpReq()) * 100}%`;
+  levelBar.style.width = `${(level.xp / (getXpReq())) * 100}%`;
 }
 
 function renderRebirthBar() {

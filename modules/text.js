@@ -365,6 +365,76 @@ const rarity = [
     colors: ["#FFFFFF"]
   },
   {
+    name: "Jackpot",
+    value: 35,
+    id: "plus",
+    texts: ["Huh?"],
+    colors: ["#FF9D00"]
+  },
+  {
+    name: "Ulti Common",
+    value: 36,
+    id: "ultiCommon",
+    texts: ["Ultimate version of common"],
+    colors: ["#AAAAAA"]
+  },
+  {
+    name: "Ulti Uncommon",
+    value: 37,
+    id: "ultiUncommon",
+    texts: ["Ultimate version of uncommon"],
+    colors: ["#CC3333"]
+  },
+  {
+    name: "Ulti Rare",
+    value: 38,
+    id: "ultiRare",
+    texts: ["Ultimate version of rare"],
+    colors: ["#33CC33"]
+  },
+  {
+    name: "Ulti Super Rare",
+    value: 39,
+    id: "ultiSuperRare",
+    texts: ["Ultimate version of super rare"],
+    colors: ["#3333CC"]
+  },
+  {
+    name: "Ulti Epic",
+    value: 40,
+    id: "ultiEpic",
+    texts: ["Ultimate version of epic"],
+    colors: ["#CCCC33"]
+  },
+  {
+    name: "Ulti Super Epic",
+    value: 41,
+    id: "ultiSuperEpic",
+    texts: ["Ultimate version of super epic"],
+    colors: ["#CC33CC"]
+  },
+  {
+    name: "Ulti Legendary",
+    value: 42,
+    id: "ultiLegendary",
+    texts: ["Ultimate version of legendary"],
+    colors: ["#33CCCC"]
+  },
+  {
+    name: "Ulti Mythical",
+    value: 43,
+    id: "ultiMythical",
+    texts: ["Ultimate version of mythical"],
+    colors: ["#B45F06"]
+  },
+  {
+    name: "It's over 9000!",
+    value: 44,
+    id: "itsOver9000",
+    texts: ["Yes, it' a DBZ reference", "Kakarot! Watch out"],
+    colors: ["#42FF00"]
+  },
+  {
     name: "Toprak's Wrath",
     value: 99,
     id: "topraksWrath",

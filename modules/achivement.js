@@ -42,6 +42,30 @@ var achivements = [
     },
   },
   {
+    name: "Legend",
+    id: "legend",
+    description: "Roll at least 10.000.000 times",
+    req: () => {
+      return getStat("totalRolls") > 10000000;
+    },
+  },
+  {
+    name: "Myth",
+    id: "myth",
+    description: "Roll at least 100.000.000 times",
+    req: () => {
+      return getStat("totalRolls") > 100000000;
+    },
+  },
+  {
+    name: "Omega Roller",
+    id: "omegaRoller",
+    description: "Roll at least 1.000.000.000 times",
+    req: () => {
+      return getStat("totalRolls") > 1000000000;
+    },
+  },
+  {
     name: "Millionare",
     id: "millionare",
     description: "Have 1.000.000 total money",
@@ -71,6 +95,14 @@ var achivements = [
     description: "Have 1.000.000.000.000.000 total money",
     req: () => {
       return getStat("totalMoney") > 1000000000000000;
+    },
+  },
+  {
+    name: "Omega RichGuy",
+    id: "omegaRichGuy",
+    description: "Have 1.000.000.000.000.000.000 total money",
+    req: () => {
+      return getStat("totalMoney") > 1000000000000000000n;
     },
   },
   {
@@ -176,6 +208,14 @@ var achivements = [
     description: "Have 1.000.000.000 money at one time",
     req: () => {
       return money > 1000000000;
+    },
+  },
+  {
+    name: "Status: Richest",
+    id: "statusRichest",
+    description: "Have 1.000.000.000.000 money at one time",
+    req: () => {
+      return money > 1000000000000;
     },
   },
   {
