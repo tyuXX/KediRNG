@@ -10,8 +10,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@main
+      - name: Checkout versioning branch
+        uses: actions/checkout@v3
+        with:
+          ref: versioning
 
       - name: Get the latest commit hash
         id: get_commit
@@ -19,7 +21,6 @@ jobs:
 
       - name: Check and increment version number
         run: |
-          # Check if version.v exists
           if [ -f version.v ]; then
             version=$(cat version.v)
             version=$((version + 1))
@@ -33,15 +34,6 @@ jobs:
         run: |
           echo "{ \"commitHash\": \"${{ env.commit_hash }}\"}" > version.json
 
-      - name: Checkout versioning branch
-        run: |
-          git fetch origin versioning
-          git checkout versioning
-
-      - name: Merge master into versioning
-        run: |
-          git merge origin/master --no-ff --commit -m "Merge master into versioning branch"
-        
       - name: Commit and push version.json and version.v to versioning branch
         run: |
           git add version.json version.v
