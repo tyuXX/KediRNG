@@ -60,7 +60,7 @@ function setGameData(gameData) {
   setSettings = gameData.setSettings || {};
   initSettings();
   rebirth = gameData.rebirth || 1;
-  migrate(gameData.versionString, gVersion);
+  migrate(gameData.versionString, gameData.version);
 
   // Load other properties here as needed
 
