@@ -33,12 +33,19 @@ jobs:
         run: |
           echo "{ \"commitHash\": \"${{ env.commit_hash }}\"}" > version.json
 
-      - name: Commit and push version.json and version.v
+      - name: Checkout versioning branch
         run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git fetch origin versioning
+          git checkout versioning
+
+      - name: Merge master into versioning
+        run: |
+          git merge origin/master --no-ff --commit -m "Merge master into versioning branch"
+        
+      - name: Commit and push version.json and version.v to versioning branch
+        run: |
           git add version.json version.v
           git commit -m "Update version files with the latest version and commit hash"
-          git push
+          git push origin versioning
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
