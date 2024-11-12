@@ -19,8 +19,9 @@ function rebirthHandler() {
     changeStat("totalMoneyRebirth", 0, true);
     inventory = defInventory;
     money = 0;
-    boughtUpgrades = [];
+    boughtUpgrades.length = 0;
     document.getElementById("rebirthButton").style.display = "none";
+    displayUpgrades();
   }
 }
 
