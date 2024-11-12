@@ -131,11 +131,8 @@ function resetGame() {
   window.location.reload(); // Reload the page
 }
 
-// Initialize autosave and load localStorage data on page load
-window.addEventListener("load", () => {
-  loadGameFromLocalStorage(); // Load game from localStorage on page load
-  setInterval(saveGameToLocalStorage, 30000); // Start autosaving every 30 seconds
-});
+loadGameFromLocalStorage(); // Load game from localStorage on page load
+setInterval(saveGameToLocalStorage, 30000); // Start autosaving every 30 seconds
 
 // Adding event listener to load input
 document.getElementById("load-input").addEventListener("change", loadGame);

@@ -25,4 +25,4 @@ async function loadVersionInfo() {
 }
 
 // Call loadVersionInfo when the game loads
-window.addEventListener('load', loadVersionInfo);
+loadVersionInfo();
