@@ -20,6 +20,7 @@ function rebirthHandler() {
     inventory = defInventory;
     money = 0;
     boughtUpgrades.length = 0;
+    upgradeValues = {};
     document.getElementById("rebirthButton").style.display = "none";
     displayUpgrades();
   }
