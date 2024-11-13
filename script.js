@@ -22,7 +22,7 @@ function backgroundRoll(num = getUpgradeValue("rollMultiplier")) {
       ) || rarity[0]; // Get a random rarity
     const grit = grades.find(() => Math.random() < 0.7);
     const selectedText = getTextFromRarity(rarit);
-    if (!checkQuestCompletion(selectedText)) {
+    if (!checkQuestCompletion(selectedText,grit.value)) {
       if (!getSettingValue("iSell")) {
         inventory.push({
           text: selectedText,
@@ -278,11 +278,11 @@ function generateRandomQuest() {
   quests.push(newQuest);
 }
 
-function checkQuestCompletion(text) {
+function checkQuestCompletion(text,grade) {
   quests.forEach((quest) => {
     if (text === quest.requiredText) {
       changeStat("questsCompleted", 1);
-      changeMoney(getFAmount(quest.reward)); // Reward the player
+      changeMoney(getFAmount(quest.reward) * Math.pow(1.8,grade)); // Reward the player
       //Remove quest from list
       quests = quests.filter((q) => q.id !== quest.id);
       notify(
