@@ -22,23 +22,28 @@ function backgroundRoll(num = getUpgradeValue("rollMultiplier")) {
       ) || rarity[0]; // Get a random rarity
     const grit = grades.find(() => Math.random() < 0.7);
     const selectedText = getTextFromRarity(rarit);
-    if (!getSettingValue("iSell")) {
-      if (!checkQuestCompletion(selectedText)) {
+    if (!checkQuestCompletion(selectedText)) {
+      if (!getSettingValue("iSell")) {
         inventory.push({
           text: selectedText,
           rarity: rarit.value,
           grade: grit.value,
-          sell: Math.floor(Math.pow(2, rarit.value) * Math.pow(1.8, grit.value) * Math.random()) + 1,
+          sell:
+            Math.floor(
+              Math.pow(2, rarit.value) *
+                Math.pow(1.8, grit.value) *
+                Math.random()
+            ) + 1,
         });
+      } else {
+        changeMoney(Math.floor(Math.pow(2, rarit.value) * Math.random()) + 1);
       }
-    } else {
-      changeMoney(Math.floor(Math.pow(2, rarit.value) * Math.random()) + 1);
     }
     if (!raritiesDone.includes(rarit.value)) {
       raritiesDone.push(rarit.value);
       notify("New rarity found!\n" + rarit.name, getColorFromRarity(rarit));
     }
-    if(!combinationsDone.includes(rarit.value + "-" + grit.value)) {
+    if (!combinationsDone.includes(rarit.value + "-" + grit.value)) {
       combinationsDone.push(rarit.value + "-" + grit.value);
     }
     changeStat("totalRolls", 1);
@@ -61,11 +66,16 @@ function backgroundRoll(num = getUpgradeValue("rollMultiplier")) {
       notify("New highest grade!\n" + grit.name, grit.color);
     }
     const textValue = Math.pow(rarit.value, 2) * Math.pow(1.8, grit.value);
-    const previousValue = Math.pow(2, getStat("highestVRarity")) * Math.pow(1.8, getStat("highestVGrade"));
-    if(textValue > previousValue) {
+    const previousValue =
+      Math.pow(2, getStat("highestVRarity")) *
+      Math.pow(1.8, getStat("highestVGrade"));
+    if (textValue > previousValue) {
       changeStat("highestVRarity", rarit.value, true);
       changeStat("highestVGrade", grit.value, true);
-      notify("New valued highest Text!\n " + rarit.name + "-" + grit.name, getColorFromRarity(rarit));
+      notify(
+        "New valued highest Text!\n " + rarit.name + "-" + grit.name,
+        getColorFromRarity(rarit)
+      );
     }
   }
 }
@@ -89,7 +99,9 @@ async function displayInventory(half = false) {
     itemDiv.innerHTML = `
       <p>${item.text}</p>
       <p>${getRarityFromInt(item.rarity).name}</p>
-      <p style="background-color: ${getGradeFromInt(item.grade).color}">${getGradeFromInt(item.grade).name}</p>
+      <p style="background-color: ${getGradeFromInt(item.grade).color}">${
+      getGradeFromInt(item.grade).name
+    }</p>
       <button onclick="delItem(${index})">Sell: ${getFAmount(
       item.sell * getUpgradeValue("sellMultiplier")
     ).toLocaleString()}</button>
@@ -298,20 +310,23 @@ async function renderLoop() {
     document.getElementById("levelLabel").innerHTML = `Level: ${
       level.level
     } (EXP: ${level.xp.toLocaleString()} / ${getXpReq().toLocaleString()})`;
-     document.getElementById("rebirthLabel").innerHTML = `Rebirth: ${
-      rebirth
-    } (Level: ${level.level} / ${getRebirthReq()})`;
+    document.getElementById(
+      "rebirthLabel"
+    ).innerHTML = `Rebirth: ${rebirth} (Level: ${
+      level.level
+    } / ${getRebirthReq()})`;
     renderLevelBar();
     renderRebirthBar();
-    if(level.level > getRebirthReq() && document.getElementById("rebirthButton").style.display === "none") {
+    if (
+      level.level > getRebirthReq() &&
+      document.getElementById("rebirthButton").style.display === "none"
+    ) {
       document.getElementById("rebirthButton").style.display = "";
     }
     displayStats();
     await new Promise((r) => setTimeout(r, 100));
   }
 }
-
-
 
 async function questLoop() {
   while (true) {
@@ -362,7 +377,10 @@ function toggleNotifications() {
 }
 
 function getFAmount(amount) {
-  return (Math.floor(amount * (Math.pow(rebirth, 2)) * (1 + level.level / 10))) * getUpgradeValue("moneyMultiplier");
+  return (
+    Math.floor(amount * Math.pow(rebirth, 2) * (1 + level.level / 10)) *
+    getUpgradeValue("moneyMultiplier")
+  );
 }
 
 // Initial calls

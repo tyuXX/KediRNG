@@ -468,6 +468,9 @@ p:hover {
   border-radius: 8px;
 }
 
+#settingsContainer {
+  grid-template-columns: repeat(auto-fill);
+}
 
 /* Mobile styling */
 @media (max-width: 600px) {
