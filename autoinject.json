@@ -13,6 +13,7 @@
     "script.js",
     "https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.4.4/lz-string.min.js",
     "modules/migrator.js",
-    "modules/gamestate.js"
+    "modules/gamestate.js",
+    "debug.js"
   ]
 }

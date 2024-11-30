@@ -15,121 +15,130 @@ function rollText() {
 }
 
 function backgroundRoll(num = getUpgradeValue("rollMultiplier")) {
+  // Pre-calculate common values
+  const luckModifier = (getUpgradeValue("luck") - 1) / 100;
+  const sellMultiplier = getUpgradeValue("sellMultiplier");
+  const autoSell = getSettingValue("iSell");
+  
+  // Batch process rolls
+  const newItems = [];
+  let moneyGained = 0;
+  
   for (let index = 0; index < num; index++) {
-    const rarit =
-      rarity.find(
-        () => Math.random() < 0.5 - (getUpgradeValue("luck") - 1) / 100
-      ) || rarity[0]; // Get a random rarity
+    const rarit = rarity.find(() => Math.random() < 0.5 - luckModifier) || rarity[0];
     const grit = grades.find(() => Math.random() < 0.7);
     const selectedText = getTextFromRarity(rarit);
-    if (!checkQuestCompletion(selectedText,grit.value)) {
-      if (!getSettingValue("iSell")) {
-        inventory.push({
+    
+    if (!checkQuestCompletion(selectedText, grit.value)) {
+      const sellValue = Math.floor(
+        Math.pow(2, rarit.value) *
+        Math.pow(1.8, grit.value) *
+        Math.random()
+      ) + 1;
+      
+      if (autoSell) {
+        moneyGained += sellValue;
+      } else {
+        newItems.push({
           text: selectedText,
           rarity: rarit.value,
           grade: grit.value,
-          sell:
-            Math.floor(
-              Math.pow(2, rarit.value) *
-                Math.pow(1.8, grit.value) *
-                Math.random()
-            ) + 1,
+          sell: sellValue
         });
-      } else {
-        changeMoney(Math.floor(Math.pow(2, rarit.value) * Math.random()) + 1);
       }
     }
+    
+    // Track statistics
     if (!raritiesDone.includes(rarit.value)) {
       raritiesDone.push(rarit.value);
       notify("New rarity found!\n" + rarit.name, getColorFromRarity(rarit));
     }
+    
     if (!combinationsDone.includes(rarit.value + "-" + grit.value)) {
       combinationsDone.push(rarit.value + "-" + grit.value);
     }
+    
     changeStat("totalRolls", 1);
-    if (
-      getStat("topSellPay") <
-      Math.floor(Math.pow(2, rarit.value) * Math.random()) + 1
-    ) {
-      changeStat(
-        "topSellPay",
-        Math.floor(Math.pow(2, rarit.value) * Math.random()) + 1
-      ),
-        true;
+    
+    // Update high scores
+    const potentialSell = Math.floor(Math.pow(2, rarit.value) * Math.random()) + 1;
+    if (getStat("topSellPay") < potentialSell) {
+      changeStat("topSellPay", potentialSell, true);
     }
+    
     if (rarit.value > getStat("highestRarity")) {
       changeStat("highestRarity", rarit.value, true);
       notify("New highest rarity!\n" + rarit.name, getColorFromRarity(rarit));
     }
+    
     if (grit.value > getStat("highestGrade")) {
       changeStat("highestGrade", grit.value, true);
       notify("New highest grade!\n" + grit.name, grit.color);
     }
+    
     const textValue = Math.pow(rarit.value, 2) * Math.pow(1.8, grit.value);
-    const previousValue =
-      Math.pow(2, getStat("highestVRarity")) *
-      Math.pow(1.8, getStat("highestVGrade"));
+    const previousValue = Math.pow(2, getStat("highestVRarity")) * Math.pow(1.8, getStat("highestVGrade"));
+    
     if (textValue > previousValue) {
       changeStat("highestVRarity", rarit.value, true);
       changeStat("highestVGrade", grit.value, true);
-      notify(
-        "New valued highest Text!\n " + rarit.name + "-" + grit.name,
-        getColorFromRarity(rarit)
-      );
+      notify("New valued highest Text!\n " + rarit.name + "-" + grit.name, getColorFromRarity(rarit));
     }
+  }
+  
+  // Batch update inventory and money
+  if (autoSell) {
+    changeMoney(moneyGained);
+  } else if (newItems.length > 0) {
+    inventory.push(...newItems);
   }
 }
 
-// Function to display the inventory
+// Global event delegation for inventory
+invDiv.addEventListener('click', (e) => {
+  const sellButton = e.target.closest('button[data-index]');
+  if (sellButton) {
+    const index = parseInt(sellButton.dataset.index);
+    delItem(index);
+  }
+});
+
 async function displayInventory(half = false) {
   if (invDiv.style.display === "none") return;
 
   const fragment = document.createDocumentFragment();
-  const startIndex = half ? invDiv.childElementCount : 0;
+  const startIndex = half ? Math.max(0, inventory.length - 100) : 0;
+  const endIndex = Math.min(startIndex + 100, inventory.length);
+  const sellMultiplier = getUpgradeValue("sellMultiplier");
 
-  for (let index = startIndex; index < inventory.length; index++) {
-    const item = inventory[index];
-    const itemDiv = document.createElement("div");
-    itemDiv.classList.add("item");
-    itemDiv.dataset.rvalue = item.rarity;
-    itemDiv.style.backgroundColor = getColorFromRarity(
-      getRarityFromInt(item.rarity)
-    );
-
-    itemDiv.innerHTML = `
-      <p>${item.text}</p>
-      <p>${getRarityFromInt(item.rarity).name}</p>
-      <p style="background-color: ${getGradeFromInt(item.grade).color}">${
-      getGradeFromInt(item.grade).name
-    }</p>
-      <button onclick="delItem(${index})">Sell: ${getFAmount(
-      item.sell * getUpgradeValue("sellMultiplier")
-    ).toLocaleString()}</button>
-    `;
-
-    fragment.appendChild(itemDiv);
-  }
-
+  // Clear only if not half update
   if (!half) invDiv.innerHTML = "";
-  invDiv.appendChild(fragment);
-}
 
-function displayQuests() {
-  const questsDiv = document.getElementById("quests"); // Ensure this div exists in your HTML
-  questsDiv.innerHTML = ""; // Clear existing quests
-  quests.forEach((quest) => {
-    const questDiv = document.createElement("div");
-    questDiv.classList.add("quest");
-    questDiv.innerHTML = `
-            <p>${quest.requiredText}</p>
-            <p>${getRarityFromInt(quest.rarity).name}</p>
-            <p>Reward: ${getFAmount(quest.reward).toLocaleString()}</p>
-        `;
-    questDiv.style.backgroundColor = getColorFromRarity(
-      getRarityFromInt(quest.rarity)
-    );
-    questsDiv.appendChild(questDiv);
+  // Create item template
+  const template = document.createElement('template');
+  
+  // Batch create elements
+  const items = inventory.slice(startIndex, endIndex).map((item, idx) => {
+    const actualIndex = startIndex + idx;
+    const rarity = getRarityFromInt(item.rarity);
+    const grade = getGradeFromInt(item.grade);
+    const sellValue = getFAmount(item.sell * sellMultiplier).toLocaleString();
+    
+    template.innerHTML = `
+      <div class="item" data-rvalue="${item.rarity}" style="background-color: ${getColorFromRarity(rarity)}">
+        <p>${item.text}</p>
+        <p>${rarity.name}</p>
+        <p style="background-color: ${grade.color}">${grade.name}</p>
+        <button data-index="${actualIndex}">Sell: ${sellValue}</button>
+      </div>
+    `.trim();
+    
+    return template.content.firstChild.cloneNode(true);
   });
+  
+  // Append all items at once
+  fragment.append(...items);
+  invDiv.appendChild(fragment);
 }
 
 // Function to delete an item from the inventory
@@ -297,35 +306,58 @@ function checkQuestCompletion(text,grade) {
   return false;
 }
 
-async function renderLoop() {
-  while (true) {
-    mlabel.innerHTML = `Money: ${money.toLocaleString()}`;
-    pmlabel.innerHTML = `Potential Money: ${inventory
-      .reduce(
-        (a, b) => a + getFAmount(b.sell * getUpgradeValue("sellMultiplier")),
-        0
-      )
-      .toLocaleString()}`;
-    tlabel.innerHTML = `Text Count: ${inventory.length.toLocaleString()}`;
-    document.getElementById("levelLabel").innerHTML = `Level: ${
-      level.level
-    } (EXP: ${level.xp.toLocaleString()} / ${getXpReq().toLocaleString()})`;
-    document.getElementById(
-      "rebirthLabel"
-    ).innerHTML = `Rebirth: ${rebirth} (Level: ${
-      level.level
-    } / ${getRebirthReq()})`;
+function displayQuests() {
+  const questsDiv = document.getElementById("quests");
+  const fragment = document.createDocumentFragment();
+  const template = document.createElement('template');
+  
+  // Clear existing quests
+  questsDiv.innerHTML = "";
+  
+  // Batch create quest elements
+  const questElements = quests.map(quest => {
+    const rarity = getRarityFromInt(quest.rarity);
+    template.innerHTML = `
+      <div class="quest" style="background-color: ${getColorFromRarity(rarity)}">
+        <p>${quest.requiredText}</p>
+        <p>${rarity.name}</p>
+        <p>Reward: ${getFAmount(quest.reward).toLocaleString()}</p>
+      </div>
+    `.trim();
+    
+    return template.content.firstChild.cloneNode(true);
+  });
+  
+  // Append all quests at once
+  fragment.append(...questElements);
+  questsDiv.appendChild(fragment);
+}
+
+function renderLoop() {
+  requestAnimationFrame(renderLoop);
+  
+  // Cache DOM elements
+  const levelLabel = document.getElementById("levelLabel");
+  const rebirthLabel = document.getElementById("rebirthLabel");
+  
+  // Batch DOM updates
+  requestAnimationFrame(() => {
+    levelLabel.textContent = `Level: ${level.level} (EXP: ${level.xp.toLocaleString()} / ${getXpReq().toLocaleString()})`;
+    rebirthLabel.textContent = `Rebirth: ${rebirth} (Level: ${level.level} / ${getRebirthReq()})`;
+    mlabel.textContent = `Money: ${getFAmount(money).toLocaleString()}`;
+    pmlabel.textContent = `Potential Money: ${getFAmount(
+      inventory.reduce((a, b) => a + b.sell * getUpgradeValue("sellMultiplier"), 0)
+    ).toLocaleString()}`;
+    tlabel.textContent = `Text count: ${inventory.length}`;
+    
     renderLevelBar();
     renderRebirthBar();
-    if (
-      level.level > getRebirthReq() &&
-      document.getElementById("rebirthButton").style.display === "none"
-    ) {
+    
+    if (level.level >= getRebirthReq()) {
       document.getElementById("rebirthButton").style.display = "";
     }
     displayStats();
-    await new Promise((r) => setTimeout(r, 100));
-  }
+  });
 }
 
 async function questLoop() {
@@ -382,6 +414,29 @@ function getFAmount(amount) {
     getUpgradeValue("moneyMultiplier")
   );
 }
+
+// Cache maps for O(1) lookups
+const rarityMap = new Map();
+const gradeMap = new Map();
+
+// Initialize cache maps
+function initializeCacheMaps() {
+    rarity.forEach(r => rarityMap.set(r.value, r));
+    grades.forEach(g => gradeMap.set(g.value, g));
+}
+
+// Replace getRarityFromInt with cached version
+function getRarityFromInt(value) {
+    return rarityMap.get(value) || rarity[0];
+}
+
+// Replace getGradeFromInt with cached version
+function getGradeFromInt(value) {
+    return gradeMap.get(value) || grades[0];
+}
+
+// Initialize maps on load
+initializeCacheMaps();
 
 // Initial calls
 
