@@ -105,39 +105,29 @@ invDiv.addEventListener('click', (e) => {
 
 async function displayInventory(half = false) {
   if (invDiv.style.display === "none") return;
-
   const fragment = document.createDocumentFragment();
-  const startIndex = half ? Math.max(0, inventory.length - 100) : 0;
-  const endIndex = Math.min(startIndex + 100, inventory.length);
-  const sellMultiplier = getUpgradeValue("sellMultiplier");
-
-  // Clear only if not half update
+  const startIndex = half ? invDiv.childElementCount : 0;
+  for (let index = startIndex; index < inventory.length; index++) {
+    const item = inventory[index];
+    const itemDiv = document.createElement("div");
+    itemDiv.classList.add("item");
+    itemDiv.dataset.rvalue = item.rarity;
+    itemDiv.style.backgroundColor = getColorFromRarity(
+      getRarityFromInt(item.rarity)
+    );
+    itemDiv.innerHTML = `
+      <p>${item.text}</p>
+      <p>${getRarityFromInt(item.rarity).name}</p>
+      <p style="background-color: ${getGradeFromInt(item.grade).color}">${
+      getGradeFromInt(item.grade).name
+    }</p>
+      <button onclick="delItem(${index})">Sell: ${getFAmount(
+      item.sell * getUpgradeValue("sellMultiplier")
+    ).toLocaleString()}</button>
+    `;
+    fragment.appendChild(itemDiv);
+  }
   if (!half) invDiv.innerHTML = "";
-
-  // Create item template
-  const template = document.createElement('template');
-  
-  // Batch create elements
-  const items = inventory.slice(startIndex, endIndex).map((item, idx) => {
-    const actualIndex = startIndex + idx;
-    const rarity = getRarityFromInt(item.rarity);
-    const grade = getGradeFromInt(item.grade);
-    const sellValue = getFAmount(item.sell * sellMultiplier).toLocaleString();
-    
-    template.innerHTML = `
-      <div class="item" data-rvalue="${item.rarity}" style="background-color: ${getColorFromRarity(rarity)}">
-        <p>${item.text}</p>
-        <p>${rarity.name}</p>
-        <p style="background-color: ${grade.color}">${grade.name}</p>
-        <button data-index="${actualIndex}">Sell: ${sellValue}</button>
-      </div>
-    `.trim();
-    
-    return template.content.firstChild.cloneNode(true);
-  });
-  
-  // Append all items at once
-  fragment.append(...items);
   invDiv.appendChild(fragment);
 }
 
