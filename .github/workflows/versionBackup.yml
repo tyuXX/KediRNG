@@ -13,9 +13,9 @@ jobs:
     steps:
       - name: Checkout versioning branch
         id: check_branch
-        uses: actions/checkout@main
+        uses: actions/checkout@v3
         with:
-          ref: versioning
+          ref: versioning-${{ github.event.workflow_run.head_branch }}
 
       - name: Set Git configuration for commit
         run: |
@@ -25,16 +25,18 @@ jobs:
       - name: Get the latest version
         id: get_version
         run: |
-          git checkout versioning
+          git checkout versioning-${{ github.event.workflow_run.head_branch }}
           if [ -f version.v ]; then
               echo "version=$(cat version.v)" >> $GITHUB_ENV
+          else
+              echo "version=1" >> $GITHUB_ENV
           fi
 
       - name: Checkout main branch files
         id: checkout_main
         uses: actions/checkout@v3
         with:
-          ref: main
+          ref: ${{ github.event.workflow_run.head_branch }}
           path: main
 
       - name: Backup version
@@ -69,9 +71,9 @@ jobs:
           cp version.json versions/lastest/
 
           # Create a change log file with the commit hash, commit message, and date.
-          echo "Commit Hash: ${{ github.event.workflow_run.head_commit.id }}\n" > versions/${{ env.version }}/change_log.txt
+          echo "Commit Hash: ${{ github.event.workflow_run.head_commit.id }}" > versions/${{ env.version }}/change_log.txt
           echo "Commit Date: ${{ github.event.workflow_run.head_commit.timestamp }}" >> versions/${{ env.version }}/change_log.txt
-          echo "Commit Message: ${{ github.event.workflow_run.head_commit.message }}\n" >> versions/${{ env.version }}/change_log.txt
+          echo "Commit Message: ${{ github.event.workflow_run.head_commit.message }}" >> versions/${{ env.version }}/change_log.txt
           echo "Version: ${{ env.version }}" >> versions/${{ env.version }}/change_log.txt
 
           echo "Commit Hash: ${{ github.event.workflow_run.head_commit.id }}" > versions/lastest/change_log.txt
@@ -82,7 +84,7 @@ jobs:
           # Commit the backup folder.
           git add versions/${{ env.version }}
           git add versions/lastest
-          git commit -m "Backup of version ${{ env.version }} from main branch" || echo "Nothing to commit"
-          git push origin versioning
+          git commit -m "Backup of version ${{ env.version }} from branch ${{ github.event.workflow_run.head_branch }}" || echo "Nothing to commit"
+          git push origin versioning-${{ github.event.workflow_run.head_branch }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

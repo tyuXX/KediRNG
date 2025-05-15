@@ -3,7 +3,7 @@ name: Update Version Info
 on:
   push:
     branches:
-      - main
+      - '*'               # changed from "main" to any branch
 
 jobs:
   update-version:
@@ -13,6 +13,7 @@ jobs:
       - name: Checkout existing repository
         uses: actions/checkout@v3
         with:
+          ref: ${{ github.ref_name }}   # use triggering branch dynamically
           fetch-depth: 0  # Fetch all history for all branches and tags
 
       - name: Set Git configuration for commit
@@ -22,28 +23,23 @@ jobs:
 
       - name: Set up Git and create Versioning branch
         run: |
-          # Ensure the remote is set to the repository's origin
+          versioning_branch="versioning-${{ github.ref_name }}"
+          echo "VERSIONING_BRANCH=$versioning_branch" >> $GITHUB_ENV
           git remote add origin $GITHUB_SERVER_URL/$GITHUB_REPOSITORY.git || true
-
-          # Check if the versioning branch exists remotely
-          if git ls-remote --exit-code --heads origin versioning; then
+          if git ls-remote --exit-code --heads origin "$versioning_branch"; then
             echo "Versioning branch exists."
           else
             echo "Versioning branch does not exist. Creating it..."
-            # Create an orphan branch which does not inherit the history
-            git checkout --orphan versioning
-            # Remove all files from the index
+            git checkout --orphan "$versioning_branch"
             git rm -rf .
-            # Make an empty commit to initiate the new branch
             git commit --allow-empty -m "Initial commit for versioning branch"
-            # Push the new branch to the remote repository
-            git push -u origin versioning
+            git push -u origin "$versioning_branch"
           fi
 
       - name: Checkout versioning branch
         uses: actions/checkout@v3
         with:
-          ref: versioning
+          ref: ${{ env.VERSIONING_BRANCH }}   # use the dynamic versioning branch
 
       - name: Get the latest commit hash
         id: get_commit
@@ -72,6 +68,6 @@ jobs:
         run: |
           git add version.json version.v
           git commit -m "Update version files with the latest version and commit hash"
-          git push origin versioning
+          git push origin "${VERSIONING_BRANCH}"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
