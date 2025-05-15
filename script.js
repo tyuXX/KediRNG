@@ -334,7 +334,7 @@ function renderLoop() {
   requestAnimationFrame(() => {
     levelLabel.textContent = `Level: ${level.level} (EXP: ${level.xp.toLocaleString()} / ${getXpReq().toLocaleString()})`;
     rebirthLabel.textContent = `Rebirth: ${rebirth} (Level: ${level.level} / ${getRebirthReq()})`;
-    mlabel.textContent = `Money: ${getFAmount(money).toLocaleString()}`;
+    mlabel.textContent = `Money: ${money.toLocaleString()}`;
     pmlabel.textContent = `Potential Money: ${getFAmount(
       inventory.reduce((a, b) => a + b.sell * getUpgradeValue("sellMultiplier"), 0)
     ).toLocaleString()}`;

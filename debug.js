@@ -256,3 +256,5 @@ Help:
 
 // Initialize debug mode
 console.log('[DEBUG] Type DEBUG.help() for available commands.\n[DEBUG] Please do not use this to cheat, but only to test.');
+
+globalThis.DEBUG = DEBUG;

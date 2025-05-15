@@ -9,17 +9,21 @@ async function loadScripts() {
     const { scripts } = await response.json();
     scriptsToLoad = scripts.length;
 
-    scripts.forEach((src) => {
-      const script = document.createElement("script");
-      script.src = `${src}?v=${new Date().getTime()}`; // Adding a unique timestamp as a cache-buster
-      script.async = false;
-      scriptContainer.appendChild(script);
-      scriptLoaded++;
+    scripts.forEach((script) => {
+      DDCInjector.injectScript(
+        script.src,
+        script.src,
+        false,
+        script.module,
+        () => {
+          scriptLoaded++;
+          scriptInfo.textContent = `Scripts loaded: ${scriptLoaded} / ${scriptsToLoad}`;
+        }
+      )
     });
   } catch (error) {
     console.error("Failed to load scripts:", error);
   }
-  scriptInfo.textContent = `Scripts loaded: ${scriptLoaded} / ${scriptsToLoad}`;
 }
 
 loadScripts();

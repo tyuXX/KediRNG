@@ -1,0 +1,77 @@
+name: Update Version Info
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  update-version:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout existing repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # Fetch all history for all branches and tags
+
+      - name: Set Git configuration for commit
+        run: |
+            git config --global user.name "github-actions[bot]"
+            git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Set up Git and create Versioning branch
+        run: |
+          # Ensure the remote is set to the repository's origin
+          git remote add origin $GITHUB_SERVER_URL/$GITHUB_REPOSITORY.git || true
+
+          # Check if the versioning branch exists remotely
+          if git ls-remote --exit-code --heads origin versioning; then
+            echo "Versioning branch exists."
+          else
+            echo "Versioning branch does not exist. Creating it..."
+            # Create an orphan branch which does not inherit the history
+            git checkout --orphan versioning
+            # Remove all files from the index
+            git rm -rf .
+            # Make an empty commit to initiate the new branch
+            git commit --allow-empty -m "Initial commit for versioning branch"
+            # Push the new branch to the remote repository
+            git push -u origin versioning
+          fi
+
+      - name: Checkout versioning branch
+        uses: actions/checkout@v3
+        with:
+          ref: versioning
+
+      - name: Get the latest commit hash
+        id: get_commit
+        run: echo "commit_hash=$(git rev-parse HEAD)" >> $GITHUB_ENV
+
+      - name: Check and increment version number
+        run: |
+          if [ -f version.v ]; then
+            version=$(cat version.v)
+            version=$((version + 1))
+          else
+            version=1
+          fi
+          echo "$version" > version.v
+          echo "version=$version" >> $GITHUB_ENV
+
+      - name: Create version.json with commit details
+        run: |
+          # Retrieve the current commit date in ISO8601 format.
+          commit_date=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+          # Retrieve the latest commit message.
+          commit_message=$(git log -1 --pretty=%B)
+          echo "{ \"commitHash\": \"${{ env.commit_hash }}\", \"commitDate\": \"${commit_date}\", \"version\": \"${{ env.version }}\", \"commitMessage\": \"${commit_message}\" }" > version.json
+
+      - name: Commit and push version.json and version.v to versioning branch
+        run: |
+          git add version.json version.v
+          git commit -m "Update version files with the latest version and commit hash"
+          git push origin versioning
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

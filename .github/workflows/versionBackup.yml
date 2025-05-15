@@ -1,0 +1,88 @@
+name: Backup Last Version
+
+on:
+  workflow_dispatch:
+  workflow_run:
+    workflows: ["Update Version Info"]
+    types:
+      - completed
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout versioning branch
+        id: check_branch
+        uses: actions/checkout@main
+        with:
+          ref: versioning
+
+      - name: Set Git configuration for commit
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Get the latest version
+        id: get_version
+        run: |
+          git checkout versioning
+          if [ -f version.v ]; then
+              echo "version=$(cat version.v)" >> $GITHUB_ENV
+          fi
+
+      - name: Checkout main branch files
+        id: checkout_main
+        uses: actions/checkout@v3
+        with:
+          ref: main
+          path: main
+
+      - name: Backup version
+        id: backup_version
+        run: |
+          if [ -z "${{ env.version }}" ]; then
+              echo "No version found. Exiting."
+              exit 1
+          fi
+
+          # Check if versions directory exists, if not create it.
+          if [ ! -d "versions" ]; then
+              mkdir versions
+          fi
+
+          # Check if the lastest version directory exists, if not create it.
+          if [ ! -d "versions/lastest" ]; then
+              mkdir versions/lastest
+          fi
+
+          # Create a new directory with the version number in the versioning branch.
+          mkdir -p versions/${{ env.version }}
+
+          # Copy files from the checked-out main branch (in the "main" folder) into the backup directory.
+          cp -R main/* versions/${{ env.version }}/
+          cp -R main/* versions/lastest/
+
+          # Copy the version file to the backup directory.
+          cp version.v versions/${{ env.version }}/
+          cp version.json versions/${{ env.version }}/
+          cp version.v versions/lastest/
+          cp version.json versions/lastest/
+
+          # Create a change log file with the commit hash, commit message, and date.
+          echo "Commit Hash: ${{ github.event.workflow_run.head_commit.id }}\n" > versions/${{ env.version }}/change_log.txt
+          echo "Commit Date: ${{ github.event.workflow_run.head_commit.timestamp }}" >> versions/${{ env.version }}/change_log.txt
+          echo "Commit Message: ${{ github.event.workflow_run.head_commit.message }}\n" >> versions/${{ env.version }}/change_log.txt
+          echo "Version: ${{ env.version }}" >> versions/${{ env.version }}/change_log.txt
+
+          echo "Commit Hash: ${{ github.event.workflow_run.head_commit.id }}" > versions/lastest/change_log.txt
+          echo "Commit Date: ${{ github.event.workflow_run.head_commit.timestamp }}" >> versions/lastest/change_log.txt
+          echo "Commit Message: ${{ github.event.workflow_run.head_commit.message }}" >> versions/lastest/change_log.txt
+          echo "Version: ${{ env.version }}" >> versions/lastest/change_log.txt
+
+          # Commit the backup folder.
+          git add versions/${{ env.version }}
+          git add versions/lastest
+          git commit -m "Backup of version ${{ env.version }} from main branch" || echo "Nothing to commit"
+          git push origin versioning
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

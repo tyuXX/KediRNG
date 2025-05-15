@@ -1,12 +1,17 @@
-const gVersion = 12;
-var UUID =
-  Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2);
+import {
+  loadLocalSave,
+  newSave,
+  loadStringSave
+} from "https://tyuxx.github.io/tyuLIB/lib/ddcGame/gameSave.js";
+
+const gVersion = 13;
+const saveID = "KediRNG";
 
 // Function to get game data
 function getGameData() {
   lastSave = Date.now();
   return {
-    version: gVersion,
+    version: gVersion, // added version property
     money: money,
     inventory: inventory,
     boughtUpgrades: boughtUpgrades,
@@ -16,7 +21,6 @@ function getGameData() {
     lastSave: lastSave,
     upgradeValues: upgradeValues,
     stats: stats,
-    UUID: UUID,
     doneAchivements: doneAchivements,
     setSettings: setSettings,
     rebirth: rebirth,
@@ -54,16 +58,13 @@ function setGameData(gameData) {
       }
     }
   });
-  UUID =
-    gameData.UUID ||
-    Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2);
   doneAchivements = gameData.doneAchivements || [];
   setSettings = gameData.setSettings || {};
   initSettings();
   rebirth = gameData.rebirth || 1;
   combinationsDone = gameData.combinationsDone || [];
   // Load other properties here as needed
-  
+
   // Migrate game data
   migrate(gameData.versionString, gameData.version);
 
@@ -81,43 +82,49 @@ function setGameData(gameData) {
 
 // Function to save game data to file
 function saveGame() {
-  const compressed = LZString.compressToUTF16(JSON.stringify(getGameData())); // Compress the JSON string
-  const blob = new Blob([compressed], { type: "text/plain" });
+  // Create a DDCSave instance using the library and trigger download
+  const saveInstance = newSave(getGameData(), gVersion, saveID);
+  const saveString = saveInstance.ToString();
+  const blob = new Blob([saveString], { type: "text/plain" });
   const link = document.createElement("a");
   link.href = URL.createObjectURL(blob);
-  link.download = UUID + "(v" + gVersion + ").gsdsv";
+  link.download = saveID + "(v" + gVersion + ").gsdsv";
   link.click();
 }
 
 // Function to save game data to localStorage (for autosave)
 async function saveGameToLocalStorage() {
   notify("Saving game...");
-  const compressed = LZString.compressToUTF16(JSON.stringify(getGameData()));
-  localStorage.setItem("autosave", compressed); // Save to localStorage
+  // Use library function to save to localStorage
+  const saveInstance = newSave(getGameData(), gVersion, saveID);
+  saveInstance.saveToLocal();
   notify("Game saved successfully!", "green");
 }
 
 // Function to load game data from a compressed string
 function loadGameData(compressedData, notifySuccess = true) {
   try {
-    const json = LZString.decompressFromUTF16(compressedData);
-    if (json) {
-      const gameData = JSON.parse(json);
-      setGameData(gameData);
-      if (notifySuccess) notify("Game loaded successfully!", "green");
-    } else {
-      notify("Error loading game data: data is corrupted or invalid", "red");
+    // Use the library's loadStringSave to verify integrity and parse the save
+    const saveInstance = loadStringSave(compressedData);
+    if (!saveInstance) {
+      throw new Error("Integrity check failed");
     }
+    setGameData(saveInstance.data);
+    if (notifySuccess) notify("Game loaded successfully!", "green");
   } catch (error) {
     notify("Error loading game data: " + error, "red");
+    console.error("Error loading game data:", error);
   }
 }
 
 // Function to load game data from localStorage (for autosave)
 function loadGameFromLocalStorage() {
-  const compressedData = localStorage.getItem("autosave");
-  if (compressedData) {
-    loadGameData(compressedData, false); // Load without success notification
+  // Use the library function to load the save using saveID as saveID
+  const saveInstance = loadLocalSave(saveID);
+  if (saveInstance) {
+    setGameData(saveInstance.data);
+  } else {
+    notify("No valid autosave found", "red");
   }
 }
 
@@ -142,3 +149,10 @@ setInterval(saveGameToLocalStorage, 30000); // Start autosaving every 30 seconds
 // Adding event listener to load input
 document.getElementById("load-input").addEventListener("change", loadGame);
 document.getElementById("saveButton").textContent += " (v" + gVersion + ")";
+
+
+globalThis.loadGame = loadGame;
+globalThis.saveGame = saveGame;
+globalThis.saveGameToLocalStorage = saveGameToLocalStorage;
+globalThis.loadGameFromLocalStorage = loadGameFromLocalStorage;
+globalThis.resetGame = resetGame;

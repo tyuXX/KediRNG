@@ -114,8 +114,12 @@
 
     <div id="forced">
       <script src="modules/performance.js" defer></script>
-      <script src="injector.js" defer></script>
+      <script src="https://tyuxx.github.io/tyuLIB/lib/ddcInjector/injector.js" type="module"></script>
+      <script defer>
+        setTimeout(() => {
+          DDCInjector.injectScript("injector", "./injector.js", false, false);
+        }, 10)
+      </script>
     </div>
-    <div id="injected"></div>
   </body>
 </html>
