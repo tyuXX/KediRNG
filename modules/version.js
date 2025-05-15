@@ -4,9 +4,9 @@ var versionString;
 // Load version info and display it in your game
 async function loadVersionInfo() {
   try {
-    // Fetch from the 'versioning' branch with refs/heads
+    // Fetch from the 'versioning-master' branch with refs/heads
     const response = await fetch(
-      "https://raw.githubusercontent.com/tyuXX/KediRNG/refs/heads/versioning/version.json?v=" +
+      "https://raw.githubusercontent.com/tyuXX/KediRNG/refs/heads/versioning-master/version.json?v=" +
         new Date().getTime()
     );
     if (!response.ok) {
@@ -15,7 +15,7 @@ async function loadVersionInfo() {
     const versionData = await response.json();
 
     const response2 = await fetch(
-      "https://raw.githubusercontent.com/tyuXX/KediRNG/refs/heads/versioning/version.v?v=" +
+      "https://raw.githubusercontent.com/tyuXX/KediRNG/refs/heads/versioning-master/version.v?v=" +
         new Date().getTime()
     );
     if (!response2.ok) {
@@ -38,7 +38,7 @@ async function versionCheckloop() {
   while (true) {
     try {
       const response = await fetch(
-        "https://raw.githubusercontent.com/tyuXX/KediRNG/refs/heads/versioning/version.v?v=" +
+        "https://raw.githubusercontent.com/tyuXX/KediRNG/refs/heads/versioning-master/version.v?v=" +
           new Date().getTime()
       );
       if (versionString !== (await response.text()).trim()) {
