@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Kedi RNG</title>
+    <meta name="description" content="HAHAYES" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      http-equiv="Cache-Control"
+      content="no-cache, no-store, must-revalidate"
+    />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div id="topMenu">
+      <div id="versionInfo">Pending...</div>
+      <label id="scriptInfo" for="scripts">Pending...</label>
+      <a href="https://github.com/tyuXX/KediRNG">This game is open source!</a>
+      <a href="https://github.com/tyuXX/KediRNG/issues"
+        >Please report bugs, and help us improve the game.</a
+      >
+      <label id="fpsLabel" for="fps">Fps: Pending...</label>
+    </div>
+
+    <div id="notifications"></div>
+
+    <h1>Kedi RNG</h1>
+    <div class="page" id="leveling">
+      <label class="label" id="levelLabel">Pending...</label>
+      <div id="levelBarI"></div>
+      <label class="label" id="rebirthLabel">Pending...</label>
+      <div id="rebirthBarI"></div>
+      <button
+        id="rebirthButton"
+        onclick="rebirthHandler()"
+        style="display: none; margin: 10px"
+      >
+        Rebirth
+      </button>
+    </div>
+    <div>
+      <label class="label" id="tlabel" for="Text count">Pending...</label>
+      <label class="label" id="mlabel" for="Money">Pending...</label>
+      <label class="label" id="pmlabel" for="Potential Money">Pending...</label>
+    </div>
+    <div>
+      <button onclick="rollText()">Roll for TEXT</button>
+      <button id="toggleInventory" onclick="toggleInventory()">
+        Toggle Inventory
+      </button>
+      <button id="toggleNotifications" onclick="toggleNotifications()">
+        Notifications (ON)
+      </button>
+      <button onclick="openSellAllPopup()">Sell All</button>
+    </div>
+
+    <div id="pages">
+      <div class="page" id="inventory" class="grid-container"></div>
+      <div class="page" id="shop">
+        <h2>Shop</h2>
+        <div id="upgrades" class="grid-container"></div>
+      </div>
+      <div class="page" id="questsContainer">
+        <h2>Quests</h2>
+        <div id="quests" class="grid-container"></div>
+      </div>
+      <div class="page" id="statsContainer">
+        <h2>Stats</h2>
+        <div class="grid-container" id="stats"></div>
+      </div>
+      <div class="page" id="achivements">
+        <h2>Achivements</h2>
+        <div class="grid-container" id="achivementsContiner"></div>
+      </div>
+      <div class="page" id="settings">
+        <h2>Settings</h2>
+        <div class="grid-container" id="settingsContainer"></div>
+      </div>
+    </div>
+
+    <!-- Sell All Popup -->
+    <div id="sellAllPopup" class="popup" style="display: none">
+      <div class="popup-content">
+        <h2>Sell All Items by Rarity</h2>
+        <form id="rarityForm" class="page">
+          <div id="rarityCheckboxes"></div>
+          <button type="button" onclick="sellSelectedRarities()">Done</button>
+          <button type="button" onclick="sellAll()">Sell All</button>
+          <button type="button" onclick="closePopup()">Cancel</button>
+        </form>
+      </div>
+    </div>
+
+    <div id="saveLoad">
+      <button id="saveButton" onclick="saveGame()">Save Game to file</button>
+      <button id="saveButton" onclick="saveGameToLocalStorage()">
+        Save Game to browser
+      </button>
+      <input type="file" id="load-input" style="display: none" />
+      <button onclick="document.getElementById('load-input').click();">
+        Load Game
+      </button>
+      <button
+        id="resetButton"
+        onclick="resetGame()"
+        style="background-color: red"
+      >
+        Reset Game
+      </button>
+    </div>
+
+    <div id="forced">
+      <script src="https://tyuxx.github.io/tyuLIB/lib/ddcInjector/injector.js" type="module"></script>
+      <script defer>
+        let id = setInterval(() => {
+          if(DDCInjector){
+            clearInterval(id)
+            DDCInjector.injectScript("injector", "./injector.js", false, false);
+          }
+        }, 100)
+      </script>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,542 @@
+const rarity = [
+  {
+    name: "Common",
+    value: 0,
+    id: "common",
+    texts: [
+      "Bruh",
+      "Trash",
+      "Go pack p2w at pets go",
+      "Cry",
+      "Leave",
+      "L",
+      "Is that the best you can do?",
+      "Keep trying, rookie!",
+      "Commonly common",
+      "Pehhhhhhhhhhhhhhhhhhhhhhhhhhhh",
+      "C-o-m-m-o-n",
+      "1/2 chance",
+      "Annoying for people who don't understand common's power",
+      "Worst of the worst",
+      "nooooooooooooooooooooooooooooooooooooooooo way so lucky(joke)",
+      "CEO of bad luck",
+      "Nerf Common!!!",
+      "Could be uncommon later(very)",
+      "Luck? What's that?",
+      "Cry about it.",
+      "Hahayes.exe",
+      "Can you not?",
+      "Blud got that peasant treatment",
+      "Common video's comment from common answered by common liked by common disliked by Common+ talked about CEO of common founded by common, common video from common"
+    ],
+    colors: ["#AAAAAA"],
+  },
+  {
+    name: "Uncommon",
+    value: 1,
+    id: "uncommon",
+    texts: [
+      "Unlucky",
+      "oh my god i am a noob",
+      "uncommon steak?",
+      "Little L",
+      "Almost there!",
+      "This isn't quite rare yet...",
+      "One of a kind",
+    ],
+    colors: ["#CC3333"],
+  },
+  {
+    name: "Rare",
+    value: 2,
+    id: "rare",
+    texts: [
+      "Bad try",
+      "Microscopic L",
+      "This can't be rare",
+      "You're getting there!",
+      "Is it rare? Barely.",
+    ],
+    colors: ["#33CC33"],
+  },
+  {
+    name: "Super Rare",
+    value: 3,
+    id: "superRare",
+    texts: [
+      "Good try",
+      "Rare=Ender but Ender is an arabic name so dynamike is super arab and you too?",
+      "Close to getting El primo oh you have it?",
+      "Rare vibes detected",
+      "Could be legendary soon!",
+    ],
+    colors: ["#3333CC"],
+  },
+  {
+    name: "Epic",
+    value: 4,
+    id: "epic",
+    texts: [
+      "VAV",
+      "VAVAV",
+      "I WANT MINIMUM EXTRA SAUCE++",
+      "HAHA tarhanaman noob trash",
+      "Epic pull!",
+      "This could be the start of greatness.",
+    ],
+    colors: ["#CCCC33"],
+  },
+  {
+    name: "Super Epic",
+    value: 5,
+    id: "superEpic",
+    texts: [
+      "Lucky",
+      "WOW you luck itself actually noob",
+      "Super epic level reached!",
+      "You're on fire!",
+      "Epic but superman",
+      "only that lol",
+    ],
+    colors: ["#CC33CC"],
+  },
+  {
+    name: "Legendary",
+    value: 6,
+    id: "legendary",
+    texts: [
+      "I want my meat legendary",
+      "Cat la best",
+      "French b",
+      "Legendary vibes!",
+      "A rare sight indeed.",
+    ],
+    colors: ["#33CCCC"],
+  },
+  {
+    name: "Mythical",
+    value: 7,
+    id: "mythical",
+    texts: ["Mythic", "The stuff of legends", "A true myth!"],
+    colors: ["#B45F06"],
+  },
+  {
+    name: "Godly",
+    value: 8,
+    id: "godly",
+    texts: ["What is better", "A divine pull!", "Beyond mere mortal items"],
+    colors: ["#9932CC"],
+  },
+  {
+    name: "Cheesy",
+    value: 9,
+    id: "cheesy",
+    texts: [
+      "Why this better",
+      "Too cheesy to be true",
+      "Aged to perfection",
+      "Delicius Grilled Cheese without cheese?",
+    ],
+    colors: ["#888888"],
+  },
+  {
+    name: "Extra Sauce",
+    value: 10,
+    id: "extraSauce",
+    texts: [
+      "What the 2.2.2.2.2.2.2.2.2.2",
+      "this game",
+      "Extra sauce, extra spice",
+      "Saucy find!",
+      "Best of the worst",
+    ],
+    colors: ["#7B7B7B"],
+  },
+  {
+    name: "Common+",
+    value: 11,
+    id: "commonPlus",
+    texts: [
+      "?+?",
+      "Just a bit more rare than common",
+      "Slightly upgraded common",
+      "Just a Huge Pet",
+      "Worst of the Best"
+    ],
+    colors: ["#D2691E"],
+  },
+  {
+    name: "Uncommon+",
+    value: 12,
+    id: "uncommonPlus",
+    texts: ["Infinite loop?", "Uncommonly uncommon", "On the rise"],
+    colors: ["#800000"],
+  },
+  {
+    name: "Rare+",
+    value: 13,
+    id: "rarePlus",
+    texts: [
+      "I want huge pet",
+      "Rare indeed",
+      "Just one step away",
+      "stop this pain",
+    ],
+    colors: ["#339933"],
+  },
+  {
+    name: "Super Rare+",
+    value: 14,
+    id: "superRarePlus",
+    texts: [
+      "Banana",
+      "Beyond rare",
+      "Quite the find!",
+      "Leader of gambling nothing",
+      "Super + studios",
+    ],
+    colors: ["#333399"],
+  },
+  {
+    name: "Epic+",
+    value: 15,
+    id: "epicPlus",
+    texts: ["Gus gus op", "An epic moment", "That's epic!", "Shade the broken"],
+    colors: ["#999933"],
+  },
+  {
+    name: "Super Epic+",
+    value: 16,
+    id: "superEpicPlus",
+    texts: ["Stop it...", "Super epic win!", "You're on another level"],
+    colors: ["#990033"],
+  },
+  {
+    name: "Legendary+",
+    value: 17,
+    id: "legendaryPlus",
+    texts: ["How did we get here", "Legend in the making", "Beyond legendary!"],
+    colors: ["#FF6347"],
+  },
+  {
+    name: "Mythical+",
+    value: 18,
+    id: "mythicalPlus",
+    texts: ["Nibble", "A myth reborn", "Mythic upgrade!"],
+    colors: ["#CD853F"],
+  },
+  {
+    name: "Godly+",
+    value: 19,
+    id: "godlyPlus",
+    texts: ["Near end", "Godly indeed", "Almost divine"],
+    colors: ["#FF77FF"],
+  },
+  {
+    name: "Cheesy+",
+    value: 20,
+    id: "cheesyPlus",
+    texts: ["-1 step ahead", "Extra cheesy!", "Grated greatness","Grilled +"],
+    colors: ["#FFD700"],
+  },
+  {
+    name: "Extra Sauce+",
+    value: 21,
+    id: "extraSaucePlus",
+    texts: [
+      "The End????????",
+      "Na' bro",
+      "Overflowing with sauce",
+      "is not healthy",
+      "Mexican",
+    ],
+    colors: ["#FFD700"],
+  },
+  {
+    name: "Lucky",
+    value: 22,
+    id: "lucky",
+    texts: [
+      "Lucky, what about next time",
+      "Luck is on your side",
+      "Not bad at all!",
+      "Kedimsel RNG",
+    ],
+    colors: ["#FF9B00"],
+  },
+  {
+    name: "Prof. Dr. Brainrot",
+    value: 23,
+    id: "brainrot",
+    texts: [
+      "Who the rizzing ohio skibidi is this guy?",
+      "Is this even real?",
+      "Brainrot level: high",
+      "Skibidi Skibidi, AHHHHHHHHHHH SKIBIDIIIIIIIII",
+    ],
+    colors: ["#1B2F4B"],
+  },
+  {
+    name: "Enchancing",
+    value: 24,
+    id: "enchancing",
+    texts: ["The age of cheese and magic", "burn him he is a dark wizard!"],
+    colors: ["#C46927"],
+  },
+  {
+    name: "Goofy",
+    value: 25,
+    id: "goofy",
+    texts: ["Goofy as goofy"],
+    colors: ["#823C2A"],
+  },
+  {
+    name: "Rolling down",
+    value: 26,
+    id: "rollingDown",
+    texts: [
+      "Never gonna give you up!",
+      "Never gonna let you down.",
+      "Never gonna run around and desert you.",
+      "Never gonna make you cry.",
+      "Never gonna say goodbye.",
+      "Never gonna tell a lie and hurt you.",
+      "Get rick rolled lol",
+    ],
+    colors: ["#96FFF1"],
+  },
+  {
+    name: "Insanity",
+    value: 27,
+    id: "insanity",
+    texts: ["Blud what r u doin?", "bruh"],
+    colors: ["#7100FF"],
+  },
+  {
+    name: "Chez",
+    value: 28,
+    id: "chez",
+    texts: [
+      "Cheese+ membership not included",
+      "Chez, the ulterior version of cheese",
+    ],
+    colors: ["#FC00FF"],
+  },
+  {
+    name: "Discord mod",
+    value: 29,
+    id: "discordMod",
+    texts: ["Go touch grass", "Get a life", "Go run a mile or smth"],
+    colors: ["#037C05"],
+  },
+  {
+    name: "Divine",
+    value: 30,
+    id: "divine",
+    texts: ["Divivion by 0?","Reference to godly+??","Holeh moleh"],
+    colors: ["#FFB4F6"]
+  },
+  {
+    name: "Good game",
+    value: 31,
+    id: "goodGame",
+    texts: ["GG","You win"],
+    colors: ["#E2AE3E"]
+  },
+  {
+    name: "Grilled",
+    value: 32,
+    id: "grilled",
+    texts: ["Grilled Cheese Simulator","Tasty"],
+    colors: ["#F0FF00"]
+  },
+  {
+    name: "Grilled+",
+    value: 33,
+    id: "grilledplus",
+    texts: ["You ruined it<:(","No, its burning!"],
+    colors: ["#FF4E00"]
+  },
+  {
+    name: "+",
+    value: 34,
+    id: "plus",
+    texts: ["Huh?"],
+    colors: ["#FFFFFF"]
+  },
+  {
+    name: "Jackpot",
+    value: 35,
+    id: "plus",
+    texts: ["Huh?"],
+    colors: ["#FF9D00"]
+  },
+  {
+    name: "Ulti Common",
+    value: 36,
+    id: "ultiCommon",
+    texts: ["Ultimate version of common"],
+    colors: ["#AAAAAA"]
+  },
+  {
+    name: "Ulti Uncommon",
+    value: 37,
+    id: "ultiUncommon",
+    texts: ["Ultimate version of uncommon"],
+    colors: ["#CC3333"]
+  },
+  {
+    name: "Ulti Rare",
+    value: 38,
+    id: "ultiRare",
+    texts: ["Ultimate version of rare"],
+    colors: ["#33CC33"]
+  },
+  {
+    name: "Ulti Super Rare",
+    value: 39,
+    id: "ultiSuperRare",
+    texts: ["Ultimate version of super rare"],
+    colors: ["#3333CC"]
+  },
+  {
+    name: "Ulti Epic",
+    value: 40,
+    id: "ultiEpic",
+    texts: ["Ultimate version of epic"],
+    colors: ["#CCCC33"]
+  },
+  {
+    name: "Ulti Super Epic",
+    value: 41,
+    id: "ultiSuperEpic",
+    texts: ["Ultimate version of super epic"],
+    colors: ["#CC33CC"]
+  },
+  {
+    name: "Ulti Legendary",
+    value: 42,
+    id: "ultiLegendary",
+    texts: ["Ultimate version of legendary"],
+    colors: ["#33CCCC"]
+  },
+  {
+    name: "Ulti Mythical",
+    value: 43,
+    id: "ultiMythical",
+    texts: ["Ultimate version of mythical"],
+    colors: ["#B45F06"]
+  },
+  {
+    name: "It's over 9000!",
+    value: 44,
+    id: "itsOver9000",
+    texts: ["Yes, it' a DBZ reference", "Kakarot! Watch out"],
+    colors: ["#42FF00"]
+  },
+  {
+    name: "Toprak's Wrath",
+    value: 99,
+    id: "topraksWrath",
+    texts: ["Unlucky Car:(", "Not the car"],
+    colors: ["#8F0000"],
+  },
+  /*{
+    name: "Default",
+    value: 0,
+    id: "default",
+    texts: ["Error?", "Ç"],
+    colors: ["#8F0000"],
+  },*/
+];
+
+const grades = [
+  {
+    name: "F",
+    id: "f",
+    value: 0,
+    color: "#FF0000",
+  },
+  {
+    name: "D",
+    id: "d",
+    value: 1,
+    color: "#FF7F00",
+  },
+  {
+    name: "C",
+    id: "c",
+    value: 2,
+    color: "#FFFF00",
+  },
+  {
+    name: "B",
+    id: "b",
+    value: 3,
+    color: "#00FF00",
+  },
+  {
+    name: "A",
+    id: "a",
+    value: 4,
+    color: "#0000FF",
+  },
+  {
+    name: "S",
+    id: "s",
+    value: 5,
+    color: "#4B0082",
+  },
+  {
+    name: "S+",
+    id: "splus",
+    value: 6,
+    color: "#4B0082",
+  },
+  {
+    name: "SS",
+    id: "ss",
+    value: 7,
+    color: "#9400D3",
+  },
+  {
+    name: "SSS",
+    id: "sss",
+    value: 8,
+    color: "#FF00FF",
+  },
+  {
+    name: "P",
+    id: "p",
+    value: 9,
+    color: "#FF00FF",
+  },
+  {
+    name: "Delta",
+    id: "delta",
+    value: 10,
+    color: "#FFFFFF",
+  },
+  {
+    name: "Omega",
+    id: "omega",
+    value: 11,
+    color: "#000000",
+  },
+]
+
+function getRarityFromInt(int) {
+  return rarity.find((rarity) => rarity.value === int);
+}
+
+function getTextFromRarity(rarity) {
+  return rarity.texts[Math.floor(Math.random() * rarity.texts.length)];
+}
+
+function getColorFromRarity(rarity) {
+  return rarity.colors[Math.floor(Math.random() * rarity.colors.length)];
+}
+
+function getGradeFromInt(int) {
+  return grades.find((grade) => grade.value === int);
+}
