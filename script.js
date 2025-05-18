@@ -27,6 +27,12 @@ function backgroundRoll(num = getUpgradeValue("rollMultiplier")) {
   for (let index = 0; index < num; index++) {
     const rarit = rarity.find(() => Math.random() < 0.5 - luckModifier) || rarity[0];
     const grit = grades.find(() => Math.random() < 0.7);
+    if(!rarit) {
+      rarit = rarity[rarity.length - 1];
+    }
+    if(!grit) {
+      grit = grades[grades.length - 1];
+    }
     const selectedText = getTextFromRarity(rarit);
     
     if (!checkQuestCompletion(selectedText, grit.value)) {
