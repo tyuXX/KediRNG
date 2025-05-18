@@ -22,7 +22,7 @@ const DEBUG = {
 
     // Rolling System
     roll: {
-        texts: (amount = 1) => {
+        texts: async (amount = 1) => {
             console.log(`[DEBUG] Rolling ${amount} texts`);
             backgroundRoll(amount);
         },

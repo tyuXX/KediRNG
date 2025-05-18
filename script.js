@@ -25,8 +25,8 @@ function backgroundRoll(num = getUpgradeValue("rollMultiplier")) {
   let moneyGained = 0;
   
   for (let index = 0; index < num; index++) {
-    const rarit = rarity.find(() => Math.random() < 0.5 - luckModifier) || rarity[0];
-    const grit = grades.find(() => Math.random() < 0.7);
+    let rarit = rarity.find(() => Math.random() < 0.5 - luckModifier) || rarity[0];
+    let grit = grades.find(() => Math.random() < 0.7);
     if(!rarit) {
       rarit = rarity[rarity.length - 1];
     }
