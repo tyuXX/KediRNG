@@ -12,7 +12,7 @@ if (xhr.status === 200) {
   rarity = [];
 }
 
-const grades = [];
+let grades = [];
 const xhr2 = new XMLHttpRequest();
 xhr2.open('GET', './modules/grades.json', false); // false makes the request synchronous
 xhr2.send(null);
@@ -42,10 +42,6 @@ function getColorFromRarity(rarity) {
 }
 
 function getGradeFromInt(int) {
-  if (!isRarityLoaded) {
-    console.warn('Rarities not fully loaded yet');
-    return { name: 'Loading...', colors: ['#CCCCCC'], texts: ['Please wait...'] };
-  }
   return grades.find((grade) => grade.value === int) || { name: '?', color: '#000000' };
 }
 
