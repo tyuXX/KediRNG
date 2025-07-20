@@ -1,0 +1,20 @@
+{
+  "scripts": [
+    {"src": "modules/performance.js", "module": true},
+    {"src": "modules/defaults.js", "module": false},
+    {"src": "modules/settings.js", "module": false},
+    {"src": "modules/version.js", "module": false},
+    {"src": "modules/game.js", "module": false},
+    {"src": "modules/text.js", "module": true },
+    {"src": "modules/notifications.js", "module": false},
+    {"src": "modules/leveling.js", "module": false},
+    {"src": "modules/achivement.js", "module": false},
+    {"src": "modules/stats.js", "module": false},
+    {"src": "modules/upgrades.js", "module": false},
+    {"src": "script.js", "module": false},
+    {"src": "https://cdnjs.cloudflare.com/ajax/libs/lz-string/1.4.4/lz-string.min.js", "module": false},
+    {"src": "modules/migrator.js", "module": false},
+    {"src": "modules/gamestate.js", "module": true},
+    {"src": "debug.js", "module": true}
+  ]
+}
