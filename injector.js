@@ -1,5 +1,3 @@
-const scriptContainer = document.getElementById("injected");
-
 // Function to load scripts
 async function loadScripts() {
   let scriptsToLoad = 0;

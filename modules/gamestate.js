@@ -2,7 +2,7 @@ import {
   loadLocalSave,
   newSave,
   loadStringSave
-} from "https://tyuxx.github.io/tyuLIB/lib/ddcGame/gameSave.js";
+} from "gameSave";
 
 const gVersion = 13;
 const saveID = "KediRNG";

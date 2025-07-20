@@ -1,7 +1,6 @@
 name: Backup Last Version
 
 on:
-  workflow_dispatch:
   workflow_run:
     workflows: ["Update Version Info"]
     types:
@@ -32,13 +31,25 @@ jobs:
               echo "version=1" >> $GITHUB_ENV
           fi
 
+      - name: Cleanup versioning branch except version files
+        id: cleanup_versioning
+        run: |
+            # Remove all files except version.v, version.json, and the versions directory.
+            find . -mindepth 1 -maxdepth 1 \
+              ! -name '.git' \
+              ! -name 'version.v' \
+              ! -name 'version.json' \
+              ! -name 'versions' \
+              -exec rm -rf {} \;
+            git add . && git commit -m "Cleanup versioning branch" || echo "Nothing to commit"
+
       - name: Checkout main branch files
         id: checkout_main
         uses: actions/checkout@v3
         with:
           ref: ${{ github.event.workflow_run.head_branch }}
           path: main
-
+      
       - name: Backup version
         id: backup_version
         run: |
@@ -52,23 +63,30 @@ jobs:
               mkdir versions
           fi
 
-          # Check if the lastest version directory exists, if not create it.
-          if [ ! -d "versions/lastest" ]; then
-              mkdir versions/lastest
+          # Check if the ext version directory exists, if not create it.
+          if [ ! -d "versions/ext" ]; then
+              mkdir versions/ext
           fi
 
           # Create a new directory with the version number in the versioning branch.
           mkdir -p versions/${{ env.version }}
 
-          # Copy files from the checked-out main branch (in the "main" folder) into the backup directory.
+                    # Copy files from the checked-out main branch (in the "main" folder) into the backup directory.
           cp -R main/* versions/${{ env.version }}/
-          cp -R main/* versions/lastest/
+          sudo find main/ -mindepth 1 -maxdepth 1 \( -name ".git" -o -name ".github" \) -prune -o -exec cp -R {} . \;
+
+          # Remove the "main" checkout directory to avoid including its Git metadata.
+          rm -rf main
+
+          # Zip the main branch files and copy them to the backup directory.
+          zip -r versions/${{ env.version }}.zip .
+          zip -r versions/ext/latest.zip .
 
           # Copy the version file to the backup directory.
           cp version.v versions/${{ env.version }}/
           cp version.json versions/${{ env.version }}/
-          cp version.v versions/lastest/
-          cp version.json versions/lastest/
+          cp version.v versions/ext/
+          cp version.json versions/ext/
 
           # Create a change log file with the commit hash, commit message, and date.
           echo "Commit Hash: ${{ github.event.workflow_run.head_commit.id }}" > versions/${{ env.version }}/change_log.txt
@@ -76,14 +94,13 @@ jobs:
           echo "Commit Message: ${{ github.event.workflow_run.head_commit.message }}" >> versions/${{ env.version }}/change_log.txt
           echo "Version: ${{ env.version }}" >> versions/${{ env.version }}/change_log.txt
 
-          echo "Commit Hash: ${{ github.event.workflow_run.head_commit.id }}" > versions/lastest/change_log.txt
-          echo "Commit Date: ${{ github.event.workflow_run.head_commit.timestamp }}" >> versions/lastest/change_log.txt
-          echo "Commit Message: ${{ github.event.workflow_run.head_commit.message }}" >> versions/lastest/change_log.txt
-          echo "Version: ${{ env.version }}" >> versions/lastest/change_log.txt
+          echo "Commit Hash: ${{ github.event.workflow_run.head_commit.id }}" > versions/ext/change_log.txt
+          echo "Commit Date: ${{ github.event.workflow_run.head_commit.timestamp }}" >> versions/ext/change_log.txt
+          echo "Commit Message: ${{ github.event.workflow_run.head_commit.message }}" >> versions/ext/change_log.txt
+          echo "Version: ${{ env.version }}" >> versions/ext/change_log.txt
 
-          # Commit the backup folder.
-          git add versions/${{ env.version }}
-          git add versions/lastest
+          # Commit the versioning branch.
+          git add .
           git commit -m "Backup of version ${{ env.version }} from branch ${{ github.event.workflow_run.head_branch }}" || echo "Nothing to commit"
           git push origin versioning-${{ github.event.workflow_run.head_branch }}
         env:
