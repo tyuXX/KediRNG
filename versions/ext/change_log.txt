@@ -1,4 +1,4 @@
-Commit Hash: e6241dfb3b0d4e69f6f5ea92ae0c47c04e6e194e
-Commit Date: 2025-07-20T12:19:12Z
-Commit Message: HOTFIX
-Version: 48
+Commit Hash: 2a89e0959c7e0420569b27fee590a9c78620a7a6
+Commit Date: 2025-08-29T17:11:46Z
+Commit Message: Fix roll and sell multipliers being n-1
+Version: 49

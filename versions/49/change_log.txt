@@ -1,0 +1,4 @@
+Commit Hash: 2a89e0959c7e0420569b27fee590a9c78620a7a6
+Commit Date: 2025-08-29T17:11:46Z
+Commit Message: Fix roll and sell multipliers being n-1
+Version: 49
