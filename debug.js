@@ -255,6 +255,6 @@ Help:
 };
 
 // Initialize debug mode
-console.log('[DEBUG] Type DEBUG.help() for available commands.\n[DEBUG] Please do not use this to cheat, but only to test.');
+console.log('[DEBUG] Type DEBUG.help() for available commands.\n[DEBUG] Please do not use this to cheat, but only to test or cheat idc.');
 
 globalThis.DEBUG = DEBUG;

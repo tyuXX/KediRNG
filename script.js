@@ -14,31 +14,44 @@ function rollText() {
   displayInventory(true);
 }
 
+function getGrit() {
+  let grit = grades.find(() => Math.random() < 0.7);
+  if(!grit) {
+    grit = grades[grades.length - 1];
+  }
+  if (grit.value < (rebirth - 1) * 2) {
+    grit = getGrit();
+  }
+  return grit;
+}
+
+function getRarit() {
+  let rarit = rarity.find(() => Math.random() < 0.5 - (getUpgradeValue("luck") - 1) / 100) || rarity[0];
+  if(!rarit) {
+    rarit = rarity[rarity.length - 1];
+  }
+  if (rarit.value < (rebirth - 1) * 2) {
+    rarit = getRarit();
+  }
+  return rarit;
+}
+
 function backgroundRoll(num = getUpgradeValue("rollMultiplier")) {
-  // Pre-calculate common values
-  const luckModifier = (getUpgradeValue("luck") - 1) / 100;
   const autoSell = getSettingValue("iSell");
   
-  // Batch process rolls
   const newItems = [];
   let moneyGained = 0;
   
   for (let index = 0; index < num; index++) {
-    let rarit = rarity.find(() => Math.random() < 0.5 - luckModifier) || rarity[0];
-    let grit = grades.find(() => Math.random() < 0.7);
-    if(!rarit) {
-      rarit = rarity[rarity.length - 1];
-    }
-    if(!grit) {
-      grit = grades[grades.length - 1];
-    }
+    let rarit = getRarit();
+    let grit = getGrit();
     const selectedText = getTextFromRarity(rarit);
     
     if (!checkQuestCompletion(selectedText, grit.value)) {
       const sellValue = Math.floor(
         Math.pow(2, rarit.value) *
         Math.pow(1.8, grit.value) *
-        Math.random()
+        Math.random() * doneAchivements.length
       ) + 1;
       
       if (autoSell) {
