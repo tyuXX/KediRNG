@@ -4,7 +4,7 @@ import {
   loadStringSave
 } from "gameSave";
 
-const gVersion = 13;
+const gVersion = 14;
 const saveID = "KediRNG";
 
 // Function to get game data

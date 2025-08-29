@@ -12,4 +12,8 @@ function migrate(version, gversion){
         }
         inventory = newInventory;
     }
+    if(gversion < 14){
+        changeUpgradeValue("rollMultiplier", 1);
+        changeUpgradeValue("sellMultiplier", 1);   
+    }
 }

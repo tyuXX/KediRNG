@@ -17,7 +17,6 @@ function rollText() {
 function backgroundRoll(num = getUpgradeValue("rollMultiplier")) {
   // Pre-calculate common values
   const luckModifier = (getUpgradeValue("luck") - 1) / 100;
-  const sellMultiplier = getUpgradeValue("sellMultiplier");
   const autoSell = getSettingValue("iSell");
   
   // Batch process rolls
@@ -444,3 +443,7 @@ displayQuests();
 tickLoop();
 questLoop();
 renderLoop();
+
+// Set default upgrade values
+changeUpgradeValue("rollMultiplier", 1);
+changeUpgradeValue("sellMultiplier", 1);
