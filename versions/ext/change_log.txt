@@ -1,4 +1,9 @@
-Commit Hash: 2a89e0959c7e0420569b27fee590a9c78620a7a6
-Commit Date: 2025-08-29T17:11:46Z
-Commit Message: Fix roll and sell multipliers being n-1
-Version: 49
+Commit Hash: a6cf961d1d7794a5471285cee9e0a9818eb06040
+Commit Date: 2025-08-30T14:01:05Z
+Commit Message: - Port number system to Break_Infinity.js to handle large numbers.
+- Achivements now boost income.
+- Rebirthing increases minimum grade and minimum rarity.
+- Fix reset not working
+- Some other bugfixes
+### Please report bugs on this update, it may be unstable
+Version: 50
