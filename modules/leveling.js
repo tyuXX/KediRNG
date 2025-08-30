@@ -28,10 +28,11 @@ function addXP(amount) {
     level.xp = level.xp.plus(xpGain);
     
     // Check for level up
-    const xpNeeded = getXpReq();
-    while (level.xp.gte(xpNeeded)) {
-      level.xp = level.xp.minus(xpNeeded);
+    let timeout = 0;
+    while (level.xp.gte(getXpReq()) && timeout < 10000) {
+      level.xp = level.xp.minus(getXpReq());
       level.level = level.level.plus(1);
+      timeout++;
     }
   } else {
     // Fallback to regular number operations
@@ -39,10 +40,11 @@ function addXP(amount) {
     level.xp += xpGain;
     
     // Check for level up
-    const xpNeeded = getXpReq();
-    while (level.xp >= xpNeeded) {
-      level.xp -= xpNeeded;
+    let timeout = 0;
+    while (level.xp >= getXpReq() && timeout < 10000) {
+      level.xp -= getXpReq();
       level.level++;
+      timeout++;
     }
   }
 }

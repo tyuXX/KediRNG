@@ -14,24 +14,30 @@ function rollText() {
   displayInventory(true);
 }
 
-function getGrit() {
+function getGrit(recurse = 0) {
   let grit = grades.find(() => Math.random() < 0.7);
   if(!grit) {
     grit = grades[grades.length - 1];
   }
-  if (grit.value < (rebirth - 1) && grit.value < grades.length - 2) {
-    grit = getGrit();
+  if (grit.value < (rebirth - 1) && grit.value < grades.length - 2 && recurse < 10) {
+    grit = getGrit(recurse + 1);
+  }
+  if (recurse >= 10) {
+    grit = grades[Math.min(grades.length - 2, (rebirth - 1))];
   }
   return grit;
 }
 
-function getRarit() {
+function getRarit(recurse = 0) {
   let rarit = rarity.find(() => Math.random() < 0.5 - (getUpgradeValue("luck") - 1) / 100) || rarity[0];
   if(!rarit) {
     rarit = rarity[rarity.length - 1];
   }
-  if (rarit.value < (rebirth - 1) * 2 && rarity.value < rarity.length - 4) {
-    rarit = getRarit();
+  if (rarit.value < (rebirth - 1) * 2 && rarity.value < rarity.length - 4 && recurse < 10) {
+    rarit = getRarit(recurse + 1);
+  }
+  if (recurse >= 10) {
+    rarit = rarity[Math.min(rarity.length - 2, (rebirth - 1) * 2).floor()];
   }
   return rarit;
 }
@@ -440,7 +446,7 @@ async function tickLoop() {
   }
 }
 
-function changeMoney(amount, mult = false) {
+function changeMoney(amount) {
   // Ensure money is a Decimal
   if (!money || !money.plus) {
     money = new Decimal(money || 0);
@@ -450,7 +456,7 @@ function changeMoney(amount, mult = false) {
   money = money.plus(famount);
   
   // Ensure addXP gets a number, not a Decimal
-  addXP(famount.toNumber());
+  addXP(famount);
   
   if (famount.gt(0)) {
     changeStat("totalMoney", famount.toNumber());
@@ -473,13 +479,32 @@ function toggleNotifications() {
 }
 
 function formatNumber(num) {
-  if (num && num.isDecimal) {
-    if (num.gte(1e6)) {
-      return num.toExponential();
+  try {
+    // Handle null/undefined/empty cases
+    if (num === null || num === undefined || num === '') return '0';
+    
+    // Convert to Decimal if it's not already
+    const decimalNum = num.isDecimal ? num : new Decimal(num || 0);
+    
+    // Handle very large numbers with exponential notation
+    if (decimalNum.gte(1e15)) {
+      return decimalNum.toExponential(3);
     }
-    return num.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    
+    // Handle large numbers with commas
+    if (decimalNum.gte(1e6)) {
+      // Format with 2 decimal places for millions and above
+      const formatted = decimalNum.toFixed(2);
+      // Add commas for thousands
+      return formatted.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+    
+    // Standard number formatting with commas
+    return decimalNum.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  } catch (e) {
+    console.error('Error formatting number:', num, e);
+    return '0';
   }
-  return Number(num).toFixed(0).toLocaleString();
 }
 
 function getFAmount(amount) {
