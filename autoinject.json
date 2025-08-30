@@ -1,5 +1,6 @@
 {
   "scripts": [
+    {"src":"https://cdn.jsdelivr.net/npm/break_infinity.js@2", "module": false},
     {"src": "modules/performance.js", "module": true},
     {"src": "modules/defaults.js", "module": false},
     {"src": "modules/settings.js", "module": false},

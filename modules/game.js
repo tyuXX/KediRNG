@@ -1,5 +1,5 @@
 var raritiesDone = defRaritiesDone;
 var combinationsDone = [];
 var inventory = defInventory;
-var money = 0;
+var money = new Decimal(0);
 var quests = [];

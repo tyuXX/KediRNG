@@ -19,7 +19,7 @@ function getGrit() {
   if(!grit) {
     grit = grades[grades.length - 1];
   }
-  if (grit.value < (rebirth - 1) * 2) {
+  if (grit.value < (rebirth - 1) && grit.value < grades.length - 2) {
     grit = getGrit();
   }
   return grit;
@@ -30,7 +30,7 @@ function getRarit() {
   if(!rarit) {
     rarit = rarity[rarity.length - 1];
   }
-  if (rarit.value < (rebirth - 1) * 2) {
+  if (rarit.value < (rebirth - 1) * 2 && rarity.value < rarity.length - 4) {
     rarit = getRarit();
   }
   return rarit;
@@ -40,7 +40,7 @@ function backgroundRoll(num = getUpgradeValue("rollMultiplier")) {
   const autoSell = getSettingValue("iSell");
   
   const newItems = [];
-  let moneyGained = 0;
+  let moneyGained = new Decimal(0);
   
   for (let index = 0; index < num; index++) {
     let rarit = getRarit();
@@ -48,20 +48,21 @@ function backgroundRoll(num = getUpgradeValue("rollMultiplier")) {
     const selectedText = getTextFromRarity(rarit);
     
     if (!checkQuestCompletion(selectedText, grit.value)) {
-      const sellValue = Math.floor(
-        Math.pow(2, rarit.value) *
-        Math.pow(1.8, grit.value) *
-        Math.random() * doneAchivements.length
-      ) + 1;
+      const sellValue = new Decimal(2)
+        .pow(rarit.value)
+        .times(Decimal.pow(1.8, grit.value))
+        .times(Math.random() * doneAchivements.length)
+        .floor()
+        .plus(1);
       
       if (autoSell) {
-        moneyGained += sellValue;
+        moneyGained = Decimal.add(moneyGained, sellValue);
       } else {
         newItems.push({
           text: selectedText,
           rarity: rarit.value,
           grade: grit.value,
-          sell: sellValue
+          sell: sellValue.toNumber() // Store as number since it's used in comparisons
         });
       }
     }
@@ -79,9 +80,9 @@ function backgroundRoll(num = getUpgradeValue("rollMultiplier")) {
     changeStat("totalRolls", 1);
     
     // Update high scores
-    const potentialSell = Math.floor(Math.pow(2, rarit.value) * Math.random()) + 1;
-    if (getStat("topSellPay") < potentialSell) {
-      changeStat("topSellPay", potentialSell, true);
+    const potentialSell = new Decimal(2).pow(rarit.value).times(Math.random()).floor().plus(1);
+    if (Decimal.gt(potentialSell, getStat("topSellPay"))) {
+      changeStat("topSellPay", potentialSell.toNumber(), true);
     }
     
     if (rarit.value > getStat("highestRarity")) {
@@ -94,10 +95,10 @@ function backgroundRoll(num = getUpgradeValue("rollMultiplier")) {
       notify("New highest grade!\n" + grit.name, grit.color);
     }
     
-    const textValue = Math.pow(rarit.value, 2) * Math.pow(1.8, grit.value);
-    const previousValue = Math.pow(2, getStat("highestVRarity")) * Math.pow(1.8, getStat("highestVGrade"));
+    const textValue = new Decimal(rarit.value).pow(2).times(Decimal.pow(1.8, grit.value));
+    const previousValue = new Decimal(2).pow(getStat("highestVRarity")).times(Decimal.pow(1.8, getStat("highestVGrade")));
     
-    if (textValue > previousValue) {
+    if (textValue.gt(previousValue)) {
       changeStat("highestVRarity", rarit.value, true);
       changeStat("highestVGrade", grit.value, true);
       notify("New valued highest Text!\n " + rarit.name + "-" + grit.name, getColorFromRarity(rarit));
@@ -105,7 +106,7 @@ function backgroundRoll(num = getUpgradeValue("rollMultiplier")) {
   }
   
   // Batch update inventory and money
-  if (autoSell) {
+  if (autoSell && moneyGained.gt(0)) {
     changeMoney(moneyGained);
   } else if (newItems.length > 0) {
     inventory.push(...newItems);
@@ -139,9 +140,7 @@ async function displayInventory(half = false) {
       <p style="background-color: ${getGradeFromInt(item.grade).color}">${
       getGradeFromInt(item.grade).name
     }</p>
-      <button onclick="delItem(${index})">Sell: ${getFAmount(
-      item.sell * getUpgradeValue("sellMultiplier")
-    ).toLocaleString()}</button>
+      <button onclick="delItem(${index})">Sell: ${formatNumber(new Decimal(item.sell).times(getUpgradeValue("sellMultiplier")))}</button>
     `;
     fragment.appendChild(itemDiv);
   }
@@ -151,8 +150,10 @@ async function displayInventory(half = false) {
 
 // Function to delete an item from the inventory
 function delItem(index) {
-  if (inventory[index].sell > 0) {
-    changeMoney(inventory[index].sell * getUpgradeValue("sellMultiplier"));
+  const item = inventory[index];
+  if (item && item.sell > 0) {
+    const sellValue = new Decimal(item.sell).times(getUpgradeValue("sellMultiplier"));
+    changeMoney(sellValue);
     inventory.splice(index, 1);
     displayInventory();
   }
@@ -161,10 +162,11 @@ function delItem(index) {
 function sellAll() {
   inventory = inventory.filter((item) => {
     if (item.sell > 0) {
-      changeMoney(item.sell * getUpgradeValue("sellMultiplier")); // Add the sell value to money
-      return false; // Remove this item from inventory
+      const sellValue = new Decimal(item.sell).times(getUpgradeValue("sellMultiplier"));
+      changeMoney(sellValue);
+      return false;
     }
-    return true; // Keep this item in inventory
+    return true;
   });
   closePopup();
   displayInventory();
@@ -234,10 +236,11 @@ function sellSelectedRarities() {
   selectedRarities.forEach((rarityValue) => {
     inventory = inventory.filter((item) => {
       if (item.rarity === rarityValue && item.sell > 0) {
-        changeMoney(item.sell * getUpgradeValue("sellMultiplier")); // Add the sell value to money
-        return false; // Remove this item from inventory
+        const sellValue = new Decimal(item.sell).times(getUpgradeValue("sellMultiplier"));
+        changeMoney(sellValue);
+        return false;
       }
-      return true; // Keep this item in inventory
+      return true;
     });
   });
 
@@ -295,23 +298,32 @@ function generateRandomQuest() {
   quests.push(newQuest);
 }
 
-function checkQuestCompletion(text,grade) {
-  quests.forEach((quest) => {
+function checkQuestCompletion(text, grade) {
+  let completed = false;
+  quests = quests.filter((quest) => {
     if (text === quest.requiredText) {
-      changeStat("questsCompleted", 1);
-      changeMoney(getFAmount(quest.reward) * Math.pow(1.8,grade)); // Reward the player
-      //Remove quest from list
-      quests = quests.filter((q) => q.id !== quest.id);
-      notify(
-        "Quest completed (" + quest.requiredText + ")! Reward: " + quest.reward,
-        getColorFromRarity(getRarityFromInt(quest.rarity))
-      );
-      displayQuests();
-      // Add a notification or modal to inform the player
-      return true;
+      try {
+        changeStat("questsCompleted", 1);
+        const baseReward = getFAmount(quest.reward);
+        const gradeBonus = new Decimal(1.8).pow(grade || 0);
+        const reward = baseReward.times(gradeBonus);
+        
+        changeMoney(reward);
+        notify(
+          `Quest completed (${quest.requiredText})! Reward: ${formatNumber(reward)}`,
+          getColorFromRarity(getRarityFromInt(quest.rarity))
+        );
+        displayQuests();
+        completed = true;
+        return false; // Remove this quest
+      } catch (error) {
+        console.error('Error in checkQuestCompletion:', error, { quest, grade });
+        return true; // Keep the quest if there was an error
+      }
     }
+    return true; // Keep other quests
   });
-  return false;
+  return completed;
 }
 
 function displayQuests() {
@@ -350,20 +362,56 @@ function renderLoop() {
   
   // Batch DOM updates
   requestAnimationFrame(() => {
-    levelLabel.textContent = `Level: ${level.level} (EXP: ${level.xp.toLocaleString()} / ${getXpReq().toLocaleString()})`;
-    rebirthLabel.textContent = `Rebirth: ${rebirth} (Level: ${level.level} / ${getRebirthReq()})`;
-    mlabel.textContent = `Money: ${money.toLocaleString()}`;
-    pmlabel.textContent = `Potential Money: ${getFAmount(
-      inventory.reduce((a, b) => a + b.sell * getUpgradeValue("sellMultiplier"), 0)
-    ).toLocaleString()}`;
-    tlabel.textContent = `Text count: ${inventory.length}`;
+    // Safely get values, handling both Decimal and regular numbers
+    const currentLevel = level && level.level ? 
+      (typeof level.level.toNumber === 'function' ? level.level : new Decimal(level.level || 1)) : new Decimal(1);
+    const currentXP = level && level.xp ? 
+      (typeof level.xp.toNumber === 'function' ? level.xp : new Decimal(level.xp || 0)) : new Decimal(0);
+    
+    const xpNeeded = getXpReq();
+    const xpNeededDec = xpNeeded instanceof Decimal ? xpNeeded : new Decimal(xpNeeded || 10);
+    
+    const rebirthReq = getRebirthReq();
+    const rebirthReqDec = rebirthReq instanceof Decimal ? rebirthReq : new Decimal(rebirthReq || 10);
+    
+    // Safely format money values
+    const moneyValue = money instanceof Decimal ? money : new Decimal(money || 0);
+    
+    levelLabel.textContent = `Level: ${formatNumber(currentLevel)} (EXP: ${formatNumber(currentXP)} / ${formatNumber(xpNeededDec)})`;
+    rebirthLabel.textContent = `Rebirth: ${formatNumber(rebirth)} (Level: ${formatNumber(currentLevel)} / ${formatNumber(rebirthReqDec)})`;
+    mlabel.textContent = `Money: ${formatNumber(moneyValue)}`;
+    
+    // Calculate potential money, handling both Decimal and regular numbers
+    const potentialMoney = inventory.reduce((sum, item) => {
+      if (!item || !item.sell) return sum;
+      
+      const itemSell = item.sell instanceof Decimal ? item.sell : new Decimal(item.sell || 0);
+      const multiplier = getUpgradeValue("sellMultiplier") || 1;
+      const multiplierDec = multiplier instanceof Decimal ? multiplier : new Decimal(multiplier);
+      
+      return sum.plus(itemSell.times(multiplierDec));
+    }, new Decimal(0));
+    
+    pmlabel.textContent = `Potential Money: ${formatNumber(potentialMoney)}`;
+    tlabel.textContent = `Text count: ${formatNumber(inventory.length)}`;
     
     renderLevelBar();
     renderRebirthBar();
     
-    if (level.level >= getRebirthReq()) {
-      document.getElementById("rebirthButton").style.display = "";
+    // Check if rebirth is available
+    const currentLevelValue = level && level.level ? 
+      (typeof level.level.gte === 'function' ? level.level : new Decimal(level.level || 0)) : 
+      new Decimal(0);
+    const reqLevel = getRebirthReq();
+    const requiredLevel = reqLevel instanceof Decimal ? reqLevel : new Decimal(reqLevel || 0);
+    
+    if (currentLevelValue.gte(requiredLevel)) {
+      const rebirthButton = document.getElementById("rebirthButton");
+      if (rebirthButton) {
+        rebirthButton.style.display = "";
+      }
     }
+    
     displayStats();
   });
 }
@@ -392,13 +440,21 @@ async function tickLoop() {
   }
 }
 
-function changeMoney(amount) {
-  const famount = getFAmount(amount);
-  money += famount;
-  addXP(famount);
-  if (amount > 0) {
-    changeStat("totalMoney", famount);
-    changeStat("totalMoneyRebirth", famount);
+function changeMoney(amount, mult = false) {
+  // Ensure money is a Decimal
+  if (!money || !money.plus) {
+    money = new Decimal(money || 0);
+  }
+  
+  const famount = new Decimal(amount);
+  money = money.plus(famount);
+  
+  // Ensure addXP gets a number, not a Decimal
+  addXP(famount.toNumber());
+  
+  if (famount.gt(0)) {
+    changeStat("totalMoney", famount.toNumber());
+    changeStat("totalMoneyRebirth", famount.toNumber());
   }
 }
 
@@ -416,11 +472,60 @@ function toggleNotifications() {
   }
 }
 
+function formatNumber(num) {
+  if (num && num.isDecimal) {
+    if (num.gte(1e6)) {
+      return num.toExponential();
+    }
+    return num.toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  }
+  return Number(num).toFixed(0).toLocaleString();
+}
+
 function getFAmount(amount) {
-  return (
-    Math.floor(amount * Math.pow(rebirth, 2) * (1 + level.level / 10)) *
-    getUpgradeValue("moneyMultiplier")
-  );
+  try {
+    // Convert amount to Decimal if it isn't already
+    const amountDecimal = amount instanceof Decimal ? amount : new Decimal(amount || 0);
+    
+    // Safely get rebirth value
+    let rebirthValue;
+    try {
+      rebirthValue = rebirth instanceof Decimal ? rebirth : new Decimal(rebirth || 1);
+    } catch (e) {
+      console.warn("Error getting rebirth value: ", e);
+      console.warn('Invalid rebirth value, using 1:', rebirth);
+      rebirthValue = new Decimal(1);
+    }
+    
+    // Safely get level value
+    let levelValue = new Decimal(1);
+    if (level && level.level !== undefined) {
+      try {
+        levelValue = level.level instanceof Decimal ? level.level : new Decimal(level.level || 1);
+      } catch (e) {
+        console.warn("Error getting level value, using 1", e);
+        console.warn('Invalid level value, using 1:', level.level);
+      }
+    }
+    
+    // Get money multiplier safely
+    let moneyMultiplier;
+    try {
+      moneyMultiplier = new Decimal(getUpgradeValue("moneyMultiplier") || 1);
+    } catch (e) {
+      console.warn('Invalid moneyMultiplier, using 1');
+      moneyMultiplier = new Decimal(1);
+    }
+    
+    // Perform calculations safely
+    const rebirthBonus = rebirthValue.times(rebirthValue);
+    const levelBonus = levelValue.dividedBy(10).plus(1);
+    
+    return amountDecimal.times(rebirthBonus).times(levelBonus).times(moneyMultiplier);
+  } catch (error) {
+    console.error('Error in getFAmount:', error, { amount, rebirth, level });
+    return new Decimal(0);
+  }
 }
 
 // Cache maps for O(1) lookups

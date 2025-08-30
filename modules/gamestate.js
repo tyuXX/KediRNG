@@ -4,14 +4,67 @@ import {
   loadStringSave
 } from "gameSave";
 
-const gVersion = 14;
+const gVersion = 15; // Bump version for Decimal support
+
+// Function to convert Decimal values to plain objects for saving
+function convertToSaveFormat(data) {
+  if (data === null || typeof data !== 'object') {
+    return data;
+  }
+
+  // Handle arrays
+  if (Array.isArray(data)) {
+    return data.map(item => convertToSaveFormat(item));
+  }
+
+  // Handle Decimal objects
+  if (typeof Decimal !== 'undefined' && data instanceof Decimal) {
+    return { __decimal__: true, value: data.toString() };
+  }
+
+  // Handle regular objects
+  const result = {};
+  for (const key in data) {
+    if (data.hasOwnProperty(key)) {
+      result[key] = convertToSaveFormat(data[key]);
+    }
+  }
+  return result;
+}
+
+// Function to restore Decimal values from saved data
+function restoreFromSaveFormat(data) {
+  if (data === null || typeof data !== 'object') {
+    return data;
+  }
+
+  // Handle Decimal restoration
+  if (data.__decimal__ === true && data.value) {
+    return new Decimal(data.value);
+  }
+
+  // Handle arrays
+  if (Array.isArray(data)) {
+    return data.map(item => restoreFromSaveFormat(item));
+  }
+
+  // Handle regular objects
+  const result = {};
+  for (const key in data) {
+    if (data.hasOwnProperty(key)) {
+      result[key] = restoreFromSaveFormat(data[key]);
+    }
+  }
+  return result;
+}
+
 const saveID = "KediRNG";
 
 // Function to get game data
 function getGameData() {
   lastSave = Date.now();
-  return {
-    version: gVersion, // added version property
+  const gameData = {
+    version: gVersion,
     money: money,
     inventory: inventory,
     boughtUpgrades: boughtUpgrades,
@@ -26,8 +79,10 @@ function getGameData() {
     rebirth: rebirth,
     updateVersion: versionString,
     combinationsDone: combinationsDone,
-    // Add any new properties here
   };
+  
+  // Convert Decimal values to save format
+  return convertToSaveFormat(gameData);
 }
 
 // Function to set game data
@@ -35,35 +90,66 @@ function setGameData(gameData) {
   // Check the version of the save file
   if (gameData.version !== gVersion) {
     notify(
-      "Old version detected (v" + gameData.version + "), proceeding anyway...",
+      "Old version detected (v" + gameData.version + "), attempting migration...",
       "wheat"
     );
+    // Migrate old save format if needed
+    migrate(gameData.version, gVersion);
   }
 
-  money = gameData.money || 0;
-  inventory = gameData.inventory || defInventory;
-  boughtUpgrades = gameData.boughtUpgrades || [];
-  raritiesDone = gameData.raritiesDone || defRaritiesDone;
-  quests = gameData.quests || [];
-  level = gameData.level || defLevel;
-  lastSave = gameData.lastSave || Date.now();
-  upgradeValues = gameData.upgradeValues || defUpgradeValues;
-  stats = gameData.stats || defStats;
-  stats.forEach((stat) => {
-    let st = defStats.find((s) => s.id === stat.id);
-    if (st) {
-      if (stat.name !== st.name) {
-        stat.name = st.name;
-        stat.show = st.show;
-      }
+  // Restore Decimal values from save format
+  const restoredData = restoreFromSaveFormat(gameData);
+
+  // Helper function to safely convert to Decimal
+  const safeToDecimal = (value, defaultValue = 0) => {
+    try {
+      return value instanceof Decimal ? value : new Decimal(value || defaultValue);
+    } catch (e) {
+      console.warn('Error converting value to Decimal, using default:', value, e);
+      return new Decimal(defaultValue);
     }
+  };
+
+  money = safeToDecimal(restoredData.money, 0);
+  inventory = restoredData.inventory || defInventory;
+  boughtUpgrades = restoredData.boughtUpgrades || [];
+  raritiesDone = restoredData.raritiesDone || defRaritiesDone;
+  quests = restoredData.quests || [];
+  
+  // Ensure level is properly initialized with Decimal values
+  level = restoredData.level || defLevel;
+  if (level) {
+    level.level = safeToDecimal(level.level, 1);
+    level.xp = safeToDecimal(level.xp, 0);
+  }
+  
+  lastSave = restoredData.lastSave || Date.now();
+  upgradeValues = restoredData.upgradeValues || defUpgradeValues;
+  
+  // Initialize stats with proper Decimal values
+  stats = (restoredData.stats || defStats).map(stat => {
+    const defaultStat = defStats.find(s => s.id === stat.id) || {};
+    const newStat = { ...defaultStat, ...stat };
+    
+    // Convert numeric values to Decimal if they should be numbers
+    if (defaultStat.value instanceof Decimal || stat.value instanceof Decimal) {
+      newStat.value = safeToDecimal(stat.value, defaultStat.value || 0);
+    }
+    if (defaultStat.highest instanceof Decimal || stat.highest instanceof Decimal) {
+      newStat.highest = safeToDecimal(stat.highest, stat.value || defaultStat.highest || 0);
+    }
+    
+    return newStat;
   });
+  
   doneAchivements = gameData.doneAchivements || [];
   setSettings = gameData.setSettings || {};
   initSettings();
-  rebirth = gameData.rebirth || 1;
+  
+  // Ensure rebirth is a Decimal
+  rebirth = safeToDecimal(restoredData.rebirth, 1);
+  
   combinationsDone = gameData.combinationsDone || [];
-  // Load other properties here as needed
 
   // Migrate game data
   migrate(gameData.versionString, gameData.version);
@@ -139,7 +225,7 @@ function loadGame(event) {
 }
 
 function resetGame() {
-  localStorage.removeItem("autosave"); // Clear storage
+  localStorage.removeItem("DDCSave-" + saveID); // Clear storage
   window.location.reload(); // Reload the page
 }
 
@@ -150,9 +236,8 @@ setInterval(saveGameToLocalStorage, 30000); // Start autosaving every 30 seconds
 document.getElementById("load-input").addEventListener("change", loadGame);
 document.getElementById("saveButton").textContent += " (v" + gVersion + ")";
 
-
 globalThis.loadGame = loadGame;
 globalThis.saveGame = saveGame;
 globalThis.saveGameToLocalStorage = saveGameToLocalStorage;
 globalThis.loadGameFromLocalStorage = loadGameFromLocalStorage;
-globalThis.resetGame = resetGame;
+document.getElementById("resetButton").addEventListener("click", resetGame);

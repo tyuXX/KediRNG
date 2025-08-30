@@ -119,10 +119,18 @@ function displayStats() {
 function changeStat(id, amount, set = false) {
   const stat = stats.find((stat) => stat.id === id);
   if (stat) {
+    // Convert amount to number if it's a Decimal
+    const numAmount = amount && amount.isDecimal ? amount.toNumber() : Number(amount);
+    
     if (set) {
-      stat.value = amount;
+      stat.value = numAmount;
     } else {
-      stat.value += amount;
+      stat.value = (stat.value || 0) + numAmount;
+    }
+    
+    // Update highest value if current value is greater
+    if (stat.value > (stat.highest || 0)) {
+      stat.highest = stat.value;
     }
   } else {
     stats.push({ name: id, id: id, value: amount, show: true });

@@ -418,6 +418,16 @@ p:hover {
   border-radius: 8px;
 }
 
+#stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 80vw));
+  justify-content: center;
+  gap: 10px;
+  overflow-y: auto;
+  max-height: 60vh;
+  padding: 10px;
+}
+
 .achivement {
   border: 1px solid #555555;
   border-radius: 8px;
